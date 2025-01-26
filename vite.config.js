@@ -8,4 +8,12 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss(),
   ],
+  base:'./',
+  assetsInclude: ['**/*.PNG', '**/*.JPG', '**/*.jpg', '**/*.png'],
+  build: {
+    outDir: "dist",
+  },
+  server: {
+    historyApiFallback: true,
+  },
 })
