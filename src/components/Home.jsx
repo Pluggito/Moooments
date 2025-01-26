@@ -14,7 +14,7 @@ const Home = () => {
         </div>
 
       {/* Buttons */}
-      <div className="absolute top-1/2 right-0 left-0 mx-auto flex flex-col sm:flex-row gap-4 justify-center w-full max-w-[90%] sm:max-w-[75%] px-4">
+      <div className="absolute top-1/2 right-0 left-0 mx-auto flex flex-col sm:flex-row gap-4 justify-center w-full max-w-[90%] sm:max-w-[75%] ">
         <button
           type="button"
           className="border-2 border-black rounded w-full sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300

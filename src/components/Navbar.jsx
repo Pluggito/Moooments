@@ -6,7 +6,7 @@ const Navbar = () => {
     ];
   
     return (
-      <nav className="flex justify-between items-center max-w-7xl mx-auto p-3 absolute top-0 left-0 right-0 z-1">
+      <nav className="flex justify-between items-center max-w-7xl mx-auto p-3 absolute top-0 left-0 right-0 ">
         {/* Brand Name */}
         <p className="text-2xl tracking-wide font-extrabold ">Moooments</p>
   
