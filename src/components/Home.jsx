@@ -8,7 +8,7 @@ const Home = () => {
            style={{ background: `url(${assets.hero_image})` }}>
       </div>
       <div className="max-w-4xl text-center absolute top-1/4 left-0 right-0 mx-auto px-4">
-          <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-black">
+          <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-black tracking-wide">
             Capture Every <span className="text-purple-700 font-bold">Moooments!</span> Share Every Memory
           </p>
         </div>
