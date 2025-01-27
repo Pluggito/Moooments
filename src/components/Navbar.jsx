@@ -15,7 +15,6 @@ const Navbar = () => {
         <NavLink to='/'>
         <p className="text-2xl tracking-wide font-extrabold ">Moooments</p>
         </NavLink>
-       
   
         
         {/* Navigation Links */}
