@@ -4,13 +4,13 @@ import  { useEffect, useState } from "react";
 import { MotionConfig, motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 
-export const SideMenu = ({isMenu, setIsMenu}) => {
+export const SideMenu = ({ isMenu, setIsMenu }) => {
   const [active, setActive] = useState(false);
 
   const handleRequest = () => {
     setActive((pv) => !pv);
     setIsMenu((pv) => !pv);
-  }
+  };
 
   useEffect(()=>{
       if(isMenu){
