@@ -10,7 +10,7 @@ const Navbar = () => {
     const location = useLocation()
   
     return (
-      <nav className={`flex justify-between items-center max-w-6xl mx-auto my-2 ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>
+      <nav className={`sm:flex justify-between items-center max-w-6xl mx-auto my-2 ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : "inline-block"}`}>
         {/* Brand Name */}
         <NavLink to='/'>
         <p className="text-2xl tracking-wide font-extrabold ">Moooments</p>
@@ -37,7 +37,7 @@ const Navbar = () => {
         </ul>
   
         {/* Buttons */}
-        <div className=" flex flex-row justify-center items-center gap-4 ">
+        <div className=" sm:flex flex-row justify-center items-center gap-4 hidden">
           <NavLink to='/signup'>
           <button
             type="button"

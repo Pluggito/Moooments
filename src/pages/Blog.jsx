@@ -3,8 +3,11 @@
 
 const Blog = () => {
   return (
-    <div>
-      <h1>Pussy ass niqqa</h1>
+    <div className=" p-2 items-center my-80">
+      <div className="text-center">
+      <h1 className=" text-2xl font-bold">No Blog Yet</h1>
+      </div>
+      
     </div>
   )
 }
