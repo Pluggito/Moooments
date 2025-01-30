@@ -7,9 +7,10 @@ import SignUp from "./admin/SignUp"
 import About from "./pages/About"
 import Pricing from "./pages/Pricing"
 import Blog from "./pages/Blog"
-import { SideMenu } from "./components/Sidemenu.jsx"
+//import { SideMenu } from "./components/Sidemenu.jsx"
 import { useState } from "react"
 import EventLink from "./pages/EventLink"
+import HambugerMenu from "./components/HambugerMenu.jsx"
 
 
 
@@ -23,7 +24,8 @@ const App = () => {
     <div className="container overflow-x-hidden m-auto">
       <Navbar />
 
-      <SideMenu isMenu={isMenu} setIsMenu={setIsMenu}/>
+      
+      <HambugerMenu  isMenu={isMenu} setIsMenu={setIsMenu}/>
       
       <Routes>
         <Route path="/" element={<Home/>}/>
