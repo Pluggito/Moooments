@@ -20,7 +20,7 @@ const HambugerMenu = ({setIsMenu, isMenu}) => {
     },[isMenu]);
 
   return (
-    <div className={`grid float-right  place-content-center sm:hidden z-50 ${location.pathname !== '/' ? "absolute top-0 right-0" :"" }`}>
+    <div className={`grid float-right mx-auto place-content-center sm:hidden z-50  ${location.pathname !== '/' ? "absolute top-0 right-0" :"-ml-11" }`}>
     <AnimatedHamburgerButton active={active}
       handleRequest={handleRequest}/>
 
@@ -59,7 +59,7 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
     initial={false}
     animate={active ? "open" : "closed"}
     onClick={handleRequest}
-    className="relative h-12 w-12 rounded-full bg-transparent transition-colors hover:bg-gray-200 z-[100]"
+    className="relative h-12 w-12 rounded-full bg-transparent transition-colors hover:bg-gray-400 z-[100]"
   >
   
           <motion.span
