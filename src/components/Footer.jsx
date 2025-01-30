@@ -8,7 +8,7 @@ const Footer = () => {
     const location = useLocation();
 
     return (
-      <div className={`flex flex-col justify-center items-center text-center mx-auto ${location.pathname === '/' ? "absolute left-0 right-0 bottom-1 w-auto " : ""}`}>
+      <div className={`flex flex-col justify-center items-center text-center mx-auto ${location.pathname === '/' ? "absolute left-0 right-0 bottom-0 sm:bottom-3 w-auto my-auto" : ""}`}>
           {/*--- first section---- */}
           {location.pathname === "/" && (
         <div>

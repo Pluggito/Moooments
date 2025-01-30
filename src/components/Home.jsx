@@ -1,13 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/asset"
 
 const Home = () => {
+
+  const Navigate = useNavigate()
   return (
     <div>
       {/* Background Image */}
       <div className="bg-cover bg-center bg-no-repeat h-screen relative flex justify-center items-center opacity-8"
            style={{ background: `url(${assets.hero_image})` }}>
       </div>
-      <div className="max-w-4xl text-center absolute top-1/4 left-0 right-0 mx-auto px-4">
+      <div className="max-w-4xl text-center absolute top-1/4 left-0 right-0 mx-auto ">
           <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-black tracking-wide">
             Capture Every <span className="text-purple-700 font-bold">Moooments!</span> Share Every Memory
           </p>
@@ -19,6 +22,7 @@ const Home = () => {
           type="button"
           className="border-2 border-black rounded w-full sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
           cursor-pointer shadow-md"
+          onClick={()=>Navigate('/eventlink')}
         >
           Enter Event Link
         </button>

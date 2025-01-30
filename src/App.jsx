@@ -7,16 +7,23 @@ import SignUp from "./admin/SignUp"
 import About from "./pages/About"
 import Pricing from "./pages/Pricing"
 import Blog from "./pages/Blog"
+import { SideMenu } from "./components/Sidemenu"
+import { useState } from "react"
+import EventLink from "./pages/EventLink"
+
 
 
 
 
 const App = () => {
 
+  const [isMenu, setIsMenu] = useState(false)
    
   return (
     <div className="container overflow-x-hidden m-auto">
       <Navbar />
+
+      <SideMenu isMenu={isMenu} setIsMenu={setIsMenu}/>
       
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -24,6 +31,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/pricing" element={<Pricing/>}/>
         <Route path="/blog" element={<Blog />} />
+        <Route path="/eventlink" element={<EventLink/>} />
       </Routes>
      
 
