@@ -23,7 +23,6 @@ const App = () => {
   return (
     <div className="container overflow-x-hidden m-auto">
       <Navbar />
-
       
       <HambugerMenu  isMenu={isMenu} setIsMenu={setIsMenu}/>
       
