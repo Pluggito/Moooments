@@ -19,6 +19,11 @@
       color: #c300f9;
       text-decoration: underline #c300f9;
     }
+
+    #header{
+      text-decoration: none;
+      list-style: none;
+    }
   
   }
   

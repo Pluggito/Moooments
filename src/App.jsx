@@ -11,6 +11,7 @@ import Blog from "./pages/Blog"
 import { useState } from "react"
 import EventLink from "./pages/EventLink"
 import HambugerMenu from "./components/HambugerMenu.jsx"
+import ForgetPassword from "./admin/ForgetPassword.jsx"
 
 
 
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/pricing" element={<Pricing/>}/>
         <Route path="/blog" element={<Blog />} />
         <Route path="/eventlink" element={<EventLink/>} />
+        <Route path="/forgetpassword" element={<ForgetPassword/>} />
       </Routes>
      
 

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -148,9 +149,12 @@ const SignUp = () => {
                         <button className="rounded sm:w-[101px] sm:h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 cursor-pointer shadow-md p-2 mt-9">
                             {isMenu}
                         </button>
+                        <NavLink to="/forgetpassword">
                         <p className="mt-4 text-gray-500 hover:text-black cursor-pointer">
                             Forgot Password?
                         </p>
+                        </NavLink>
+                        
                     </motion.div>
                 ) : (
                     <motion.div
