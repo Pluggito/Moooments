@@ -1,4 +1,5 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
 
 const Navbar = () => {
     const components = [
@@ -7,19 +8,20 @@ const Navbar = () => {
       { label: "Blog", path: "/blog" },
     ];
 
-    const location = useLocation()
+    const location = useLocation();
+    const Navigate = useNavigate();
   
     return (
-      <nav className={`sm:flex justify-between items-center max-w-6xl mx-auto my-3 inline-block ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>
+      <nav className={`sm:flex justify-between items-center max-w-6xl mx-auto my-3 inline-block p-1 ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>
         {/* Brand Name */}
-        <NavLink to='/'>
-        <p className="text-2xl tracking-wide font-extrabold ">Moooments</p>
-        </NavLink>
+        
+        <p id="header" className="text-2xl tracking-wide font-extrabold ">Moooments</p>
+ 
   
         
         {/* Navigation Links */}
         {
-          location.pathname !== '/signup' && (
+          location.pathname !== '/signup' ?  (
             <>
               <ul className="hidden sm:flex flex-row justify-between gap-9">
           {components.map((item, index) => (
@@ -56,7 +58,10 @@ const Navbar = () => {
           </NavLink>
         </div>
             </>
-          )}
+          ) : <button onClick={()=>Navigate('/')} className="border-2 border-black rounded sm:w-[101px] sm:h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
+          cursor-pointer shadow-md m">Go to Home</button>}
+
+          
       
       </nav>
     );

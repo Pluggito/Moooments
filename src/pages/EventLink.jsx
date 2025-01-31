@@ -2,7 +2,7 @@
 
 const EventLink = () => {
   return (
-    <div className="items-center mx-auto max-w-4xl my-48 p-8
+    <div className="items-center mx-auto max-w-4xl my-45 p-8
     sm:h-full ">
         
         <div className="flex flex-col justify-center  items-center  sm:w-[551px] w-full sm:h-[230px] h-[250px] mx-auto gap-5 ">
