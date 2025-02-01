@@ -13,6 +13,8 @@ import EventLink from "./pages/EventLink"
 import HambugerMenu from "./components/HambugerMenu.jsx"
 import ForgetPassword from "./admin/ForgetPassword.jsx"
 import CreateAlbum from "./pages/CreateAlbum.jsx"
+import Preview from "./pages/Preview.jsx"
+import Dashboard from "./admin/Dashboard.jsx"
 
 
 
@@ -37,6 +39,8 @@ const App = () => {
         <Route path="/eventlink" element={<EventLink/>} />
         <Route path="/forgetpassword" element={<ForgetPassword/>} />
         <Route path="/create-album" element={<CreateAlbum/>}/>
+        <Route path="/preview" element={<Preview/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
       </Routes>
      
 

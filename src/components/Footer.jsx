@@ -1,41 +1,43 @@
 import { useLocation } from "react-router-dom"
 
-
-
-
 const Footer = () => {
-
     const location = useLocation();
 
     return (
-      <div className={`flex flex-col justify-center items-center text-center mx-auto  ${location.pathname === '/' ? "sm:absolute left-0 right-0 bottom-0 sm:bottom-3 w-auto my-auto" : ""}`}>
+      <div className={`flex flex-col justify-center items-center text-center w-full p-4 gap-4
+        ${location.pathname === '/' ? 
+          "fixed bottom-0 left-0 right-0 bg-transparent pb-6" : 
+          "my-8"}`}
+      >
           {/*--- first section---- */}
           {location.pathname === "/" && (
-        <div>
-          <p className="text-lg">Want to share more memories? Keep uploading!</p>
-        </div>
-      )}
+            <div className=" px-4">
+              <p className="text-base sm:text-lg font-medium text-gray-600">Want to share more memories? Keep uploading!</p>
+            </div>
+          )}
   
           {/*-----second section---- */}
-          <div>
-              <ul className="flex flex-row items-center justify-between gap-3 text-gray-600">
-                  <p className="cursor-pointer">Privacy Policy</p>
-                  <hr className="w-0.5 h-3 bg-gray-600"/>
-                  <p className="cursor-pointer">Terms of Service</p>
-                  <hr className="w-0.5 h-3 bg-gray-600"/>
-                  <p className="cursor-pointer">Cookie Policy</p>
+          <div className="w-full max-w-md px-4">
+              <ul className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-gray-600 text-sm sm:text-base">
+                  <li className="cursor-pointer hover:text-[#c300f9] transition-colors">Privacy Policy</li>
+                  <hr className="w-0.5 h-3 bg-gray-800 hidden sm:block"/>
+                  <span className="block sm:hidden">•</span>
+                  <li className="cursor-pointer hover:text-[#c300f9] transition-colors">Terms of Service</li>
+                  <hr className="w-0.5 h-3 bg-gray-800 hidden sm:block"/>
+                  <span className="block sm:hidden">•</span>
+                  <li className="cursor-pointer hover:text-[#c300f9] transition-colors">Cookie Policy</li>
               </ul>
-            </div>
+          </div>
   
           {/*----third section----- */}
-          <div>
-              <p className="text-gray-500 text-sm">© 2025. <span className="text-[#c300f9]">Moooments</span> </p>
+          <div className="mt-2">
+              <p className="text-gray-800 text-xs sm:text-sm font-medium">
+                © 2025. <span className="text-[#c300f9]">Moooments</span>
+              </p>
           </div>
-        
-  
       </div>
     )
-  }
+}
   
-  export default Footer
+export default Footer
   

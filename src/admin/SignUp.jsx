@@ -10,20 +10,91 @@ const SignUp = () => {
     const [termsAndConditions, setTermsAndConditions] = useState(false);
     const [newsletter, setNewsletter] = useState(false);
     const [isMenu, setIsMenu] = useState("Sign Up");
-    const [userData, setUserData] = useState({
-        name: "",
-        email: "",
-        password: "",
+    const [userName, setUserName] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
     });
+    const [error, setError] = useState({
+        email: '',
+        password: '',
+        userName: '',
+        general: ''
+    });
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value.trim() });
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value.trim()
+        }));
+    };
+
+    const handleSignup = (e) => {
+        e.preventDefault();
+        const errors = {};
+        setIsLoading(true);
+
+        // Reset errors
+        setError({});
+
+
+        if(!userName){
+            errors.userName = 'Name is required';
+        }
+
+        // Validate email
+        if (!formData.email) {
+            errors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = 'Please enter a valid email';
+        }
+
+        // Validate password
+        if (!formData.password) {
+            errors.password = 'Password is required';
+        } else if (formData.password.length < 6) {
+            errors.password = 'Password must be at least 6 characters';
+        }
+
+        // Validate terms and newsletter
+        if (!termsAndConditions || !newsletter) {
+            errors.general = 'Please accept all required fields';
+        }
+
+        if (Object.keys(errors).length > 0) {
+            setError(errors);
+            setIsLoading(false);
+            setTimeout(() => {
+                setError({});
+            }, 3000);
+            return;
+        }
+
+        // If validation passes, proceed with signup
+        console.log('Form submitted:', { formData, userName });
+        
+        // Reset form
+        setFormData({ email: '', password: '' });
+        setNewsletter(false);
+        setTermsAndConditions(false);
+        setUserName('');
+        setIsLoading(false);
     };
 
     const slideVariants = {
         hidden: { opacity: 0, y: -50 },
         visible: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: 50 },
+    };
+
+    const getPasswordStrength = (password) => {
+        if (!password) return '';
+        if (password.length < 6) return 'bg-red-500';
+        if (password.length < 8) return 'bg-yellow-500';
+        if (/[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)) return 'bg-green-500';
+        return 'bg-yellow-500';
     };
 
     return (
@@ -88,6 +159,8 @@ const SignUp = () => {
                     <hr className="flex-grow border-gray-400" />
                 </div>
 
+                {error.general && <p className="mt-2 text-red-700">{error.general}</p>}
+
                 {/* User Info Form */}
                 {isMenu === "Login" ? (
                     <motion.div
@@ -102,13 +175,17 @@ const SignUp = () => {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-4"
+                                className={`w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-1
+                                    ${error.email ? 'border-red-500' : ''}`}
                                 autoComplete="off"
                                 required
-                                value={userData.email}
+                                value={formData.email}
                                 onChange={handleChange}
                                 name="email"
                             />
+                            {error.email && (
+                                <p className="text-red-500 text-xs mb-2">{error.email}</p>
+                            )}
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
@@ -116,10 +193,13 @@ const SignUp = () => {
                                     className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none"
                                     autoComplete="off"
                                     required
-                                    value={userData.password}
+                                    value={formData.password}
                                     onChange={handleChange}
                                     name="password"
                                 />
+                                {formData.password && (
+                                    <div className={`h-1 mt-1 rounded-full ${getPasswordStrength(formData.password)}`} />
+                                )}
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -146,8 +226,14 @@ const SignUp = () => {
                                 Remember me
                             </label>
                         </div>
-                        <button className="rounded sm:w-[101px] sm:h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 cursor-pointer shadow-md p-2 mt-9">
-                            {isMenu}
+                        <button 
+                            onClick={handleSignup}
+                            disabled={isLoading}
+                            className={`rounded sm:w-[101px] sm:h-[44px] font-semibold text-white 
+                                ${isLoading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
+                                transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5`}
+                        >
+                            {isLoading ? 'Signing up...' : isMenu}
                         </button>
                         <NavLink to="/forgetpassword">
                         <p className="mt-4 text-gray-500 hover:text-black cursor-pointer">
@@ -172,20 +258,25 @@ const SignUp = () => {
                                 className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-4"
                                 autoComplete="off"
                                 required
-                                value={userData.name}
-                                onChange={handleChange}
+                                value={userName}
+                                onChange={(e)=>setUserName(e.target.value)}
                                 name="name"
                             />
+                            {error.userName && <p className="text-red-500 text-xs mb-2">{error.userName}</p>}
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-4"
+                                className={`w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-1
+                                    ${error.email ? 'border-red-500' : ''}`}
                                 autoComplete="off"
                                 required
-                                value={userData.email}
+                                value={formData.email}
                                 onChange={handleChange}
                                 name="email"
                             />
+                            {error.email && (
+                                <p className="text-red-500 text-xs mb-2">{error.email}</p>
+                            )}
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
@@ -193,10 +284,13 @@ const SignUp = () => {
                                     className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none"
                                     autoComplete="off"
                                     required
-                                    value={userData.password}
+                                    value={formData.password}
                                     onChange={handleChange}
                                     name="password"
                                 />
+                                {formData.password && (
+                                    <div className={`h-1 mt-1 rounded-full ${getPasswordStrength(formData.password)}`} />
+                                )}
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -230,16 +324,23 @@ const SignUp = () => {
                                     type="checkbox"
                                     id="newsletter"
                                     checked={newsletter}
+                                    required
                                     onChange={() => setNewsletter(!newsletter)}
                                     className="w-5 h-5 cursor-pointer accent-[#c300f9]"
                                 />
                                 <label htmlFor="newsletter" className="text-gray-500 text-sm">
-                                    Get the latest on Moooments' products and join the waitlist for our full e-ticketing platform launch!
+                                    Get the latest on Moooments&apos; products and join the waitlist for our full e-ticketing platform launch!
                                 </label>
                             </div>
                         </div>
-                        <button className="rounded sm:w-[101px] sm:h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5">
-                            {isMenu}
+                        <button 
+                        onClick={handleSignup}
+                        disabled={isLoading}
+                        className={`rounded sm:w-[101px] sm:h-[44px] font-semibold text-white 
+                            ${isLoading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
+                            transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5`}
+                        >
+                            {isLoading ? 'Signing up...' : isMenu}
                         </button>
                     </motion.div>
                 )}
