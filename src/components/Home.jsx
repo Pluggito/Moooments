@@ -29,6 +29,7 @@ const Home = () => {
         <button
           type="button"
           className="rounded w-full sm:w-[292px] h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 cursor-pointer shadow-md"
+          onClick={()=>Navigate('/create-album')}
         >
           Create your Event Album
         </button>

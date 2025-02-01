@@ -12,6 +12,7 @@ import { useState } from "react"
 import EventLink from "./pages/EventLink"
 import HambugerMenu from "./components/HambugerMenu.jsx"
 import ForgetPassword from "./admin/ForgetPassword.jsx"
+import CreateAlbum from "./pages/CreateAlbum.jsx"
 
 
 
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/eventlink" element={<EventLink/>} />
         <Route path="/forgetpassword" element={<ForgetPassword/>} />
+        <Route path="/create-album" element={<CreateAlbum/>}/>
       </Routes>
      
 
