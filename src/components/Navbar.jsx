@@ -4,6 +4,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     const components = [
+      {label: "Home", path: "/"},
       { label: "About", path: "/about" },
       { label: "Pricing", path: "/pricing" },
       { label: "Blog", path: "/blog" },
@@ -26,7 +27,7 @@ const Navbar = () => {
     },[isMobile]) */}
   
     return (
-      <nav className={`sm:flex justify-between items-center max-w-6xl mx-auto my-3 inline-block p-1 ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>
+      <nav className={`sm:flex justify-around items-center max-w-6xl mx-auto my-3 inline-block ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>
         {/* Brand Name */}
         
         <p id="header" className="text-2xl tracking-wide font-extrabold ">Moooments</p>
@@ -74,7 +75,7 @@ const Navbar = () => {
             </>
           ) : <button onClick={()=>Navigate('/')} className="border-2
           hidden sm:inline border-black rounded sm:w-[101px] sm:h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
-          cursor-pointer shadow-md m">Go to Home</button>}
+          cursor-pointer shadow-md m">  Go to Home</button>}
 
           
       
