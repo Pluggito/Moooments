@@ -21,8 +21,15 @@ export const EventProvider = ({ children }) => {
     localStorage.setItem('events', JSON.stringify(updatedEvents));
   };
 
+  const clearEvents = () => {
+    localStorage.clear(); // Clears all localStorage
+    // OR
+    localStorage.removeItem('events'); // Clears only the events
+    setSavedEvents([]);
+  };
+
   return (
-    <EventContext.Provider value={{ savedEvents, addEvent }}>
+    <EventContext.Provider value={{ savedEvents, addEvent, clearEvents }}>
       {children}
     </EventContext.Provider>
   );

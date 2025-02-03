@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 
@@ -12,19 +12,9 @@ const Navbar = () => {
 
     const location = useLocation();
     const Navigate = useNavigate();
-    const [isMobile, setIsMobile] = useState();
+   
 
-    {/*useEffect(()=>{
-
-      const handleResize = () =>{
-        setIsMobile(window.innerWidth <=640);
-          }
-
-          handleResize();
-          window.addEventListener("resize", handleResize);
-          return () => window.removeEventListener("resize", handleResize);
-
-    },[isMobile]) */}
+  
   
     return (
       <nav className={`sm:flex justify-around items-center max-w-6xl mx-auto my-3 inline-block ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>

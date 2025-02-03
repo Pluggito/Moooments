@@ -4,7 +4,7 @@ import { assets } from "../assets/asset"
 const Home = () => {
   const Navigate = useNavigate()
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-[100dvh]">
       {/* Background Image */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
