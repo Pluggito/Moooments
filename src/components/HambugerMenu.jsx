@@ -20,7 +20,7 @@ const HambugerMenu = ({setIsMenu, isMenu}) => {
     },[isMenu]);
 
   return (
-    <div className={`grid float-right mx-auto place-content-center sm:hidden z-50 ${
+    <div className={`grid float-right mx-auto place-content-center sm:hidden z-50 my-3 ${
       location.pathname !== '/' ? "absolute top-0 right-0" : "-ml-11"
     }`}>
       <AnimatedHamburgerButton 

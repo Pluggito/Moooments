@@ -21,9 +21,10 @@
     }
 
     #header{
-      text-decoration: none;
-      list-style: none;
+      text-shadow: 0 2px 4px rgba(195, 0, 249, 0.5);
     }
+
+   
   
   }
   
