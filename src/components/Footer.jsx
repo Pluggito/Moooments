@@ -6,7 +6,7 @@ const Footer = () => {
     return (
       <div className={`flex flex-col justify-center items-center text-center w-full p-2 gap-4
         ${location.pathname === '/' ? 
-          "fixed bottom-0 left-0 right-0 bg-transparent pb-3" : 
+          "my-25 bottom-0 left-0 right-0 bg-transparent pb-3" : 
           "my-5"}`}
       >
           {/*--- first section---- */}

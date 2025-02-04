@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { MotionConfig, motion } from "framer-motion";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import PropTypes from 'prop-types';
 
 const HambugerMenu = ({setIsMenu, isMenu}) => {
     const [active, setActive] = useState(false);
+    const location = useLocation();
 
     const handleRequest = () => {
       setActive((pv) => !pv);
@@ -20,8 +21,8 @@ const HambugerMenu = ({setIsMenu, isMenu}) => {
     },[isMenu]);
 
   return (
-    <div className={`grid float-right mx-auto place-content-center sm:hidden z-50 my-3 ${
-      location.pathname !== '/' ? "absolute top-0 right-0" : "-ml-10"
+    <div className={`grid float-right sm:hidden z-50 ${
+      location.pathname !== '/' ? "absolute top-3 right-1 " : ""
     }`}>
       <AnimatedHamburgerButton 
         active={active}
