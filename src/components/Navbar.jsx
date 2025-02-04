@@ -1,8 +1,9 @@
 import { NavLink, useLocation,  } from "react-router-dom";
 import '../index.css';
 import { Link } from "react-router-dom";
+import HambugerMenu from "./HambugerMenu";
 
-const Navbar = () => {
+const Navbar = ({isMenu, setIsMenu}) => {
     const components = [
       
       { label: "About", path: "/about" },
@@ -60,6 +61,8 @@ const Navbar = () => {
               </div>
             </>
           ) : <></>}
+
+          <HambugerMenu  isMenu={isMenu} setIsMenu={setIsMenu}/>
 
           
       

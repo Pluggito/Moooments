@@ -26,9 +26,9 @@ const App = () => {
    
   return (
     <div className="container overflow-x-hidden mx-auto px-4 md:px-10 lg:px-[100px]">
-      <Navbar />
+      <Navbar isMenu={isMenu} setIsMenu={setIsMenu}/>
 
-      <HambugerMenu  isMenu={isMenu} setIsMenu={setIsMenu}/>
+     
       
       <Routes>
         <Route path="/" element={<Home/>}/>
