@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { assets } from "../assets/asset"
+import { assets } from "../assets/asset";
+import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
 
 const Home = () => {
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
+
   return (
     <div className="relative min-h-[100dvh]">
       {/* Background Image */}
@@ -12,12 +15,29 @@ const Home = () => {
       />
       
       {/* Content Container */}
-      <div className="relative flex flex-col min-h-screen">
+      <div className="relative flex flex-col">
         {/* Heading */}
-        <div className="max-w-4xl text-center mx-auto px-4 mt-[25vh] mb-8">
-          <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-black tracking-wide">
-            Capture Every <span className="text-purple-700 font-bold">Moooments!</span> Share Every Memory
-          </p>
+        <div className="w-full text-center mx-auto px-4 mt-[30vh] mb-8">
+          <motion.p 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-black tracking-wide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          >
+            Capture Every&nbsp;
+            <span className="text-[#c300f9] font-bold">
+              <Typewriter
+                words={["Moooments!", "Laughter!", "Love!", "Joy!", "Adventures!", "Moooments!"]}
+                loop={true}
+                cursor
+                cursorStyle="_"
+                typeSpeed={100}
+                deleteSpeed={50}
+                delaySpeed={1500}
+              />
+            </span>
+            <br/> Share Every Memory
+          </motion.p>
         </div>
 
         {/* Buttons */}
@@ -26,14 +46,14 @@ const Home = () => {
             type="button"
             className="border-2 border-black rounded w-full sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
             cursor-pointer shadow-md"
-            onClick={()=>Navigate('/eventlink')}
+            onClick={() => Navigate('/eventlink')}
           >
             Enter Event Link
           </button>
           <button
             type="button"
             className="rounded w-full sm:w-[292px] h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 cursor-pointer shadow-md"
-            onClick={()=>Navigate('/create-album')}
+            onClick={() => Navigate('/create-album')}
           >
             Create your Event Album
           </button>
@@ -41,6 +61,6 @@ const Home = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
