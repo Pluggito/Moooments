@@ -25,7 +25,7 @@ const App = () => {
   const [isMenu, setIsMenu] = useState(false)
    
   return (
-    <div className="container overflow-x-hidden m-auto ">
+    <div className="container overflow-x-hidden mx-auto px-4 md:px-10 lg:px-[100px]">
       <Navbar />
 
       <HambugerMenu  isMenu={isMenu} setIsMenu={setIsMenu}/>
