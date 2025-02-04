@@ -17,7 +17,7 @@ const Navbar = () => {
   
   
     return (
-      <nav className={`sm:flex justify-around items-center max-w-6xl mx-auto my-3 inline-block ${location.pathname === '/' ?"absolute top-0 left-0 right-0 z-10" : ""}`}>
+      <nav className={`sm:flex justify-around items-center max-w-6xl mx-auto my-3 inline-block ${location.pathname === '/' ?"absolute top-0 left-3 right-0 z-10" : ""}`}>
         {/* Brand Name */}
         
         <p id="header" className="text-2xl tracking-wide font-extrabold ">Moooments</p>
