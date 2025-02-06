@@ -60,6 +60,7 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
           duration: 0.5,
           ease: "easeInOut",
         }}
+        role='button'
       >
         <motion.button
           initial={false}
