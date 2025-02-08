@@ -13,7 +13,7 @@ const EventLink = () => {
                 placeholder="Event Link" 
                 name="event-link"/>
                 <button className="rounded sm:w-[101px] sm:h-[44px] w-1/2 font-bold hover:bg-gray-800 bg-black text-slate-100 hover:text-white transition-all duration-300
-                cursor-pointer shadow-md p-2">Enter</button>
+                cursor-pointer shadow-md p-2">Next</button>
              </div>
           
         </div>

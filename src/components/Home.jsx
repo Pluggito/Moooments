@@ -7,7 +7,7 @@ const Home = () => {
   const Navigate = useNavigate();
 
   return (
-    <div className="relative">
+    <header className="relative">
       {/* Background Image */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
@@ -30,9 +30,9 @@ const Home = () => {
                 words={["Moooments!", "Laughter!", "Love!", "Joy!", "Adventures!", "Moooments!"]}
                 loop={true}
                 cursor
-                cursorStyle="_"
-                typeSpeed={100}
-                deleteSpeed={50}
+                cursorStyle="|"
+                typeSpeed={300}
+                deleteSpeed={75}
                 delaySpeed={1500}
               />
             </span>
@@ -59,7 +59,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

@@ -63,6 +63,7 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
         role='button'
       >
         <motion.button
+        type="button"
           initial={false}
           animate={active ? "open" : "closed"}
           onClick={handleRequest}
