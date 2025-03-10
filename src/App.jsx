@@ -15,7 +15,7 @@ import ForgetPassword from "./admin/ForgetPassword.jsx"
 import CreateAlbum from "./pages/CreateAlbum.jsx"
 import Preview from "./pages/Preview.jsx"
 import Dashboard from "./admin/Dashboard.jsx"
-import Hero from "./components/Hero.jsx"
+
 
 
 
