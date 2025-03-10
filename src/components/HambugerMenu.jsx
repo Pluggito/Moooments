@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 const HambugerMenu = ({setIsMenu, isMenu}) => {
     const [active, setActive] = useState(false);
     const location = useLocation();
+    
 
     const handleRequest = () => {
       setActive((pv) => !pv);
