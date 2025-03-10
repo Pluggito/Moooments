@@ -1,52 +1,98 @@
 import { useEffect, useState } from "react";
 import { MotionConfig, motion } from "framer-motion";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PropTypes from 'prop-types';
 
 const HambugerMenu = ({setIsMenu, isMenu}) => {
     const [active, setActive] = useState(false);
-    const location = useLocation();
-    
 
     const handleRequest = () => {
       setActive((pv) => !pv);
       setIsMenu((pv) => !pv);
     }
 
-    useEffect(()=>{
-        if(isMenu){
-          setActive(true);
-        }else{
-          setActive(false)
-        }
-    },[isMenu]);
+    useEffect(() => {
+      if(isMenu) {
+        setActive(true);
+        document.body.style.overflow = 'hidden';
+      } else {
+        setActive(false);
+        document.body.style.overflow = 'unset';
+      }
+    }, [isMenu]);
 
-  return (
-    <div className={`grid float-right sm:hidden z-50 ${
-      location.pathname !== '/' ? "absolute top-3 right-1 " : ""
-    }`}>
-      <AnimatedHamburgerButton 
-        active={active}
-        handleRequest={handleRequest}
-      />
+    return (
+      <div className="grid float-right sm:hidden pointer-events-auto">
+        <AnimatedHamburgerButton 
+          active={active}
+          handleRequest={handleRequest}
+        />
 
-      {/*----Side Menu components---- */}
-      <div className={`fixed top-0 right-0 h-[d40vh] transition-all duration-500 ease-out overflow-hidden shadow-lg rounded-bl-xl ${
-        isMenu 
-          ? "w-[40vw] opacity-100 pointer-events-auto bg-white z-50" 
-          : "w-0 opacity-0 pointer-events-auto"
-      }`}>
-        <div className="flex flex-col my-6 text-center z-10">
-          <NavLink onClick={()=> setIsMenu(false)} to='/' className='py-1.5 pl-4 text-base hover:bg-gray-100'>Home</NavLink>
-          <NavLink onClick={()=> setIsMenu(false)} to='/about' className='py-1.5 pl-4 text-base hover:bg-gray-100'>About</NavLink>
-          <NavLink onClick={()=> setIsMenu(false)} to='/pricing' className='py-1.5 pl-4 text-base hover:bg-gray-100'>Pricing</NavLink>
-          <NavLink onClick={()=> setIsMenu(false)} to='/blog' className='py-1.5 pl-4 text-base hover:bg-gray-100'>Blog</NavLink>
-          <NavLink onClick={()=> setIsMenu(false)} to='/signup' className='py-1.5 pl-4 text-base hover:bg-gray-100'>Signup</NavLink>
-        </div>
+        <motion.div
+          initial={false}
+          animate={isMenu ? "open" : "closed"}
+          variants={{
+            open: { 
+              x: "0%",
+              transition: { type: "spring", stiffness: 300, damping: 30 }
+            },
+            closed: { 
+              x: "100%",
+              transition: { type: "spring", stiffness: 300, damping: 30 }
+            }
+          }}
+          className="fixed inset-0 bg-white z-[40]"
+        >
+          <div className="flex flex-col items-center justify-center h-full gap-8">
+            <motion.div
+              variants={{
+                open: { y: 0, opacity: 1 },
+                closed: { y: 20, opacity: 0 }
+              }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col gap-6 text-center"
+            >
+              <NavLink 
+                onClick={() => setIsMenu(false)} 
+                to='/' 
+                className='text-3xl font-medium hover:text-[#c300f9] transition-colors'
+              >
+                Home
+              </NavLink>
+              <NavLink 
+                onClick={() => setIsMenu(false)} 
+                to='/about' 
+                className='text-3xl font-medium hover:text-[#c300f9] transition-colors'
+              >
+                About
+              </NavLink>
+              <NavLink 
+                onClick={() => setIsMenu(false)} 
+                to='/pricing' 
+                className='text-3xl font-medium hover:text-[#c300f9] transition-colors'
+              >
+                Pricing
+              </NavLink>
+              <NavLink 
+                onClick={() => setIsMenu(false)} 
+                to='/blog' 
+                className='text-3xl font-medium hover:text-[#c300f9] transition-colors'
+              >
+                Blog
+              </NavLink>
+              <NavLink 
+                onClick={() => setIsMenu(false)} 
+                to='/signup' 
+                className='text-3xl font-medium hover:text-[#c300f9] transition-colors'
+              >
+                Sign Up
+              </NavLink>
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
-    </div>
-  );
-}
+    );
+};
 
 // Add PropTypes
 HambugerMenu.propTypes = {

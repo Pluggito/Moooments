@@ -10,34 +10,39 @@ const Navbar = ({isMenu, setIsMenu}) => {
       { label: "Blog", path: "/blog" },
     ];
 
+   
+
     const location = useLocation();
     
 
     return (
-      <nav className={`sm:flex justify-between items-center mx-auto my-3 drop-shadow-md border-b-2 border-b-transparent`}>
+      <nav className={`sm:flex justify-between items-center px-2 py-3 overflow-hidden sticky shadow-xs z-50`}>
         {/* Brand Name */}
         <Link 
           to='/' 
-          className={`text-3xl tracking-wide font-extrabold transition-all duration-300 hover:drop-shadow-[0_8px_12px_rgba(195,0,249,0.7)] no-underline`}
+          className={` text-2xl sm:text-3xl  tracking-wide font-extrabold transition-all duration-300 hover:drop-shadow-[0_8px_12px_rgba(195,0,249,0.7)] no-underline`}
         >
           Moooments
         </Link>
 
         {/* Navigation Links */}
         {
-          location.pathname !== '/signup' ?  (
+          location.pathname !== '/signup' ? (
             <>
-              <ul className="hidden sm:flex flex-row justify-between gap-9">
-                {components.map((item, index) => (
-                  <NavLink 
-                    key={index}
-                    to={item.path}
-                    className="font-medium cursor-pointer no-underline text-gray-600 hover:text-[#c300f9]"
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-              </ul>
+              {/* Only show links if not on the About page */}
+              {location.pathname !== '/about' && (
+                <ul className={`hidden sm:flex flex-row justify-between gap-9`}>
+                  {components.map((item, index) => (
+                    <NavLink 
+                      key={index}
+                      to={item.path}
+                      className="font-medium cursor-pointer no-underline text-gray-600 hover:text-[#c300f9]"
+                    >
+                      {item.label}
+                    </NavLink>
+                  ))}
+                </ul>
+              )}
 
               {/* Buttons */}
               <div className="sm:flex flex-row justify-center items-center gap-4 hidden">

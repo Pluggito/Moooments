@@ -1,8 +1,7 @@
-
 import Navbar from "./components/Navbar"
 import Home from "./components/Home"
 import Footer from "./components/Footer"
-import { Routes,Route } from "react-router-dom"
+import { Routes,Route, useLocation } from "react-router-dom"
 import SignUp from "./admin/SignUp"
 import About from "./pages/About"
 import Pricing from "./pages/Pricing"
@@ -24,9 +23,12 @@ import Dashboard from "./admin/Dashboard.jsx"
 const App = () => {
 
   const [isMenu, setIsMenu] = useState(false)
+  const location = useLocation()
    
   return (
-    <main className="container overflow-x-hidden mx-auto px-4 md:px-10 lg:px-[100px] max-h-screen ">
+    <main className={`
+      container overflow-x-hidden mx-auto px-4 md:px-10 lg:px-[100px]
+    `}>
       <Navbar isMenu={isMenu} setIsMenu={setIsMenu}/>
 
       <Routes>

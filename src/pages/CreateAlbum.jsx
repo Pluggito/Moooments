@@ -132,7 +132,7 @@ const CreateAlbum = () => {
   const Navigate = useNavigate()
 
   return (
-      <div className='max-w-5xl items-center mx-auto p-4 my-6 sm:my-20'>
+      <div className='max-w-5xl items-center mx-auto p-4'>
         <div>
         <NavLink
           to="/"
@@ -257,7 +257,8 @@ const CreateAlbum = () => {
           <button 
 
             type="submit"
-            className="cursor-pointer w-full h-[40px] text-slate-100 bg-black border border-[#C300F9] shadow-[0_0_10px_rgba(168,85,247,0.15)] rounded-lg"
+            className="cursor-pointer w-full h-[40px] text-slate-100 bg-black border hover:border-[#C300F9]
+           shadow-[0_0_10px_rgba(168,85,247,0.15)] rounded-lg"
           >
             Create Album
           </button>
