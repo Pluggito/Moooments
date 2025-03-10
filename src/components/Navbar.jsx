@@ -1,5 +1,4 @@
 import { NavLink, useLocation,  } from "react-router-dom";
-import '../index.css';
 import { Link } from "react-router-dom";
 import HambugerMenu from "./HambugerMenu";
 
@@ -15,11 +14,9 @@ const Navbar = ({isMenu, setIsMenu}) => {
     
 
     return (
-      <nav className={`sm:flex justify-between items-center mx-auto my-3`}>
-        {/*${location.pathname === '/' ?"absolute top-0 left-3 right-3 z-10" : ""} */}
+      <nav className={`sm:flex justify-between items-center mx-auto my-3 drop-shadow-md border-b-2 border-b-transparent`}>
         {/* Brand Name */}
         <Link 
-          id="header" 
           to='/' 
           className={`text-3xl tracking-wide font-extrabold transition-all duration-300 hover:drop-shadow-[0_8px_12px_rgba(195,0,249,0.7)] no-underline`}
         >
