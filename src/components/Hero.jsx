@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Hero = () => {
     const Navigate = useNavigate();
   return (
-    <main className="border flex items-center justify-center py-20 sm:py-45 md:py-50 lg:py-30 pointer-events-none mt-15">
+    <main className="border flex items-center justify-center py-15 sm:py-45 md:py-50 lg:py-30 pointer-events-none mt-15">
         <div 
         className="fixed z-10 inset-0 bg-cover bg-center bg-no-repeat opacity-8"
         style={{ background: `url(${assets.hero_image})` }}
