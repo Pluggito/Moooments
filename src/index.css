@@ -3,12 +3,12 @@
 
 *{
     outline: none;
-    overflow: hidden;
   }
   
   html{
     scroll-behavior: smooth;
     overscroll-behavior: none;
+    scrollbar-width: none;
   }
   
  /*#hero-background {

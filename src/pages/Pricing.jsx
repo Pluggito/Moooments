@@ -2,12 +2,12 @@
 
 const Pricing = () => {
   return (
-    <div className=" p-2 items-center my-80">
+    <section className=" p-2 items-center py-60">
       <div className="text-center">
       <h1 className=" text-2xl text-gray-700 font-medium">Pricing Structure Coming Soon!</h1>
       </div>
       
-    </div>
+    </section>
   )
 }
 

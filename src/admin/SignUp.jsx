@@ -98,7 +98,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className="items-center justify-center text-center m-auto max-w-7xl p-2">
+        <section className="items-center justify-center text-center m-auto max-w-7xl p-">
             <div className="transform tracking-wide px-1">
                 <h1 className="sm:text-[36px] font-medium text-black ">
                     Login to your <span className="text-[#c300f9] font-bold sm:text-[40px]">MooomentS!</span> Account
@@ -345,7 +345,7 @@ const SignUp = () => {
                     </motion.div>
                 )}
             </form>
-        </div>
+        </section>
     );
 };
 
