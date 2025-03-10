@@ -15,7 +15,8 @@ const Navbar = ({isMenu, setIsMenu}) => {
     
 
     return (
-      <nav className={`sm:flex justify-between items-center max-w-7xl mx-auto my-3 inline-block ${location.pathname === '/' ?"absolute top-0 left-3 right-3 z-10" : ""}`}>
+      <nav className={`sm:flex justify-between items-center mx-auto my-3`}>
+        {/*${location.pathname === '/' ?"absolute top-0 left-3 right-3 z-10" : ""} */}
         {/* Brand Name */}
         <Link 
           id="header" 

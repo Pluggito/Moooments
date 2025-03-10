@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 const HambugerMenu = ({setIsMenu, isMenu}) => {
     const [active, setActive] = useState(false);
     const location = useLocation();
+    
 
     const handleRequest = () => {
       setActive((pv) => !pv);
@@ -63,6 +64,7 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
         role='button'
       >
         <motion.button
+        type="button"
           initial={false}
           animate={active ? "open" : "closed"}
           onClick={handleRequest}
