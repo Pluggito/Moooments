@@ -25,8 +25,7 @@ const App = () => {
    
   return (
     <main className={`
-      container overflow-x-hidden mx-auto px-3 md:px-10 lg:px-[100px] h-[100dvh]
-      border-4 
+      container overflow-x-hidden mx-auto px-3 md:px-10 lg:px-[100px] 
     `}>
       <Navbar isMenu={isMenu} setIsMenu={setIsMenu}/>
 
