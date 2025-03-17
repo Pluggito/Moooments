@@ -240,7 +240,7 @@ const CreateAlbum = () => {
                 </p>
                 <p className="text-sm text-gray-500">*Images must be JPEG or PNG</p>
               </div>
-              <input
+                <input
                 id="file-upload"
                 type="file"
                 className="hidden"

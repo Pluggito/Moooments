@@ -114,21 +114,21 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
           initial={false}
           animate={active ? "open" : "closed"}
           onClick={handleRequest}
-          className="relative h-10 w-10 rounded-full bg-transparent transition-colors hover:bg-gray-100 z-[100]"
+          className="relative h-10 w-10 rounded-full bg-transparent transition-colors hover:bg-gray-100 z-[100] p-2"
         >
           <motion.span
             variants={VARIANTS.top}
-            className="absolute h-0.5 w-5 bg-black"
+            className="absolute h-[3px] w-[22px] bg-black rounded"
             style={{ y: "-50%", left: "50%", x: "-50%", top: "35%" }}
           />
           <motion.span
             variants={VARIANTS.middle}
-            className="absolute h-0.5 w-5 bg-black"
+            className="absolute h-[3px] w-[22px]  bg-black rounded"
             style={{ left: "50%", x: "-50%", top: "50%", y: "-50%" }}
           />
           <motion.span
             variants={VARIANTS.bottom}
-            className="absolute h-0.5 w-5 bg-black"
+            className="absolute h-[3px] w-[22px] bg-black rounded"
             style={{
               x: "-50%",
               y: "50%",
