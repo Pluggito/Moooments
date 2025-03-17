@@ -1,25 +1,25 @@
 import { LucideArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useEvents } from "../context/EventContext";
 
 const Preview = () => {
-  const [preview, setPreview] = useState([]);
-
-  useEffect(() => {
-    try {
-      const events = JSON.parse(localStorage.getItem('events') || '[]');
-      // Get the most recently created event
-      const latestEvent = events[events.length - 1];
-      setPreview(latestEvent ? [latestEvent] : []);
-    } catch (error) {
-      console.error('Error loading event:', error);
-    }
-  }, []);
-
+  const { savedEvents } = useEvents();
+  const [latestEvent, setLatestEvent] = useState(null);
   const Navigate = useNavigate();
 
+  useEffect(() => {
+    if (savedEvents.length > 0) {
+      setLatestEvent(savedEvents[savedEvents.length - 1]);
+    }
+  }, [savedEvents]);
+
+  if (!latestEvent) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="max-w-2xl mx-auto p-4 space-y-6">
+    <div className="max-w-6xl mx-auto p-4 space-y-6">
       <div className="space-y-6">
         <NavLink
           to="/create-album"
@@ -36,46 +36,47 @@ const Preview = () => {
           </p>
         </div>
 
-        {preview.map((event) => (
-          <div key={event.id} className="border rounded-lg overflow-hidden shadow-md">
-            {event.coverImage && (
-              <div className="relative aspect-[16/9] w-full h-48">
-                <img 
-                  src={event.coverImage} 
-                  alt={event.eventTitle}
-                  className="w-full h-full object-cover"
-                />
+        <div className="rounded-lg overflow-hidden shadow-md flex-wrap md:flex-nowrap lg:flex w-full p-3 gap-3">
+          {latestEvent.coverImage && (
+            <div className="relative aspect-[4/3] p-1 overflow-hidden sm:flex-3">
+              <img 
+                src={latestEvent.coverImage}
+                alt={latestEvent.eventTitle}
+                className="w-full h-full object-center object-cover rounded-lg"
+              />
+            </div>
+          )}
+
+          <div className="p-6 flex-2 text-left">
+            <h2 className="text-2xl font-bold mb-4">{latestEvent.eventTitle}</h2>
+
+            <div className="space-y-4 mt-7">
+              <div>
+                <h3 className="text-lg font-semibold bg-[#c300f9] text-white mb-2 p-2 rounded">
+                  About this Event
+                </h3>
+                <p className="text-gray-600 w-full">
+                  {latestEvent.eventDescription}
+                </p>
               </div>
-            )}
-
-            <div className="p-6">
-              <h2 className="text-2xl font-semibold mb-4">{event.eventTitle}</h2>
-
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-[#c300f9] mb-2">About this Event</h3>
-                  <p className="text-gray-600">
-                    {event.eventDescription}
-                  </p>
-                </div>
-                
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span>{event.eventType}</span>
-                  <span>{new Date(event.eventDate).toLocaleDateString()}</span>
-                </div>
+              
+              <div className="flex justify-between items-center text-sm text-gray-500">
+                <span>{latestEvent.eventType}</span>
+                <span>{new Date(latestEvent.eventDate).toLocaleDateString()}</span>
               </div>
             </div>
 
-            <div className="px-6 pb-6">
+            <div className="px-6 pb-6 mt-7">
               <button 
-                onClick={()=>Navigate('/dashboard')}
-                className="w-full bg-black hover:bg-zinc-800 text-white py-3 rounded-lg border border-[#c300f9] shadow-[0_0_10px_rgba(168,85,247,0.15)]"
+                onClick={() => Navigate('/nextphase')}
+                className="w-full bg-black hover:bg-zinc-800 text-white py-3 rounded-lg border border-[#c300f9] shadow-[0_0_10px_rgba(168,85,247,0.15)]
+                cursor-pointer transform transition-all duration-500 hover:scale-[1.05]"
               >
                 Upload Your Album
               </button>
             </div>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

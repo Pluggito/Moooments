@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar"
 import Home from "./components/Home"
 import Footer from "./components/Footer"
-import { Routes,Route, useLocation } from "react-router-dom"
+import { Routes,Route} from "react-router-dom"
 import SignUp from "./admin/SignUp"
 import About from "./pages/About"
 import Pricing from "./pages/Pricing"
@@ -9,12 +9,11 @@ import Blog from "./pages/Blog"
 //import { SideMenu } from "./components/Sidemenu.jsx"
 import { useState } from "react"
 import EventLink from "./pages/EventLink"
-import HambugerMenu from "./components/HambugerMenu.jsx"
 import ForgetPassword from "./admin/ForgetPassword.jsx"
 import CreateAlbum from "./pages/CreateAlbum.jsx"
 import Preview from "./pages/Preview.jsx"
 import Dashboard from "./admin/Dashboard.jsx"
-
+import NextPhase from "./pages/NextPhase.jsx"
 
 
 
@@ -23,11 +22,11 @@ import Dashboard from "./admin/Dashboard.jsx"
 const App = () => {
 
   const [isMenu, setIsMenu] = useState(false)
-  const location = useLocation()
    
   return (
     <main className={`
-      container overflow-x-hidden mx-auto px-4 md:px-10 lg:px-[100px]
+      container overflow-x-hidden mx-auto px-3 md:px-10 lg:px-[100px] h-[95dvh]
+      border-4 
     `}>
       <Navbar isMenu={isMenu} setIsMenu={setIsMenu}/>
 
@@ -42,6 +41,7 @@ const App = () => {
         <Route path="/create-album" element={<CreateAlbum/>}/>
         <Route path="/preview" element={<Preview/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/nextphase" element={<NextPhase/>}/>
       </Routes>
      
 

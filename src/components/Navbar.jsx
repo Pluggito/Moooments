@@ -1,6 +1,8 @@
 import { NavLink, useLocation,  } from "react-router-dom";
 import { Link } from "react-router-dom";
 import HambugerMenu from "./HambugerMenu";
+import { motion } from "framer-motion";
+
 
 const Navbar = ({isMenu, setIsMenu}) => {
     const components = [
@@ -55,11 +57,18 @@ const Navbar = ({isMenu, setIsMenu}) => {
                   </button>
                 </NavLink>
                 <NavLink to='/signup'>
-                  <button
+                  <motion.button
                     className="rounded sm:w-[101px] sm:h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 cursor-pointer shadow-md p-2"
+                    intial={{opacity:0, scale: 1.05}}
+                    animate={{opacity: 1, scale: 0.95}}
+                    whileHover={{scale: 1.1}}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeIn"
+                    }}
                   >
                     Sign Up
-                  </button>
+                  </motion.button>
                 </NavLink>
               </div>
             </>

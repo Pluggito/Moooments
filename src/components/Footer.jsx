@@ -4,7 +4,7 @@ const Footer = () => {
   const location = useLocation();
 
   return (
-    <footer className="w-full justify-center items-center mt-3  text-center flex flex-col py-10 ">
+    <footer className="w-full justify-center items-center mt-3  text-center flex flex-col py-10 border ">
       {/*w-full fixed mt-auto flex flex-col justify-center items-center text-center p-4 gap-4 bg-transparent border */}
       {/* First Section */}
       {location.pathname === "/" && (
