@@ -1,14 +1,113 @@
+import { useState } from 'react';
+import { useEvents } from '../context/EventContext';
+import PropTypes from 'prop-types';
+import { Image } from 'lucide-react';
 
 const Dashboard = () => {
+  const [activeTab, setActiveTab] = useState('upcoming');
+  const { savedEvents } = useEvents();
+
   return (
-    <div className="flex flex-stretch gap-4 h-screen">
-      {/*left hand side */}
-      <section className="border-4">section 1</section>
-      <section>section 2</section>
+    <div className="min-h-screen flex flex-1">
+      {/* Left Sidebar Pattern */}
+      <div className="hidden lg:block w-20 xl:w-32 bg-gradient-to-br from-[#c300f9]/10 to-transparent">
+        <div className="h-full w-full pattern-grid-lg opacity-20" />
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 p-4 sm:p-6 lg:p-6 xl:p-8 bg-white text-black">
+        <div className="max-w-5xl mx-auto">
+          <div className="lg:w-[500px] xl:w-[570px]">
+            <div className="bg-black text-white p-3 flex items-center gap-3 rounded-t-lg">
+              <Image className="w-6 h-6" />
+              <h1 className="text-xl font-semibold">Event Album</h1>
+            </div>
+          </div>
+          
+          <div className="flex flex-col lg:flex-col xl:flex-row justify-between items-start gap-4 xl:gap-6">
+            {/* Event List Container */}
+            <div className="w-full lg:w-[500px] xl:w-[570px] drop-shadow-md rounded-b-lg">
+              {/* Tabs */}
+              <div className="w-full">
+                <div className="grid grid-cols-2 border-b border-dotted border-[#c300f9]/30">
+                  <button
+                    onClick={() => setActiveTab('upcoming')}
+                    className={`py-2 lg:py-3 text-sm sm:text-base transition-colors ${
+                      activeTab === 'upcoming' ? 'border-b-2 border-[#c300f9] font-medium' : ''
+                    }`}
+                  >
+                    Upcoming Event
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('published')}
+                    className={`py-2 lg:py-3 text-sm sm:text-base transition-colors ${
+                      activeTab === 'published' ? 'border-b-2 border-[#c300f9] font-medium' : ''
+                    }`}
+                  >
+                    Published Event
+                  </button>
+                </div>
+
+                <div className="p-3 lg:p-4 space-y-4">
+                  {activeTab === 'upcoming' && (
+                    <>
+                      {savedEvents.map((event) => (
+                        <EventCard 
+                          key={event.id}
+                          title={event.eventTitle}
+                          description={event.eventDescription}
+                          image={event.coverImage}
+                        />
+                      ))}
+                    </>
+                  )}
+                  {activeTab === 'published' && <EventCard />}
+                </div>
+              </div>
+            </div>
+
+            {/* Create Button - Fixed on mobile, normal on desktop */}
+            <div className="lg:static fixed bottom-0 left-0 right-0 p-4 bg-white lg:p-0 lg:bg-transparent z-10">
+              <button className="w-full lg:w-auto border-3 border-[#030f0f] bg-white text-[#030f0f] hover:bg-[#030f0f] hover:text-white transition-colors px-4 lg:px-6 py-3 rounded-lg font-bold shadow-lg lg:shadow-none cursor-pointer">
+                Create New Event Album
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  );
+};
 
+const EventCard = ({ title, description, image }) => {
+  return (
+    <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
+      <div className="w-full sm:w-1/3">
+        <img
+          src={image || "/placeholder.jpg"}
+          alt={title}
+          className="rounded-lg w-full h-[160px] sm:h-[120px] object-cover"
+        />
+      </div>
+      <div className="flex-1 flex flex-col justify-between">
+        <div>
+          <h3 className="font-medium text-lg mb-2">{title || "Catalyst Book Club"}</h3>
+          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+            {description || "Where stories spark change..."}
+          </p>
+        </div>
+        <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-6 py-2 transition-colors">
+          Edit Event
+        </button>
+      </div>
+    </div>
+  );
+};
 
-  )
-}
+EventCard.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string
+};
 
-export default Dashboard
+export default Dashboard;
