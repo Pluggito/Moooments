@@ -5,7 +5,7 @@ const NextPhase = () => {
   return (
     <div>
         <div className="items-center flex flex-col
-        py-50 my-10 border-2 gap-2">
+        py-50 my-10 gap-2">
                 <h1>Your event album is ready!</h1>
                 <button
                 className="border-2 border-black rounded w-3/4 sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300

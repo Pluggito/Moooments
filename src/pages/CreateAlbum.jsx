@@ -53,6 +53,13 @@ const CreateAlbum = () => {
       return;
     }
     setFile(file);
+
+    // Create preview URL
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleEventDetails = (e) => {
@@ -130,6 +137,17 @@ const CreateAlbum = () => {
   };
 
   const Navigate = useNavigate()
+
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  // Clean up preview URL when component unmounts
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
       <div className='max-w-5xl items-center mx-auto p-4'>
@@ -221,7 +239,9 @@ const CreateAlbum = () => {
           {/*------image Upload----- */}
           <div>
             <div>
-              <p className="font-medium my-4 text-gray-700 text-sm">Upload Cover Image - Give your album a personal touch with a banner.</p>
+              <p className="font-medium my-4 text-gray-700 text-sm">
+                Upload Cover Image - Give your album a personal touch with a banner.
+              </p>
             </div>
 
             <div
@@ -233,14 +253,25 @@ const CreateAlbum = () => {
               onDrop={handleDrop}
               onClick={() => document.getElementById("file-upload")?.click()}
             >
-              <div className="flex flex-col items-center gap-2">
-                <Upload className="h-10 w-10 text-gray-500" />
-                <p className="text-sm text-gray-700">
-                  Drag an image here or <span className="text-[#c300f9] font-medium">click to upload</span>
-                </p>
-                <p className="text-sm text-gray-500">*Images must be JPEG or PNG</p>
-              </div>
-                <input
+              {previewUrl ? (
+                <div className="flex flex-col items-center gap-4">
+                  <img 
+                    src={previewUrl} 
+                    alt="Preview" 
+                    className="max-h-48 rounded-lg object-contain"
+                  />
+                  <p className="text-sm text-gray-500">Click or drag to change image</p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <Upload className="h-10 w-10 text-gray-500" />
+                  <p className="text-sm text-gray-700">
+                    Drag an image here or <span className="text-[#c300f9] font-medium">click to upload</span>
+                  </p>
+                  <p className="text-sm text-gray-500">*Images must be JPEG or PNG</p>
+                </div>
+              )}
+              <input
                 id="file-upload"
                 type="file"
                 className="hidden"
@@ -248,9 +279,6 @@ const CreateAlbum = () => {
                 onChange={handleFileInput}
               />
             </div>
-            {file && (
-              <p className="text-sm text-gray-500 mt-2">Selected file: {file.name}</p>
-            )}
           </div>
 
           <div className="items-center text-center w-3/4 my-6 p-1 mx-auto">

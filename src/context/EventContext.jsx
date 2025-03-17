@@ -20,40 +20,69 @@ export const EventProvider = ({ children }) => {
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        // Create indexes for searching
+        store.createIndex('eventTitle', 'eventTitle', { unique: false });
+        store.createIndex('eventDate', 'eventDate', { unique: false });
+        // Add an array to store multiple photos
+        store.createIndex('photos', 'photos', { unique: false, multiEntry: true });
       }
     };
 
     request.onsuccess = (event) => {
       const db = event.target.result;
       setDb(db);
-      
-      // Load initial events
-      const transaction = db.transaction([STORE_NAME], 'readonly');
-      const store = transaction.objectStore(STORE_NAME);
-      const getAllRequest = store.getAll();
-
-      getAllRequest.onsuccess = () => {
-        setSavedEvents(getAllRequest.result);
-      };
+      loadEvents(db);
     };
   }, []);
+
+  const loadEvents = (database) => {
+    const transaction = database.transaction([STORE_NAME], 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      setSavedEvents(request.result);
+    };
+  };
 
   const addEvent = (newEvent) => {
     if (!db) return;
 
+    // Ensure photos array exists
+    const eventWithPhotos = {
+      ...newEvent,
+      photos: newEvent.photos || [],
+      coverImage: newEvent.coverImage || null
+    };
+
     const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
-    const request = store.add(newEvent);
+    const request = store.add(eventWithPhotos);
 
     request.onsuccess = () => {
-      // Refresh the events list
-      const getAllTransaction = db.transaction([STORE_NAME], 'readonly');
-      const store = getAllTransaction.objectStore(STORE_NAME);
-      const getAllRequest = store.getAll();
+      loadEvents(db);
+    };
+  };
 
-      getAllRequest.onsuccess = () => {
-        setSavedEvents(getAllRequest.result);
+  const addPhotoToEvent = async (eventId, photo) => {
+    if (!db) return;
+
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.get(eventId);
+
+    request.onsuccess = () => {
+      const event = request.result;
+      if (!event.photos) {
+        event.photos = [];
+      }
+      event.photos.push(photo);
+
+      // Update the event with new photo
+      const updateRequest = store.put(event);
+      updateRequest.onsuccess = () => {
+        loadEvents(db);
       };
     };
   };
@@ -71,7 +100,12 @@ export const EventProvider = ({ children }) => {
   };
 
   return (
-    <EventContext.Provider value={{ savedEvents, addEvent, clearEvents }}>
+    <EventContext.Provider value={{ 
+      savedEvents, 
+      addEvent, 
+      clearEvents,
+      addPhotoToEvent 
+    }}>
       {children}
     </EventContext.Provider>
   );
