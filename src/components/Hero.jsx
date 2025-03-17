@@ -32,7 +32,7 @@ const Hero = () => {
               />
 
               <motion.h1
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tighter inline-block"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black text-balance inline-block"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
