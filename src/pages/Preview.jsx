@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useEvents } from "../context/EventContext";
 
 const Preview = () => {
-  const { savedEvents } = useEvents();
+  const { savedEvents, clearEvents } = useEvents();
   const [latestEvent, setLatestEvent] = useState(null);
   const Navigate = useNavigate();
 
@@ -14,6 +14,17 @@ const Preview = () => {
     }
   }, [savedEvents]);
 
+  const handleNavigation = (direction) => {
+    if (direction === 'back') {
+      // Clear the event when going back
+      clearEvents();
+      Navigate('/create-album');
+    } else if (direction === 'forward') {
+      // Keep the event and proceed
+      Navigate('/nextphase');
+    }
+  };
+
   if (!latestEvent) {
     return <div>Loading...</div>;
   }
@@ -21,13 +32,13 @@ const Preview = () => {
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       <div className="space-y-6">
-        <NavLink
-          to="/create-album"
+        <button
+          onClick={() => handleNavigation('back')}
           className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
         >
           <LucideArrowLeft className="w-4 h-4 mr-2" />
           Back
-        </NavLink>
+        </button>
 
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold text-[#c300f9]">Share Your Memories</h1>
@@ -68,7 +79,7 @@ const Preview = () => {
 
             <div className="px-6 pb-6 mt-7">
               <button 
-                onClick={() => Navigate('/nextphase')}
+                onClick={() => handleNavigation('forward')}
                 className="w-full bg-black hover:bg-zinc-800 text-white py-3 rounded-lg border border-[#c300f9] shadow-[0_0_10px_rgba(168,85,247,0.15)]
                 cursor-pointer transform transition-all duration-500 hover:scale-[1.05]"
               >
