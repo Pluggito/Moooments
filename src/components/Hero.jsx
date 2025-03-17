@@ -12,7 +12,7 @@ const Hero = () => {
     };
 
     return (
-      <main className="flex items-center justify-center py-20 sm:py-45 md:py-50 lg:py-28 my-15 xl:my-11 overflow-hidden">
+      <main className="flex items-center justify-center py-20 sm:py-45 md:py-50 lg:py-28 my-15 xl:my-11 overflow-x-hidden">
         <div 
           className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
           style={{ background: `url(${assets.hero_image})` }}
