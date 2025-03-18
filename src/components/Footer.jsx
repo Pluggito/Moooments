@@ -2,9 +2,13 @@ import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   const location = useLocation();
-
+  
+  // Array of paths where footer should not be fixed
+  const nonFixedPaths = ['/create-album', '/signup'];
+  
   return (
-    <footer className="w-full justify-center items-center mt-3  text-center flex flex-col py-10">
+    <footer className={`w-full items-center mt-3 text-center flex flex-col py-10 pointer-events-none shadow-xs z-50 
+      ${!nonFixedPaths.includes(location.pathname) ? '-translate-x-1/2 left-1/2 bottom-0 fixed' : ''}`}>
       {/*w-full fixed mt-auto flex flex-col justify-center items-center text-center p-4 gap-4 bg-transparent border */}
       {/* First Section */}
       {location.pathname === "/" && (
@@ -16,7 +20,7 @@ const Footer = () => {
       )}
 
       {/* Second Section - Links */}
-      <div className="w-full max-w-md px-2">
+      <div className="w-full max-w-md px-2 ">
         <ul className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-gray-600 text-sm sm:text-base">
           <li className="cursor-pointer hover:text-[#c300f9] transition-colors">
             Privacy Policy
