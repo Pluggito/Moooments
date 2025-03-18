@@ -32,7 +32,7 @@ const Navbar = ({isMenu, setIsMenu}) => {
           location.pathname !== '/signup' ? (
             <>
               {/* Only show links if not on the About page */}
-              {location.pathname !== '/about' && (
+              {!['/about', '/create-album'].includes(location.pathname) && (
                 <ul className={`hidden sm:flex flex-row justify-between gap-9`}>
                   {components.map((item, index) => (
                     <NavLink 

@@ -1,6 +1,6 @@
 import { LucideArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEvents } from "../context/EventContext";
 
 const Preview = () => {

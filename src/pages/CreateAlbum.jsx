@@ -150,11 +150,11 @@ const CreateAlbum = () => {
   }, [previewUrl]);
 
   return (
-      <div className='max-w-5xl items-center mx-auto p-4'>
-        <div>
+      <div className='max-w-7xl items-center mx-auto p-4 sm:p-4'>
+        <div className="mb-5">
         <NavLink
           to="/"
-          className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-slate-50 transition-colors border-2 hover:bg-black duration-500 ease-in-out rounded p-2  font-semibold"
         >
           <LucideArrowLeft className="w-4 h-4 mr-2" />
           Back
@@ -283,7 +283,6 @@ const CreateAlbum = () => {
 
           <div className="items-center text-center w-3/4 my-6 p-1 mx-auto">
           <button 
-
             type="submit"
             className="cursor-pointer w-full h-[40px] text-slate-100 bg-black border hover:border-[#C300F9]
            shadow-[0_0_10px_rgba(168,85,247,0.15)] rounded-lg"
