@@ -7,8 +7,8 @@ const Footer = () => {
   const nonFixedPaths = ['/'];
   
   return (
-    <footer className={`w-full items-center mt-3 text-center flex flex-col py-10 pointer-events-none shadow-xs z-50 
-      ${nonFixedPaths.includes(location.pathname) ? '-translate-x-1/2 left-1/2 bottom-0 fixed ' : ''}`}>
+    <footer className={`w-full items-center mt-3 text-center flex flex-col py-10 shadow-xs  
+      ${nonFixedPaths.includes(location.pathname) ? '-translate-x-1/2 left-1/2 bottom-0 fixed z-[1]' : ''}`}>
       {/*w-full fixed mt-auto flex flex-col justify-center items-center text-center p-4 gap-4 bg-transparent border */}
       {/* First Section */}
       {location.pathname === "/" && (
