@@ -2,7 +2,6 @@ import { assets } from "../assets/asset"
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useNavigate } from "react-router-dom";
-
 const Hero = () => {
     const Navigate = useNavigate();
     
@@ -12,7 +11,7 @@ const Hero = () => {
     };
 
     return (
-      <main className="flex items-center justify-center py-[50%] lg:py-[12%] my-15 xl:my-11 overflow-x-hidden ">
+      <main className="flex items-center justify-center py-[30%] lg:py-[12%] my-15 xl:my-11 overflow-x-hidden ">
         <div 
           className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
           style={{ background: `url(${assets.hero_image})` }}
