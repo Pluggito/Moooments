@@ -14,6 +14,7 @@ import CreateAlbum from "./pages/CreateAlbum.jsx"
 import Preview from "./pages/Preview.jsx"
 import Dashboard from "./admin/Dashboard.jsx"
 import NextPhase from "./pages/NextPhase.jsx"
+import AddPhotos from "./pages/AddPhotos.jsx"
 
 
 
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/preview" element={<Preview/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/nextphase" element={<NextPhase/>}/>
+        <Route path='/add-to-album' element={<AddPhotos/>}/>
       </Routes>
      
 
