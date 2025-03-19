@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useEvents } from '../context/EventContext';
 import PropTypes from 'prop-types';
-import { Image } from 'lucide-react';
+import { Delete, DeleteIcon, Image, Trash, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
-  const { savedEvents } = useEvents();
+  const { savedEvents, deleteEvent } = useEvents();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-1">
@@ -54,9 +56,12 @@ const Dashboard = () => {
                       {savedEvents.map((event) => (
                         <EventCard 
                           key={event.id}
+                          id={event.id}
                           title={event.eventTitle}
                           description={event.eventDescription}
                           image={event.coverImage}
+                          navigate={navigate}
+                          onDelete={deleteEvent}
                         />
                       ))}
                     </>
@@ -68,7 +73,7 @@ const Dashboard = () => {
 
             {/* Create Button - Fixed on mobile, normal on desktop */}
             <div className="lg:static fixed bottom-0 left-0 right-0 p-4 bg-white lg:p-0 lg:bg-transparent z-10">
-              <button className="w-full lg:w-auto border-3 border-[#030f0f] bg-white text-[#030f0f] hover:bg-[#030f0f] hover:text-white transition-colors px-4 lg:px-6 py-3 rounded-lg font-bold shadow-lg lg:shadow-none cursor-pointer">
+              <button onClick={()=> navigate('/create-album')} className="w-full lg:w-auto border-3 border-[#030f0f] bg-white text-[#030f0f] hover:bg-[#030f0f] hover:text-white transition-colors px-4 lg:px-6 py-3 rounded-lg font-bold shadow-lg lg:shadow-none cursor-pointer">
                 Create New Event Album
               </button>
             </div>
@@ -79,7 +84,13 @@ const Dashboard = () => {
   );
 };
 
-const EventCard = ({ title, description, image }) => {
+const EventCard = ({ id, title, description, image, navigate, onDelete }) => {
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      onDelete(id);
+    }
+  };
+
   return (
     <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
       <div className="w-full sm:w-1/3">
@@ -96,18 +107,46 @@ const EventCard = ({ title, description, image }) => {
             {description || "Where stories spark change..."}
           </p>
         </div>
-        <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-6 py-2 transition-colors">
-          Edit Event
-        </button>
+        <div className='flex items-center gap-4'>
+          <button 
+            onClick={() => navigate('/add-to-album')} 
+            className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-6 py-2 transition-colors cursor-pointer"
+          >
+            Edit Event
+          </button>
+          
+          <button 
+            onClick={handleDelete} 
+            className="w-[150px] h-[40px] cursor-pointer flex items-center bg-black border-none rounded-md shadow-[1px_1px_3px_rgba(0,0,0,0.15)] transition-all duration-200 hover:bg-gray-700 focus:outline-none group relative"
+          >
+            <span className="transform translate-x-[35px] text-white font-bold transition-all duration-200 group-hover:text-transparent">
+              Delete
+            </span>
+            <span className="absolute border-l border-white transform translate-x-[110px] h-[40px] w-[40px] flex items-center justify-center transition-all duration-200 group-hover:w-[150px] group-hover:border-l-0 group-hover:translate-x-0">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="15" 
+                height="15" 
+                viewBox="0 0 24 24" 
+                className="fill-[#eee] transition-transform duration-200 group-active:scale-80"
+              >
+                <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" />
+              </svg>
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 EventCard.propTypes = {
+  id: PropTypes.number.isRequired,
   title: PropTypes.string,
   description: PropTypes.string,
-  image: PropTypes.string
+  image: PropTypes.string,
+  navigate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 export default Dashboard;

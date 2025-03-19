@@ -9,24 +9,11 @@ export const EventProvider = ({ children }) => {
   const [savedEvents, setSavedEvents] = useState([]);
   const [db, setDb] = useState(null);
 
-  // Initialize IndexedDB
   useEffect(() => {
     const request = indexedDB.open(DB_NAME, 1);
 
     request.onerror = (event) => {
       console.error("Database error:", event.target.error);
-    };
-
-    request.onupgradeneeded = (event) => {
-      const db = event.target.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-        // Create indexes for searching
-        store.createIndex('eventTitle', 'eventTitle', { unique: false });
-        store.createIndex('eventDate', 'eventDate', { unique: false });
-        // Add an array to store multiple photos
-        store.createIndex('photos', 'photos', { unique: false, multiEntry: true });
-      }
     };
 
     request.onsuccess = (event) => {
@@ -49,16 +36,18 @@ export const EventProvider = ({ children }) => {
   const addEvent = (newEvent) => {
     if (!db) return;
 
-    // Ensure photos array exists
-    const eventWithPhotos = {
-      ...newEvent,
-      photos: newEvent.photos || [],
-      coverImage: newEvent.coverImage || null
-    };
-
     const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
-    const request = store.add(eventWithPhotos);
+    
+    // Generate new ID based on timestamp
+    const newId = Date.now();
+    const eventWithId = {
+      ...newEvent,
+      id: newId,
+      createdAt: new Date().toISOString()
+    };
+
+    const request = store.add(eventWithId);
 
     request.onsuccess = () => {
       loadEvents(db);
@@ -99,12 +88,25 @@ export const EventProvider = ({ children }) => {
     };
   };
 
+  const deleteEvent = (eventId) => {
+    if (!db) return;
+
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.delete(eventId);
+
+    request.onsuccess = () => {
+      loadEvents(db);
+    };
+  };
+
   return (
     <EventContext.Provider value={{ 
       savedEvents, 
       addEvent, 
       clearEvents,
-      addPhotoToEvent 
+      addPhotoToEvent,
+      deleteEvent
     }}>
       {children}
     </EventContext.Provider>
