@@ -10,7 +10,6 @@ const Dashboard = ({loading, setLoading}) => {
   const { getAlbum, deleteAlbum } = useContext(EventContext);
   const [savedEvents, setSavedEvents] = useState([]);
   const navigate = useNavigate();
-  c
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -33,12 +32,10 @@ const Dashboard = ({loading, setLoading}) => {
 
 
 
-  {/*const handleDeleteEvent = async (eventId) => {
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      await deleteAlbum(eventId);
+  const handleDeleteEvent = async (id) => {
+    await deleteAlbum(id);
       fetchEvents();
-    }
-  };*/}
+  };
 
   return (
     <div className="min-h-screen flex flex-1">
@@ -73,6 +70,7 @@ const Dashboard = ({loading, setLoading}) => {
                           description={event.description}
                           image={event.album_picture}
                           navigate={navigate}
+                          handleDeleteEvent={handleDeleteEvent}
                         />
                       ))
                     ) : (
@@ -92,7 +90,7 @@ const Dashboard = ({loading, setLoading}) => {
   );
 };
 
-const EventCard = ({ id, image, title, description, navigate }) => {
+const EventCard = ({ id, image, title, description, navigate, handleDeleteEvent }) => {
   return (
     <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
       <div className="w-full sm:w-1/3">
@@ -108,6 +106,7 @@ const EventCard = ({ id, image, title, description, navigate }) => {
             Add Photos
           </button>
           <button 
+             onClick={() => handleDeleteEvent(id)} 
             className="w-[150px] h-[40px] cursor-pointer flex items-center bg-black border-none rounded-md shadow-[1px_1px_3px_rgba(0,0,0,0.15)] transition-all duration-200 hover:bg-gray-700 focus:outline-none group relative"
           >
             <span className="transform translate-x-[35px] text-white font-bold transition-all duration-200 group-hover:text-transparent">
