@@ -48,13 +48,26 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
       return res.data        
   }
 
-  //const deleteAlbum = async() =>{
-    
-  //}
+  const deleteAlbum = async (id) => {
+    try {
+      const res = await api.delete(`api/v1/update-delet-album/${id}/`);
+      
+      if (res.status === 204 || res.status === 200) {
+        console.log("Album deleted successfully");
+        return res.data;
+      } else {
+        console.error("Failed to delete album");
+      }
+    } catch (error) {
+      console.error("Error deleting album:", error);
+    }
+  };
+  
 
   const value = {
     createAlbum,
-    getAlbum
+    getAlbum,
+    deleteAlbum
   }
 
   return (
