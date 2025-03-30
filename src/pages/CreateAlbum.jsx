@@ -8,7 +8,7 @@ import PageLoader from "../components/PageLoader";
 
 
 
-const CreateAlbum = () => {
+const CreateAlbum = ({loading, setLoading}) => {
  const navigate = useNavigate()
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState(null);
@@ -16,7 +16,6 @@ const CreateAlbum = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const { createAlbum } = useContext(EventContext);
   const { authToken } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
   const [eventDetails, setEventDetails] = useState({
     id: 1, // Default starting ID
     eventTitle: '',

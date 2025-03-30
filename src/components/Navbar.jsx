@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { UserCircle } from "lucide-react";
 import PageLoader from "./PageLoader";
 
-const Navbar = ({ isMenu, setIsMenu }) => {
+const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     const components = [
       { label: "About", path: "/about" },
       { label: "Pricing", path: "/pricing" },
@@ -17,7 +17,6 @@ const Navbar = ({ isMenu, setIsMenu }) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef();
-    const [loading, setLoading] = useState(false)
 
     const toggleDropdown = () => {
       setDropdownVisible(!dropdownVisible);

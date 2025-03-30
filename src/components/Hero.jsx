@@ -7,11 +7,10 @@ import { AuthContext } from "../context/AuthContext";
 import PageLoader from "../components/PageLoader";
 
 
-const Hero = () => {
+const Hero = ({loading, setLoading}) => {
     const navigate = useNavigate();
     
     const {isLoggedIn} = useContext(AuthContext)
-    const [loading, setLoading] = useState(false);
 
     const handleClick = async() => {
       setLoading(true);
