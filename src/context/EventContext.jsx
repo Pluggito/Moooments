@@ -1,121 +1,71 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import axios from "axios";
+import { createContext } from "react";
 import PropTypes from 'prop-types';
+import useAxios from "../utils/useAxios";
+import { toast } from "react-toastify";
 
-const EventContext = createContext();
-const DB_NAME = 'MooomentsDB';
-const STORE_NAME = 'events';
+const BASEURL = "https://mooment-prototype-v1.onrender.com/";
 
-export const EventProvider = ({ children }) => {
-  const [savedEvents, setSavedEvents] = useState([]);
-  const [db, setDb] = useState(null);
+  export const EventContext = createContext();
 
-  useEffect(() => {
-    const request = indexedDB.open(DB_NAME, 1);
+ export const EventProvider = ({ children }) => {
+ // const [loading, setLoading] = useState(false);
+  const api = useAxios()
+  const createAlbum = async (eventDetails, file, authToken) => {
+    try { 
+        const eventData = {
+            title: eventDetails.eventTitle,
+            description: eventDetails.eventDescription,
+            event_type: eventDetails.eventType,
+            event_date: eventDetails.eventDate,
+            album_picture: file
+        };
 
-    request.onerror = (event) => {
-      console.error("Database error:", event.target.error);
-    };
+        const res = await axios.post(`${BASEURL}api/v1/list-create-album/`, eventData, {
+            headers: {
+                'Authorization': `Bearer ${authToken.access}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        const event = res.data;
+        
+        if (res.status === 201) {
+            toast.success('event created');
+            console.log(event);
+        }else if(res.status === 400){
+          toast.error('Error creating events')
+        }
+    } catch (error) {
 
-    request.onsuccess = (event) => {
-      const db = event.target.result;
-      setDb(db);
-      loadEvents(db);
-    };
-  }, []);
+        console.log('Error', error);
+    }
+  }
 
-  const loadEvents = (database) => {
-    const transaction = database.transaction([STORE_NAME], 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.getAll();
+  const getAlbum = async () => { 
+      const res = await api.get(`api/v1/list-create-album/`)
+      console.log(res.data)
+      return res.data        
+  }
 
-    request.onsuccess = () => {
-      setSavedEvents(request.result);
-    };
-  };
-
-  const addEvent = (newEvent) => {
-    if (!db) return;
-
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
+  //const deleteAlbum = async() =>{
     
-    // Generate new ID based on timestamp
-    const newId = Date.now();
-    const eventWithId = {
-      ...newEvent,
-      id: newId,
-      createdAt: new Date().toISOString()
-    };
+  //}
 
-    const request = store.add(eventWithId);
-
-    request.onsuccess = () => {
-      loadEvents(db);
-    };
-  };
-
-  const addPhotoToEvent = async (eventId, photo) => {
-    if (!db) return;
-
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.get(eventId);
-
-    request.onsuccess = () => {
-      const event = request.result;
-      if (!event.photos) {
-        event.photos = [];
-      }
-      event.photos.push(photo);
-
-      // Update the event with new photo
-      const updateRequest = store.put(event);
-      updateRequest.onsuccess = () => {
-        loadEvents(db);
-      };
-    };
-  };
-
-  const clearEvents = () => {
-    if (!db) return;
-
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.clear();
-
-    request.onsuccess = () => {
-      setSavedEvents([]);
-    };
-  };
-
-  const deleteEvent = (eventId) => {
-    if (!db) return;
-
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.delete(eventId);
-
-    request.onsuccess = () => {
-      loadEvents(db);
-    };
-  };
+  const value = {
+    createAlbum,
+    getAlbum
+  }
 
   return (
-    <EventContext.Provider value={{ 
-      savedEvents, 
-      addEvent, 
-      clearEvents,
-      addPhotoToEvent,
-      deleteEvent
-    }}>
+    <EventContext.Provider value={value}>
       {children}
     </EventContext.Provider>
   );
 };
 
+
 EventProvider.propTypes = {
   children: PropTypes.node.isRequired
 };
-
-export const useEvents = () => useContext(EventContext);
 

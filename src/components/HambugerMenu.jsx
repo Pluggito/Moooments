@@ -3,7 +3,7 @@ import { MotionConfig, motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import PropTypes from 'prop-types';
 
-const HambugerMenu = ({setIsMenu, isMenu}) => {
+const HambugerMenu = ({setIsMenu, isMenu, isLoggedIn}) => {
     const [active, setActive] = useState(false);
 
     const handleRequest = () => {
@@ -23,6 +23,7 @@ const HambugerMenu = ({setIsMenu, isMenu}) => {
 
     return (
       <div className="grid float-right sm:hidden pointer-events-auto">
+        <span className="sr-only">Toggle menu</span>
         <AnimatedHamburgerButton 
           active={active}
           handleRequest={handleRequest}
@@ -80,13 +81,14 @@ const HambugerMenu = ({setIsMenu, isMenu}) => {
               >
                 Blog
               </NavLink>
-              <NavLink 
+               <NavLink 
                 onClick={() => setIsMenu(false)} 
                 to='/signup' 
-                className='text-3xl font-medium hover:text-[#c300f9] transition-colors'
+                className={`${isLoggedIn ? 'hidden' : 'text-3xl font-medium hover:text-[#c300f9] transition-colors' }`}
               >
                 Sign Up
               </NavLink>
+              
             </motion.div>
           </div>
         </motion.div>
@@ -114,7 +116,7 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
           initial={false}
           animate={active ? "open" : "closed"}
           onClick={handleRequest}
-          className="relative h-12 w-12 rounded-full bg-transparent transition-colors hover:bg-gray-100 -mt-2 z-[999] p-2"
+          className="relative h-12 w-12 rounded-full bg-transparent transition-colors hover:bg-gray-100  z-[999] p-2"
         >
           <motion.span
             variants={VARIANTS.top}

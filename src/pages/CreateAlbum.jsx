@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
-import {   Upload, ChevronDown } from "lucide-react"; // You'll need to install lucide-react
-import {  useNavigate, NavLink } from "react-router-dom";
-import { useEvents } from '../context/EventContext';
-import { LucideArrowLeft } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import {  Upload, ChevronDown } from "lucide-react"; 
+import { NavLink, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { EventContext } from "../context/EventContext";
+import { AuthContext } from "../context/AuthContext";
+import PageLoader from "../components/PageLoader";
 
 
 
 const CreateAlbum = () => {
-  const { addEvent } = useEvents();
+ const navigate = useNavigate()
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const { createAlbum } = useContext(EventContext);
+  const { authToken } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const [eventDetails, setEventDetails] = useState({
     id: 1, // Default starting ID
     eventTitle: '',
@@ -47,11 +53,10 @@ const CreateAlbum = () => {
   };
 
   const validateAndSetFile = (file) => {
-    // Check file type
-    if (!file.type.match(/^image\/(jpeg|png)$/)) {
-      alert("Please upload a JPEG or PNG file");
+    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
+      alert("Please upload a JPEG, PNG, or WebP file");
       return;
-    }
+    }    
     setFile(file);
 
     // Create preview URL
@@ -70,75 +75,49 @@ const CreateAlbum = () => {
     }));
   };
 
-  // Get next available ID
-  const getNextId = () => {
-    try {
-      const existingEvents = JSON.parse(localStorage.getItem('events') || '[]');
-      if (existingEvents.length === 0) return 1;
-      const maxId = Math.max(...existingEvents.map(event => event.id));
-      return maxId + 1;
-    } catch (err) {
-      console.error('Error getting next ID:', err);
-      return 1;
+  const validateForm = () => {
+    if (!eventDetails.eventTitle || !eventDetails.eventDescription || 
+        !eventDetails.eventType || !eventDetails.eventDate || !file) {
+      setError('Please fill in all required fields');
+      setTimeout(() => setError(''), 3000);
+      return false;
     }
+    return true;
+  };
+
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+    if (!authToken) {
+        setError('Please login first');
+        return;
+    }
+    setLoading(true);
+    try {
+         await createAlbum(eventDetails, file, authToken);
+         setLoading(false);
+          navigate('/preview');
+        
+    } catch (error) {
+        console.error('Events not created', error);
+        setLoading(false);
+        setError('Failed to create event. Please try again.');
+        
+    } 
+
+    setEventDetails('')
+    setFile('')
+    setError('')
   };
 
   // Set initial ID when component mounts
   useEffect(() => {
     setEventDetails(prev => ({
-      ...prev,
-      id: getNextId()
+      ...prev
     }));
   }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Validate all required fields
-    if (!eventDetails.eventTitle || !eventDetails.eventDescription || 
-        !eventDetails.eventType || !eventDetails.eventDate || !file) {
-      setError('Please fill in all required fields');
-      setTimeout(() => setError(''), 3000);
-      return;
-    }
-
-    // Convert file to base64 string
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      // Create new event with file info
-      const newEvent = {
-        ...eventDetails,
-        coverImage: reader.result, // Store the base64 string instead of just filename
-      };
-
-      try {
-        addEvent(newEvent);
-        console.log('Event Created:', newEvent);
-
-        // Reset form and set next ID
-        setEventDetails({
-          id: getNextId(),
-          eventTitle: '',
-          eventDescription: '',
-          eventType: '',
-          eventDate: '',
-          createdAt: new Date().toISOString(),
-        });
-        setFile(null);
-        
-        Navigate('/preview');
-      } catch (err) {
-        setError('Failed to save event. Please try again.');
-        console.error('Error saving event:', err);
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
-
-  const Navigate = useNavigate()
-
-  const [previewUrl, setPreviewUrl] = useState(null);
 
   // Clean up preview URL when component unmounts
   useEffect(() => {
@@ -151,12 +130,13 @@ const CreateAlbum = () => {
 
   return (
       <div className='max-w-7xl items-center mx-auto p-4 sm:p-4'>
+        {loading && <PageLoader />}
         <div className="mb-5">
         <NavLink
           to="/"
           className="inline-flex items-center text-sm text-gray-600 hover:text-slate-50 transition-colors border-2 hover:bg-black duration-500 ease-in-out rounded p-2  font-semibold"
         >
-          <LucideArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </NavLink>
         </div>
@@ -216,6 +196,14 @@ const CreateAlbum = () => {
                     <option value="festival">Festival</option>
                     <option value="conference">Conference</option>
                     <option value="workshop">Workshop</option>
+                    <option value="fashion">Retreats</option>
+                    <option value="fashion">Fashion Shows</option>
+                    <option value="art">Art Shows</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="birthday">Birthday</option>
+                    <option value="corporate">Corporate Event</option>
+                    <option value="family">Family Gathering</option>
+                    <option value="other">Other</option>
                   </select>
                   <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none h-5 w-5" />
                 </div>
@@ -271,7 +259,7 @@ const CreateAlbum = () => {
                   <p className="text-sm text-gray-500">*Images must be JPEG or PNG</p>
                 </div>
               )}
-              <input
+                <input
                 id="file-upload"
                 type="file"
                 className="hidden"
@@ -283,9 +271,11 @@ const CreateAlbum = () => {
 
           <div className="items-center text-center w-3/4 my-6 p-1 mx-auto">
           <button 
+            onClick={handleSubmit}
             type="submit"
             className="cursor-pointer w-full h-[40px] text-slate-100 bg-black border hover:border-[#C300F9]
            shadow-[0_0_10px_rgba(168,85,247,0.15)] rounded-lg"
+           
           >
             Create Album
           </button>
@@ -297,4 +287,5 @@ const CreateAlbum = () => {
   )
 }
 
-export default CreateAlbum
+
+export default CreateAlbum;

@@ -1,0 +1,128 @@
+import { createContext, useEffect, useState } from "react";
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({children}) => {
+
+    const [authToken, setAuthToken] = useState(() => 
+        localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null
+    );
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const navigate = useNavigate();
+
+    const registerUser = async (userData) => {
+        setLoading(true);
+        setError("");
+        
+        try {
+            const registerRes = await axios.post(`${BASEURL}auth/v1/register/`, userData);
+            
+            if (registerRes.status === 201) {
+                const loginData = {
+                    email: userData.email,
+                    password: userData.password
+                };
+                
+                const loginRes = await axios.post(`${BASEURL}auth/v1/login/`, loginData);
+                
+                if (loginRes.status === 200) {
+                    const tokens = loginRes.data;
+                    setAuthToken(tokens);
+                    localStorage.setItem('authTokens', JSON.stringify(tokens));
+                    
+                    try {
+                        await axios.post(
+                            `${BASEURL}auth/v1/send-email-verification/`, 
+                            {}, 
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${tokens.access}`
+                                }
+                            }
+                        );
+                        navigate('/');
+                    } catch (emailError) {
+                        setError("Email verification failed. Please try again later.");
+                    }
+                }
+            }
+        } catch (error) {
+            setError(
+                error.response?.data?.message || 
+                "Registration failed. Please check your information and try again."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loginUser = async (credentials) => {
+        setLoading(true);
+        setError("");
+        
+        try {
+            const response = await axios.post(`${BASEURL}auth/v1/login/`, credentials);
+            
+            if (response.status === 200) {
+                const tokens = response.data;
+                setAuthToken(tokens);
+                localStorage.setItem('authTokens', JSON.stringify(tokens));
+                setIsLoggedIn(true);
+                navigate('/');
+            }
+        } catch (error) {
+            setError(
+                error.response?.data?.message || 
+                "Login failed. Please check your credentials."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const logoutUser = () => {
+        setAuthToken(null);
+        setUser(null);
+        localStorage.removeItem('authTokens');
+        setIsLoggedIn(false);
+        navigate('/');
+    };
+
+    useEffect(()=>{
+        if(localStorage.getItem('authTokens')){
+            setIsLoggedIn(true)
+        }
+
+        else{
+            setIsLoggedIn(false)
+        }
+    },[])
+
+   
+
+    const contextData = {
+        user,
+        authToken,
+        loading,
+        error,
+        registerUser,
+        loginUser,
+        logoutUser,
+        isLoggedIn
+    };
+
+    return (
+        <AuthContext.Provider value={contextData}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+
+
+const BASEURL = 'https://mooment-prototype-v1.onrender.com/';

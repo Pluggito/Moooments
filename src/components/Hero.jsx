@@ -2,20 +2,38 @@ import { assets } from "../assets/asset"
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import PageLoader from "../components/PageLoader";
+
+
 const Hero = () => {
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
     
-    const handleClick = () => {
+    const {isLoggedIn} = useContext(AuthContext)
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = async() => {
+      setLoading(true);
       // Navigate after animation completes
-      setTimeout(() => Navigate('/create-album'), 300);
+      setTimeout(() => {
+        if(!isLoggedIn){
+          navigate('/signup')
+        }
+        else if(isLoggedIn){
+          navigate('/create-album')
+        }
+        setLoading(false);
+      }, 1500);
     };
 
-    return (
+  return (
       <main className="flex items-center justify-center py-[30%] lg:py-[12%] my-15 xl:my-11 overflow-x-hidden ">
+        {loading && <PageLoader />}
         <div 
-          className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
-          style={{ background: `url(${assets.hero_image})` }}
-        />
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
+        style={{ background: `url(${assets.hero_image})` }}
+      />
 
         <section className="w-full relative z-[30]">
           <div className="flex flex-col items-center justify-center py-5">
@@ -32,38 +50,38 @@ const Hero = () => {
 
               <motion.h1
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black text-balance inline-block"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-              >
-                Capture Every&nbsp;
-                <span className="text-[#c300f9] font-bold">
-                  <Typewriter
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          >
+            Capture Every&nbsp;
+            <span className="text-[#c300f9] font-bold">
+              <Typewriter
                     words={["Moooments!", "Laughter!", "Love!", "Joy!", "", "Moooments!"]}
-                    loop={true}
-                    cursor
-                    cursorStyle="|"
-                    typeSpeed={300}
-                    deleteSpeed={75}
-                    delaySpeed={1500}
-                  />
-                </span>
-                <br/> Share Every Memory
+                loop={true}
+                cursor
+                cursorStyle="|"
+                typeSpeed={300}
+                deleteSpeed={75}
+                delaySpeed={1500}
+              />
+            </span>
+            <br/> Share Every Memory
               </motion.h1>
-            </div>
+        </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-[90%] sm:max-w-[75%] mx-auto px-4 mt-7">
-              <button
-                type="button"
-                className="border-2 border-black rounded w-full sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
+          <button
+            type="button"
+            className="border-2 border-black rounded w-full sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
                 cursor-pointer shadow-md relative z-[30]"
-                onClick={() => Navigate('/eventlink')}
-              >
-                Enter Event Link
-              </button>
+            onClick={() => navigate('/eventlink')}
+          >
+            Enter Event Link
+          </button>
               
               <motion.button
-                type="button"
+            type="button"
                 className="rounded w-full sm:w-[292px] h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-colors cursor-pointer shadow-md relative z-[30]"
                 onClick={handleClick}
                 whileTap={{ scale: 0.95 }}
@@ -77,13 +95,13 @@ const Hero = () => {
                   stiffness: 500,
                   damping: 25
                 }}
-              >
-                Create your Event Album
+          >
+            Create your Event Album
               </motion.button>
-            </div>
-          </div>
-        </section>
-      </main>
+        </div>
+        </div>
+      </section>
+    </main>
     );
 };
 
