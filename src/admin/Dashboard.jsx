@@ -1,22 +1,54 @@
-import { useState } from 'react';
-import { useEvents } from '../context/EventContext';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Delete, DeleteIcon, Image, Trash, Trash2 } from 'lucide-react';
+import { Image } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { EventContext } from '../context/EventContext';
+import PageLoader from '../components/PageLoader';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
-  const { savedEvents, deleteEvent } = useEvents();
+  const { getAlbum, deleteAlbum } = useContext(EventContext);
+  const [savedEvents, setSavedEvents] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const fetchEvents = async () => {
+    setLoading(true);
+    try {
+      const events = await getAlbum() || [];
+      if (events.length > 0) {
+        const sortedEvents = [...events].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setSavedEvents(sortedEvents);
+      }
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const handleEditEvent = (eventId) => {
+    navigate(`/edit-album/${eventId}`);
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      await deleteAlbum(eventId);
+      fetchEvents();
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-1">
-      {/* Left Sidebar Pattern */}
+      {loading && <PageLoader />}
       <div className="hidden lg:block w-20 xl:w-32 bg-gradient-to-br from-[#c300f9]/10 to-transparent">
         <div className="h-full w-full pattern-grid-lg opacity-20" />
       </div>
 
-      {/* Main Content Area */}
       <div className="flex-1 p-4 sm:p-6 lg:p-6 xl:p-8 bg-white text-black">
         <div className="max-w-5xl mx-auto">
           <div className="lg:w-[500px] xl:w-[570px]">
@@ -25,57 +57,36 @@ const Dashboard = () => {
               <h1 className="text-xl font-semibold">Event Album</h1>
             </div>
           </div>
-          
           <div className="flex flex-col lg:flex-col xl:flex-row justify-between items-start gap-4 xl:gap-6">
-            {/* Event List Container */}
             <div className="w-full lg:w-[500px] xl:w-[570px] drop-shadow-md rounded-b-lg">
-              {/* Tabs */}
               <div className="w-full">
                 <div className="grid grid-cols-2 border-b border-dotted border-[#c300f9]/30">
-                  <button
-                    onClick={() => setActiveTab('upcoming')}
-                    className={`py-2 lg:py-3 text-sm sm:text-base transition-colors ${
-                      activeTab === 'upcoming' ? 'border-b-2 border-[#c300f9] font-medium' : ''
-                    }`}
-                  >
-                    Upcoming Event
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('published')}
-                    className={`py-2 lg:py-3 text-sm sm:text-base transition-colors ${
-                      activeTab === 'published' ? 'border-b-2 border-[#c300f9] font-medium' : ''
-                    }`}
-                  >
-                    Published Event
-                  </button>
+                  <button onClick={() => setActiveTab('upcoming')} className={`py-2 lg:py-3 text-sm sm:text-base transition-colors ${activeTab === 'upcoming' ? 'border-b-2 border-[#c300f9] font-medium' : ''}`}>Upcoming Event</button>
+                  <button onClick={() => setActiveTab('published')} className={`py-2 lg:py-3 text-sm sm:text-base transition-colors ${activeTab === 'published' ? 'border-b-2 border-[#c300f9] font-medium' : ''}`}>Published Event</button>
                 </div>
-
                 <div className="p-3 lg:p-4 space-y-4">
                   {activeTab === 'upcoming' && (
-                    <>
-                      {savedEvents.map((event) => (
-                        <EventCard 
+                    savedEvents.length > 0 ? (
+                      savedEvents.map(event => (
+                        <EventCard
                           key={event.id}
                           id={event.id}
-                          title={event.eventTitle}
-                          description={event.eventDescription}
-                          image={event.coverImage}
-                          navigate={navigate}
-                          onDelete={deleteEvent}
+                          title={event.title}
+                          description={event.description}
+                          image={event.album_picture}
+                          onEdit={handleEditEvent}
+                          onDelete={handleDeleteEvent}
                         />
-                      ))}
-                    </>
+                      ))
+                    ) : (
+                      <p>No Event created</p>
+                    )
                   )}
-                  {activeTab === 'published' && <EventCard />}
                 </div>
               </div>
             </div>
-
-            {/* Create Button - Fixed on mobile, normal on desktop */}
             <div className="lg:static fixed bottom-0 left-0 right-0 p-4 bg-white lg:p-0 lg:bg-transparent z-10">
-              <button onClick={()=> navigate('/create-album')} className="w-full lg:w-auto border-3 border-[#030f0f] bg-white text-[#030f0f] hover:bg-[#030f0f] hover:text-white transition-colors px-4 lg:px-6 py-3 rounded-lg font-bold shadow-lg lg:shadow-none cursor-pointer">
-                Create New Event Album
-              </button>
+              <button onClick={() => navigate('/create-album')} className="w-full lg:w-auto border-3 border-[#030f0f] bg-white text-[#030f0f] hover:bg-[#030f0f] hover:text-white transition-colors px-4 lg:px-6 py-3 rounded-lg font-bold shadow-lg lg:shadow-none cursor-pointer">Create New Event Album</button>
             </div>
           </div>
         </div>
@@ -84,39 +95,20 @@ const Dashboard = () => {
   );
 };
 
-const EventCard = ({ id, title, description, image, navigate, onDelete }) => {
-  const handleDelete = () => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      onDelete(id);
-    }
-  };
-
+const EventCard = ({ id, image, title, description, onEdit, onDelete }) => {
   return (
     <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
       <div className="w-full sm:w-1/3">
-        <img
-          src={image || "/placeholder.jpg"}
-          alt={title}
-          className="rounded-lg w-full h-[160px] sm:h-[120px] object-cover"
-        />
+        <img src={image || "/placeholder.jpg"} alt={title} className="rounded-lg w-full h-[160px] sm:h-[120px] object-cover aspect-1/1" />
       </div>
       <div className="flex-1 flex flex-col justify-between">
         <div>
           <h3 className="font-medium text-lg mb-2">{title || "Catalyst Book Club"}</h3>
-          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-            {description || "Where stories spark change..."}
-          </p>
+          <p className="text-sm text-gray-600 line-clamp-2 mb-3">{description || "Where stories spark change..."}</p>
         </div>
         <div className='flex items-center gap-4'>
+          <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-3 py-2 transition-colors cursor-pointer" onClick={() => onEdit(id)}>Edit Event</button>
           <button 
-            onClick={() => navigate('/add-to-album')} 
-            className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-6 py-2 transition-colors cursor-pointer"
-          >
-            Edit Event
-          </button>
-          
-          <button 
-            onClick={handleDelete} 
             className="w-[150px] h-[40px] cursor-pointer flex items-center bg-black border-none rounded-md shadow-[1px_1px_3px_rgba(0,0,0,0.15)] transition-all duration-200 hover:bg-gray-700 focus:outline-none group relative"
           >
             <span className="transform translate-x-[35px] text-white font-bold transition-all duration-200 group-hover:text-transparent">
@@ -145,8 +137,8 @@ EventCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
-  navigate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default Dashboard;

@@ -1,9 +1,11 @@
 import { assets } from "../assets/asset";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -11,17 +13,21 @@ const SignUp = () => {
     const [newsletter, setNewsletter] = useState(false);
     const [isMenu, setIsMenu] = useState("Sign Up");
     const [userName, setUserName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+
+    // Get auth context values
+    const { registerUser, loginUser, loading, error: authError } = useContext(AuthContext);
+
     const [error, setError] = useState({
         email: '',
         password: '',
         userName: '',
         general: ''
     });
-    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,14 +37,12 @@ const SignUp = () => {
         }));
     };
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
         const errors = {};
-        setIsLoading(true);
 
         // Reset errors
         setError({});
-
 
         if(!userName){
             errors.userName = 'Name is required';
@@ -65,22 +69,26 @@ const SignUp = () => {
 
         if (Object.keys(errors).length > 0) {
             setError(errors);
-            setIsLoading(false);
-            setTimeout(() => {
-                setError({});
-            }, 3000);
+            setTimeout(() => setError({}), 3000);
             return;
         }
 
-        // If validation passes, proceed with signup
-        console.log('Form submitted:', { formData, userName });
-        
-        // Reset form
-        setFormData({ email: '', password: '' });
-        setNewsletter(false);
-        setTermsAndConditions(false);
-        setUserName('');
-        setIsLoading(false);
+        // Call registerUser with form data
+        await registerUser({
+            email: formData.email,
+            password: formData.password,
+            first_name: userName,
+            last_name: lastName,
+            
+        });
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        await loginUser({
+            email: formData.email,
+            password: formData.password
+        });
     };
 
     const slideVariants = {
@@ -159,6 +167,13 @@ const SignUp = () => {
                     <hr className="flex-grow border-gray-400" />
                 </div>
 
+                {/* Display auth errors */}
+                {authError && (
+                    <div className="text-red-500 text-sm mb-4">
+                        {authError}
+                    </div>
+                )}
+
                 {error.general && <p className="mt-2 text-red-700">{error.general}</p>}
 
                 {/* User Info Form */}
@@ -227,13 +242,13 @@ const SignUp = () => {
                             </label>
                         </div>
                         <button 
-                            onClick={handleSignup}
-                            disabled={isLoading}
+                            onClick={handleLogin}
+                            disabled={loading}
                             className={`rounded sm:w-[101px] sm:h-[44px] font-semibold text-white 
-                                ${isLoading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
+                                ${loading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
                                 transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5`}
                         >
-                            {isLoading ? 'Signing up...' : isMenu}
+                            {loading ? 'Processing...' : isMenu}
                         </button>
                         <NavLink to="/forgetpassword">
                         <p className="mt-4 text-gray-500 hover:text-black cursor-pointer">
@@ -254,12 +269,22 @@ const SignUp = () => {
                         <div className="sm:w-full">
                             <input
                                 type="name"
-                                placeholder="Name"
+                                placeholder="Firstname"
                                 className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-4"
                                 autoComplete="off"
                                 required
                                 value={userName}
                                 onChange={(e)=>setUserName(e.target.value)}
+                                name="name"
+                            />
+                            <input
+                                type="name"
+                                placeholder="Lastname"
+                                className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none mb-4"
+                                autoComplete="off"
+                                required
+                                value={lastName}
+                                onChange={(e)=>setLastName(e.target.value)}
                                 name="name"
                             />
                             {error.userName && <p className="text-red-500 text-xs mb-2">{error.userName}</p>}
@@ -334,13 +359,13 @@ const SignUp = () => {
                             </div>
                         </div>
                         <button 
-                        onClick={handleSignup}
-                        disabled={isLoading}
-                        className={`rounded sm:w-[101px] sm:h-[44px] font-semibold text-white 
-                            ${isLoading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
-                            transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5`}
+                            onClick={handleSignup}
+                            disabled={loading}
+                            className={`rounded sm:w-[101px] sm:h-[44px] font-semibold text-white 
+                                ${loading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
+                                transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5`}
                         >
-                            {isLoading ? 'Signing up...' : isMenu}
+                            {loading ? 'Processing...' : isMenu}
                         </button>
                     </motion.div>
                 )}

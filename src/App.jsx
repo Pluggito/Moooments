@@ -15,6 +15,8 @@ import Preview from "./pages/Preview.jsx"
 import Dashboard from "./admin/Dashboard.jsx"
 import NextPhase from "./pages/NextPhase.jsx"
 import AddPhotos from "./pages/AddPhotos.jsx"
+import { ToastContainer } from "react-toastify"
+import Albums from "./pages/Albums.jsx"
 
 
 
@@ -26,9 +28,10 @@ const App = () => {
    
   return (
     <main className={`
-      container overflow-x-hidden mx-auto px-3 md:px-10 lg:px-[100px] 
+      container relative overflow-x-hidden mx-auto px-3 md:px-10 lg:px-[100px] 
     `}>
       <Navbar isMenu={isMenu} setIsMenu={setIsMenu}/>
+      <ToastContainer/>
 
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -43,6 +46,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/nextphase" element={<NextPhase/>}/>
         <Route path='/add-to-album' element={<AddPhotos/>}/>
+        <Route path='/album/:albumId' element={<Albums/>}/>
       </Routes>
      
 
