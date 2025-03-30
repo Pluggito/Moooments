@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { UserCircle } from "lucide-react";
 import PageLoader from "./PageLoader";
 
-const Navbar = ({ isMenu, setIsMenu, toggleDropdown }) => {
+const Navbar = ({ isMenu, setIsMenu }) => {
     const components = [
       { label: "About", path: "/about" },
       { label: "Pricing", path: "/pricing" },
@@ -22,6 +22,7 @@ const Navbar = ({ isMenu, setIsMenu, toggleDropdown }) => {
     const toggleDropdown = () => {
       setDropdownVisible(!dropdownVisible);
     };
+    
     const handleNavigation = () =>{
       setLoading(true)
       setTimeout(()=>{
@@ -86,7 +87,10 @@ const Navbar = ({ isMenu, setIsMenu, toggleDropdown }) => {
                 <UserCircle className="w-12 h-12 transition-all duration-300 hover:text-[#c300f9]" strokeWidth={1.3} onClick={toggleDropdown} />
                 {dropdownVisible &&  <div className="absolute right-0 top-[100%] mt-2 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
                   <button
-                    onClick={logoutUser}
+                    onClick={() => {
+                      logoutUser();
+                      toggleDropdown();
+                    }}
                     className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
                   >
                     Log out
@@ -131,17 +135,24 @@ const Navbar = ({ isMenu, setIsMenu, toggleDropdown }) => {
 const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation }) => {
     return (
         <>
-            <UserCircle className={`${isLoggedIn ? 'w-8 h-8 transition-all duration-300 hover:text-[#c300f9]': 'hidden'}`} strokeWidth={1.5} onClick={toggleDropdown} />
+            <UserCircle className={`${isLoggedIn ? 'w-8 h-8 transition-all duration-300 hover:text-[#c300f9]' : 'hidden'}`} strokeWidth={1.5} onClick={toggleDropdown} />
             {dropdownVisible && (
-                <div className="absolute right-0 top-[100%] mt-2 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
+                <div className="absolute right-0 top-[100%] mt-2 flex-col flex gap-4 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
                     <button
-                        onClick={handleNavigation}
-                        className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
+                        onClick={() => {
+                            handleNavigation();
+                            toggleDropdown();
+                        }}
+                        className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left p-2"
                     >
                         My Dashboard
                     </button>
+                    <div className="w-full bg-slate-300 h-1"></div>
                     <button
-                        onClick={logoutUser}
+                        onClick={() => {
+                            logoutUser();
+                            toggleDropdown();
+                        }}
                         className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
                     >
                         Log out
@@ -155,7 +166,6 @@ const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleN
 Navbar.propTypes = {
   isMenu: PropTypes.bool.isRequired,
   setIsMenu: PropTypes.func.isRequired,
-  toggleDropdown: PropTypes.func.isRequired
 };
 
 export default Navbar;
