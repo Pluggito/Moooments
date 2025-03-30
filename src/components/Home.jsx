@@ -1,8 +1,8 @@
 import Hero from "./Hero";
 
-const Home = () => {
+const Home = ({loading, setLoading}) => {
  return( 
-    <Hero/>
+    <Hero loading={loading} setLoading={setLoading}/>
     )
   }
 

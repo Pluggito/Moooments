@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
 
-const Preview = () => {
+const Preview = ({loading, setLoading}) => {
     const navigate = useNavigate();
     const { getAlbum } = useContext(EventContext);
     const [savedEvents, setSavedEvents] = useState([]);
-    const [loading, setLoading] = useState(false);
+    
 
     const fetchEvents = async () => {
       setLoading(true);
@@ -30,7 +30,7 @@ const Preview = () => {
       setLoading(true)
       setTimeout(()=>
         {
-          navigate('/nextphase')
+          navigate('/event-album-page')
           setLoading(false);
         }, 1500)
       navigate()

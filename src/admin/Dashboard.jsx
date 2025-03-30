@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { EventContext } from '../context/EventContext';
 import PageLoader from '../components/PageLoader';
 
-const Dashboard = () => {
+const Dashboard = ({loading, setLoading}) => {
   const [activeTab, setActiveTab] = useState('upcoming');
   const { getAlbum, deleteAlbum } = useContext(EventContext);
   const [savedEvents, setSavedEvents] = useState([]);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  c
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -31,16 +31,14 @@ const Dashboard = () => {
     fetchEvents();
   }, []);
 
-  const handleEditEvent = (eventId) => {
-    navigate(`/edit-album/${eventId}`);
-  };
 
-  const handleDeleteEvent = async (eventId) => {
+
+  {/*const handleDeleteEvent = async (eventId) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       await deleteAlbum(eventId);
       fetchEvents();
     }
-  };
+  };*/}
 
   return (
     <div className="min-h-screen flex flex-1">
@@ -74,8 +72,7 @@ const Dashboard = () => {
                           title={event.title}
                           description={event.description}
                           image={event.album_picture}
-                          onEdit={handleEditEvent}
-                          onDelete={handleDeleteEvent}
+                          navigate={navigate}
                         />
                       ))
                     ) : (
@@ -95,7 +92,7 @@ const Dashboard = () => {
   );
 };
 
-const EventCard = ({ id, image, title, description, onEdit, onDelete }) => {
+const EventCard = ({ id, image, title, description, navigate }) => {
   return (
     <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
       <div className="w-full sm:w-1/3">
@@ -107,7 +104,9 @@ const EventCard = ({ id, image, title, description, onEdit, onDelete }) => {
           <p className="text-sm text-gray-600 line-clamp-2 mb-3">{description || "Where stories spark change..."}</p>
         </div>
         <div className='flex items-center gap-4'>
-          <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-3 py-2 transition-colors cursor-pointer" onClick={() => onEdit(id)}>Edit Event</button>
+          <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-3 py-2 transition-colors cursor-pointer" onClick={() => navigate('/add-to-album')}>
+            Add Photos
+          </button>
           <button 
             className="w-[150px] h-[40px] cursor-pointer flex items-center bg-black border-none rounded-md shadow-[1px_1px_3px_rgba(0,0,0,0.15)] transition-all duration-200 hover:bg-gray-700 focus:outline-none group relative"
           >

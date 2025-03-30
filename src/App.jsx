@@ -13,10 +13,10 @@ import ForgetPassword from "./admin/ForgetPassword.jsx"
 import CreateAlbum from "./pages/CreateAlbum.jsx"
 import Preview from "./pages/Preview.jsx"
 import Dashboard from "./admin/Dashboard.jsx"
-import NextPhase from "./pages/NextPhase.jsx"
 import AddPhotos from "./pages/AddPhotos.jsx"
 import { ToastContainer } from "react-toastify"
 import Albums from "./pages/Albums.jsx"
+import EventAlbumPage from "./pages/EventAlbumPage.jsx"
 
 
 
@@ -25,27 +25,28 @@ import Albums from "./pages/Albums.jsx"
 const App = () => {
 
   const [isMenu, setIsMenu] = useState(false)
+  const [loading, setLoading] = useState(false);
    
   return (
     <main className={`
       container relative overflow-x-hidden mx-auto px-3 md:px-10 lg:px-[100px] 
     `}>
-      <Navbar isMenu={isMenu} setIsMenu={setIsMenu}/>
+      <Navbar isMenu={isMenu} setIsMenu={setIsMenu} loading={loading} setLoading={setLoading}/>
       <ToastContainer/>
 
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Home loading={loading} setLoading={setLoading} />} />
         <Route path="/signup" element={<SignUp/>} />
         <Route path="/about" element={<About />} />
         <Route path="/pricing" element={<Pricing/>}/>
         <Route path="/blog" element={<Blog />} />
         <Route path="/eventlink" element={<EventLink/>} />
         <Route path="/forgetpassword" element={<ForgetPassword/>} />
-        <Route path="/create-album" element={<CreateAlbum/>}/>
-        <Route path="/preview" element={<Preview/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/nextphase" element={<NextPhase/>}/>
-        <Route path='/add-to-album' element={<AddPhotos/>}/>
+        <Route path="/create-album" element={<CreateAlbum loading={loading} setLoading={setLoading} />} />
+        <Route path="/preview" element={<Preview loading={loading} setLoading={setLoading} />} />
+        <Route path="/dashboard" element={<Dashboard loading={loading} setLoading={setLoading} />} />
+        <Route path='/add-to-album' element={<AddPhotos loading={loading} setLoading={setLoading}/>}/>
+        <Route path="/event-album-page" element={<EventAlbumPage loading={loading} setLoading={setLoading} />} />
         <Route path='/album/:albumId' element={<Albums/>}/>
       </Routes>
      
