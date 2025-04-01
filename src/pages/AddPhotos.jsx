@@ -1,88 +1,202 @@
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, XIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddPhotos = ({ loading, setLoading }) => {
-  const { getAlbum } = useContext(EventContext);
-  const [latestAlbum, setLatestAlbum] = useState(null);
+  const {uploadImage, getAlbumDetails } = useContext(EventContext);
+  const [latestAlbum, setLatestAlbum] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const navigate = useNavigate();
+  const { albumId } = useParams();
 
-  const fetchEvents = async () => {
+  const validateAndSetFiles = (newFiles) => {
+    const validFiles = newFiles.filter(file => file.type.match(/^image\/(jpeg|png|webp)$/));
+
+    if (validFiles.length === 0) {
+      alert("Please upload only JPEG, PNG, or WebP files.");
+      return;
+    }
+
+    if (files.length + validFiles.length > 7) {
+      alert("You can upload a maximum of 7 photos.");
+      return;
+    }
+
+    setFiles(prevFiles => [...prevFiles, ...validFiles]);
+    const newPreviews = validFiles.map(file => URL.createObjectURL(file));
+    setPreviewUrls(prevUrls => [...prevUrls, ...newPreviews]);
+  };
+
+  const handleFileInput = (e) => {
+    if (e.target.files?.length) {
+      validateAndSetFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    validateAndSetFiles(Array.from(e.dataTransfer.files));
+  };
+
+  const removeImage = (index) => {
+    URL.revokeObjectURL(previewUrls[index]);
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    setPreviewUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
+  };
+
+  const handleUploadImages = async () => {
+    if (files.length + latestAlbum[0].image_count > 7) {
+      alert("Maximum limit exceeded");
+      return;
+    }
+
+    if (files.length === 0) {
+      alert("Please select at least one image.");
+      return;
+    }
+
+    if (!latestAlbum.length) {
+      alert("No album found. Please create an album first.");
+      return;
+    }
+
     setLoading(true);
     try {
-      const events = await getAlbum();
-      if (events.length > 0) {
-        const sortedEvents = events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        setLatestAlbum(sortedEvents[0]); // Only store the latest album
+      const retrievedAlbumData = await getAlbumDetails(albumId);
+      if (!retrievedAlbumData) {
+        alert("Album ID retrieval failed.");
+        setLoading(false);
+        return;
       }
+
+      for (const file of files) {
+        await uploadImage(albumId, file);
+      }
+
+      alert("Images uploaded successfully!");
+      setLoading(false);
+      navigate(`/album/${albumId}`);
+      setFiles([]); // Clear uploaded files
+      setPreviewUrls([]); // Reset previews
     } catch (error) {
-      console.error("Error fetching events:", error);
+      console.error("Error uploading images:", error);
+      alert("Failed to upload images.");
     } finally {
       setLoading(false);
     }
   };
+ 
 
   useEffect(() => {
+    if (!albumId){
+      alert('no id found')
+      return
+    }
     fetchEvents();
-  }, []);
+  }, [albumId]);
+
+  const fetchEvents = async () => {
+    setLoading(true);
+    try {
+      console.log("Fetching album details for albumId:", albumId);
+      
+      const albumData = await getAlbumDetails(albumId);
+      console.log("Album details response:", albumData);
+      
+      if (!albumData) {
+        alert("No album found for this ID");
+        return;
+      }
+  
+      if (albumData) {
+        setLatestAlbum([albumData]); 
+      } else {
+        alert("No album found for this ID.");
+      }
+    } catch (error) {
+      console.error("Error fetching album details:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
+  
+
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
 
   return (
     <div className="max-w-6xl mx-auto p-4 bg-white">
       {loading && <PageLoader />}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Left Column - Image and Header */}
         <div className="relative">
-          <div className="z-10 p-4 ">
-            <h2 className="text-xl font-semibold text-purple-600">Share Your Memories</h2>
-            <p className="text-gray-700">
-              Contribute your photos to the event album and make the moments unforgettable.
-            </p>
-          </div>
-          {latestAlbum ? (
-            <div key={latestAlbum.id} className="relative rounded-lg overflow-hidden mt-16 md:mt-0 drop-shadow-lg">
-              {latestAlbum.album_picture ? (
-                <img src={latestAlbum.album_picture} alt="Latest Event" className="w-full object-cover aspect-4/3" />
-              ) : (
-                <p className="text-gray-500 text-center p-4">No Cover Image</p>
-              )}
-              <div className="absolute bottom-4 left-4 bg-white bg-opacity-80 px-3 py-1 rounded-md text-sm">
-                <span className="font-medium">{latestAlbum.photos?.length || 0}</span> photos
-              </div>
-            </div>
+          <h2 className="text-xl font-semibold text-purple-600">Share Your Memories</h2>
+          <p className="text-gray-700 mb-5">Contribute your photos to the event album.</p>
+          {latestAlbum.length > 0 && latestAlbum[0]?.album_picture ? (
+            <img src={latestAlbum[0].album_picture} alt="Latest Event" className="w-full object-cover aspect-4/3 rounded-lg" />
           ) : (
             <p className="text-gray-500">No Event created</p>
           )}
         </div>
 
-        {/* Right Column - Event Details and Upload */}
-        <div className="space-y-4 py-6">
-          <h1 className="text-2xl font-bold text-gray-800">Catalyst Book Club</h1>
+        <div className="space-y-4 justify-center flex flex-col p-5">
+          <h1 className="text-2xl font-bold text-gray-800">{latestAlbum[0]?.title || "No Event"}</h1>
+          <p className="text-gray-700">{latestAlbum[0]?.description || "No description available"}</p>
 
-          <div className="bg-purple-600 text-white py-2 px-4 rounded-md">
-            <h3 className="font-medium">About this Event</h3>
+          <div
+            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${isDragging ? "border-[#c300f9] bg-[#c300f9]/5" : "border-gray-400"}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => document.getElementById("file-upload").click()}
+          >
+            <input
+              id="file-upload"
+              type="file"
+              className="hidden"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              onChange={handleFileInput}
+            />
+            <ImageIcon className="h-10 w-10 text-gray-500" />
+            <p className="text-sm text-gray-700">Drag & drop or <span className="text-[#c300f9] font-medium">click to upload</span></p>
+            <p className="text-sm text-gray-500">Max 7 images (JPEG, PNG, WebP)</p>
           </div>
 
-          <p className="text-gray-700">
-            Where stories spark change and ideas ignite growth. Join a community of passionate readers exploring books
-            that inspire, challenge, and transform.
-          </p>
-
-          <div className="mt-8 space-y-2">
-            <p className="font-medium">Upload Cover Image - Give your album a personal touch with a banner.</p>
-            <p className="text-sm text-purple-600">*Images must be JPEG or PNG</p>
-
-            <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center bg-gray-50">
-              <ImageIcon className="h-8 w-8 text-gray-400 mb-2" />
-              <p className="text-gray-500 text-sm">
-                Drag an image here or <button className="text-purple-600 hover:underline">click to upload</button>
-              </p>
+          {previewUrls.length > 0 && (
+            <div className="grid grid-cols-3 gap-4">
+              {previewUrls.map((url, index) => (
+                <div key={index} className="relative">
+                  <img src={url} alt={`Preview ${index}`} className="h-24 rounded-lg object-cover" />
+                  <XIcon className="absolute top-1 right-1 text-xs p-1 rounded-full cursor-pointer bg-black text-slate-50" size={27} onClick={() => removeImage(index)}/>
+                </div>
+              ))}
             </div>
+          )}
 
-            <div className="pt-4 space-y-3">
-              <button className="w-full border-gray-300">Preview Photos</button>
-              <button className="w-full bg-zinc-800 hover:bg-zinc-700 text-white p-3 rounded cursor-pointer font-bold">Add photos to Album</button>
-            </div>
-          </div>
+          <button onClick={handleUploadImages} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white p-3 cursor-pointer font-bold rounded-lg">
+            Add photos to Album
+          </button>
+          <p>*Maximum of 7 photos</p>
         </div>
       </div>
     </div>

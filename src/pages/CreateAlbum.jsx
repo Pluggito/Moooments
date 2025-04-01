@@ -95,9 +95,9 @@ const CreateAlbum = ({loading, setLoading}) => {
     }
     setLoading(true);
     try {
-         await createAlbum(eventDetails, file, authToken);
+         const albumId = await createAlbum(eventDetails, file, authToken);
          setLoading(false);
-          navigate('/preview');
+          navigate('/event-album-page', { state: { albumId } });
         
     } catch (error) {
         console.error('Events not created', error);

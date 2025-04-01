@@ -34,6 +34,7 @@ const Dashboard = ({loading, setLoading}) => {
 
   const handleDeleteEvent = async (id) => {
     await deleteAlbum(id);
+
       fetchEvents();
   };
 
@@ -42,8 +43,7 @@ const Dashboard = ({loading, setLoading}) => {
       {loading && <PageLoader />}
       <div className="hidden lg:block w-20 xl:w-32 bg-gradient-to-br from-[#c300f9]/10 to-transparent">
         <div className="h-full w-full pattern-grid-lg opacity-20" />
-      </div>
-
+      </div>     
       <div className="flex-1 p-4 sm:p-6 lg:p-6 xl:p-8 bg-white text-black">
         <div className="max-w-5xl mx-auto">
           <div className="lg:w-[500px] xl:w-[570px]">
@@ -68,9 +68,28 @@ const Dashboard = ({loading, setLoading}) => {
                           id={event.id}
                           title={event.title}
                           description={event.description}
+                          albumId={event.albumId}
                           image={event.album_picture}
                           navigate={navigate}
                           handleDeleteEvent={handleDeleteEvent}
+                        />
+                      ))
+                    ) : (
+                      <p>No Event created</p>
+                    )
+                  )}
+                  {activeTab === 'published' && (
+                    savedEvents.length > 0 ? (
+                      savedEvents.map(event => (
+                        <EventCard
+                          key={event.id}
+                          id={event.id}
+                          title={event.title}
+                          image={event.album_picture}
+                          description={event.description}
+                          navigate={navigate}
+                          activeTab={activeTab}
+                          albumId={event.albumId}
                         />
                       ))
                     ) : (
@@ -90,7 +109,7 @@ const Dashboard = ({loading, setLoading}) => {
   );
 };
 
-const EventCard = ({ id, image, title, description, navigate, handleDeleteEvent }) => {
+const EventCard = ({ id, image, title, description, navigate, handleDeleteEvent, activeTab, albumId }) => {
   return (
     <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
       <div className="w-full sm:w-1/3">
@@ -101,8 +120,13 @@ const EventCard = ({ id, image, title, description, navigate, handleDeleteEvent 
           <h3 className="font-medium text-lg mb-2">{title || "Catalyst Book Club"}</h3>
           <p className="text-sm text-gray-600 line-clamp-2 mb-3">{description || "Where stories spark change..."}</p>
         </div>
-        <div className='flex items-center gap-4'>
-          <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-3 py-2 transition-colors cursor-pointer" onClick={() => navigate('/add-to-album')}>
+        {activeTab === 'published' ? (<>
+          <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white font-bold rounded-md px-3 py-2 transition-colors cursor-pointer" onClick={() => navigate(`/album/${albumId}`)}>
+            View Album
+          </button>
+        </>): (
+          <div className='flex items-center gap-4 font-bold'>
+          <button className="self-start bg-[#c300f9] hover:bg-[#a000c7] text-white rounded-md px-3 py-2 transition-colors cursor-pointer" onClick={() => navigate(`/add-to-album/${albumId}`)}>
             Add Photos
           </button>
           <button 
@@ -124,7 +148,8 @@ const EventCard = ({ id, image, title, description, navigate, handleDeleteEvent 
               </svg>
             </span>
           </button>
-        </div>
+        </div>)}
+        
       </div>
     </div>
   );
@@ -135,8 +160,9 @@ EventCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
+  handleDeleteEvent: PropTypes.func.isRequired,
+
 };
 
 export default Dashboard;

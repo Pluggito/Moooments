@@ -6,7 +6,6 @@ import SignUp from "./admin/SignUp"
 import About from "./pages/About"
 import Pricing from "./pages/Pricing"
 import Blog from "./pages/Blog"
-//import { SideMenu } from "./components/Sidemenu.jsx"
 import { useState } from "react"
 import EventLink from "./pages/EventLink"
 import ForgetPassword from "./admin/ForgetPassword.jsx"
@@ -40,14 +39,14 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/pricing" element={<Pricing/>}/>
         <Route path="/blog" element={<Blog />} />
-        <Route path="/eventlink" element={<EventLink/>} />
+        <Route path="/eventlink" element={<EventLink loading={loading} setLoading={setLoading}/>} />
         <Route path="/forgetpassword" element={<ForgetPassword/>} />
         <Route path="/create-album" element={<CreateAlbum loading={loading} setLoading={setLoading} />} />
         <Route path="/preview" element={<Preview loading={loading} setLoading={setLoading} />} />
         <Route path="/dashboard" element={<Dashboard loading={loading} setLoading={setLoading} />} />
-        <Route path='/add-to-album' element={<AddPhotos loading={loading} setLoading={setLoading}/>}/>
+        <Route path='/add-to-album/:albumId' element={<AddPhotos loading={loading} setLoading={setLoading}/>}/>
         <Route path="/event-album-page" element={<EventAlbumPage loading={loading} setLoading={setLoading} />} />
-        <Route path='/album/:albumId' element={<Albums/>}/>
+        <Route path='/album/:albumId' element={<Albums loading={loading} setLoading={setLoading}/>}/>
       </Routes>
      
 
