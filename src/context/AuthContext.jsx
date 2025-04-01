@@ -35,7 +35,7 @@ export const AuthProvider = ({children}) => {
                     setAuthToken(tokens);
                     localStorage.setItem('authTokens', JSON.stringify(tokens));
                     
-                    try {
+                    {/*try {
                         await axios.post(
                             `${BASEURL}auth/v1/send-email-verification/`, 
                             {}, 
@@ -48,7 +48,7 @@ export const AuthProvider = ({children}) => {
                         navigate('/');
                     } catch (emailError) {
                         setError("Email verification failed. Please try again later.");
-                    }
+                    } */}
                 }
             }
         } catch (error) {
