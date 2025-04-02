@@ -106,7 +106,7 @@ const SignUp = () => {
     };
 
     return (
-        <section className="items-center justify-center text-center m-auto max-w-7xl p-">
+        <section className="items-center justify-center text-center m-auto max-w-7xl   mt-2">
             <div className="transform tracking-wide px-1">
                 <h1 className="sm:text-[36px] font-medium text-black ">
                     Login to your <span className="text-[#c300f9] font-bold sm:text-[40px]">MooomentS!</span> Account
@@ -116,9 +116,9 @@ const SignUp = () => {
                 </p>
             </div>
 
-            <form className="shadow-lg rounded-lg my-4 max-w-xl mx-auto items-center px-6 py-4">
+            <form className="shadow-lg rounded-lg my-4 max-w-xl mx-auto items-center px-6 py-4 bg-white">
                 {/* Top Tabs with Color Slider */}
-                <div className="relative justify-center flex flex-row gap-1 tracking-wide">
+                <div className="relative justify-center flex flex-row gap-1 tracking-wide bg-slate-50">
                     {/* Slider background */}
                     <div
                         className={`absolute top-0 left-0 h-full bg-[#c300f9] transition-transform duration-500 ease-in-out`}
@@ -147,7 +147,7 @@ const SignUp = () => {
                     </p>
                 </div>
 
-                <button className="w-full sm:w-1/2 p-3 flex items-center justify-center gap-4 text-black text-md font-semibold shadow-md rounded-lg hover:bg-black hover:text-slate-100 duration-500 transition-all ease hover:opacity-90 mx-auto my-6 cursor-pointer">
+                <button className="w-full sm:w-1/2 p-3 flex items-center justify-center gap-4 text-black text-md font-semibold shadow-md rounded-lg hover:bg-black hover:text-slate-100 duration-500 transition-all ease hover:opacity-90 mx-auto my-6 cursor-pointer bg-slate-50">
                     <span>
                         <img
                             src={assets.google_icon}
