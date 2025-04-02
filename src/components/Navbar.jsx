@@ -7,6 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
 import { UserCircle } from "lucide-react";
 import PageLoader from "./PageLoader";
+import { LayoutDashboard, LogOut } from "lucide-react";
 
 const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     const components = [
