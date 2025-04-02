@@ -1,290 +1,277 @@
-import { useContext, useEffect, useState } from "react";
-import {  Upload, ChevronDown } from "lucide-react"; 
-import { NavLink, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import { EventContext } from "../context/EventContext";
-import { AuthContext } from "../context/AuthContext";
-import PageLoader from "../components/PageLoader";
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import '../index.css'
 
+const CreateAlbum = () => {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    eventType: "",
+    eventDate: "",
+  })
+  const [coverImage, setCoverImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [isDragging, setIsDragging] = useState(false)
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
 
-const CreateAlbum = ({loading, setLoading}) => {
- const navigate = useNavigate()
-  const [isDragging, setIsDragging] = useState(false);
-  const [file, setFile] = useState(null);
-  const [error, setError] = useState('');
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const { createAlbum } = useContext(EventContext);
-  const { authToken } = useContext(AuthContext);
-  const [eventDetails, setEventDetails] = useState({
-    id: 1, // Default starting ID
-    eventTitle: '',
-    eventDescription: '',
-    eventType: '',
-    eventDate: '',
-    createdAt: new Date().toISOString(),
-  });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setCoverImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+    e.preventDefault()
+    setIsDragging(true)
+  }
 
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
+  const handleDragLeave = () => {
+    setIsDragging(false)
+  }
 
   const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
+    e.preventDefault()
+    setIsDragging(false)
 
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      validateAndSetFile(files[0]);
-    }
-  };
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0]
+      setCoverImage(file)
 
-  const handleFileInput = (e) => {
-    if (e.target.files?.length) {
-      validateAndSetFile(e.target.files[0]);
-    }
-  };
-
-  const validateAndSetFile = (file) => {
-    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
-      alert("Please upload a JPEG, PNG, or WebP file");
-      return;
-    }    
-    setFile(file);
-
-    // Create preview URL
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewUrl(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleEventDetails = (e) => {
-    const { name, value } = e.target;
-    setEventDetails(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const validateForm = () => {
-    if (!eventDetails.eventTitle || !eventDetails.eventDescription || 
-        !eventDetails.eventType || !eventDetails.eventDate || !file) {
-      setError('Please fill in all required fields');
-      setTimeout(() => setError(''), 3000);
-      return false;
-    }
-    return true;
-  };
-
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-    if (!authToken) {
-        setError('Please login first');
-        return;
-    }
-    setLoading(true);
-    try {
-         const albumId = await createAlbum(eventDetails, file, authToken);
-         setLoading(false);
-          navigate('/event-album-page', { state: { albumId } });
-        
-    } catch (error) {
-        console.error('Events not created', error);
-        setLoading(false);
-        setError('Failed to create event. Please try again.');
-        
-    } 
-
-    setEventDetails('')
-    setFile('')
-    setError('')
-  };
-
-  // Set initial ID when component mounts
-  useEffect(() => {
-    setEventDetails(prev => ({
-      ...prev
-    }));
-  }, []);
-
-  // Clean up preview URL when component unmounts
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result)
       }
-    };
-  }, [previewUrl]);
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // Handle form submission logic here
+    console.log("Form submitted:", formData, coverImage)
+    // Navigate to next page or show success message
+  }
 
   return (
-      <div className='max-w-7xl items-center mx-auto p-4 sm:p-4'>
-        {loading && <PageLoader />}
-        <div className="mb-5">
-        <NavLink
-          to="/"
-          className="inline-flex items-center text-sm text-gray-600 hover:text-slate-50 transition-colors border-2 hover:bg-black duration-500 ease-in-out rounded p-2  font-semibold"
+      <main className="flex-1 container mx-auto max-w-5xl px-2 py-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-gray-700 hover:text-[#c300f9]  mb-8 group transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-2 group-hover:-translate-x-1 transition-transform"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
           Back
-        </NavLink>
-        </div>
-        <div className='justify-center sm:w-[708px] mx-auto mb-4'>
-        <p className='text-center font-semibold text-3xl '>Start a collection of memories 
-        that lasts a lifetime.</p>
-        </div>
-        {/*------Event Details----- */}
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-          {error && (
-            <p className="text-red-500 text-sm text-center mb-4">{error}</p>
-          )}
-          <p className="font-medium mb-4">Event Details - Help everyone recognize your special occasion.</p>
-          {/*------Events data------- */} 
-          <div className="w-full">
-            <div className="p-2">
-              <label htmlFor="eventTitle" className="text-gray-600">
-             <span className="text-[#c300f9]">*</span>Event Title
-                <input 
-                placeholder="Give your event a name"
-                id="eventTitle"
-                name="eventTitle"
-                type='text'
-                value={eventDetails.eventTitle}
-                onChange={handleEventDetails}
-                className="w-full p-2 text-gray-700 border-2 border-gray-600  rounded-lg hover:border-fuchsia-700"/>
-              </label>
-            </div>
+        </button>
 
-            <div className="p-2">
-              <label htmlFor="eventDescription" className="text-gray-600">
-              <span className="text-[#c300f9]">*</span>Event Description
-                <input 
-                placeholder="Describe the event"
-                id="eventDescription"
-                name="eventDescription"
-                type="text"
-                value={eventDetails.eventDescription}
-                onChange={handleEventDetails}
-                className="w-full p-2 text-gray-700 border-2 border-gray-600  rounded-lg hover:border-fuchsia-700"/>
-              </label>
-            </div>
-
-            <div className="p-2">
-              <label htmlFor="eventType" className="text-gray-600">
-              <span className="text-[#c300f9]">*</span>Event Type
-                <div className="relative">
-                  <select
-                    id="eventType"
-                    name="eventType"
-                    value={eventDetails.eventType}
-                    onChange={handleEventDetails}
-                    className="w-full p-2 text-gray-700 border-2 border-gray-600 rounded-lg hover:border-fuchsia-700 appearance-none bg-white cursor-pointer"
-                  >
-                    <option value="" disabled>What type of event</option>
-                    <option value="concert">Concert</option>
-                    <option value="festival">Festival</option>
-                    <option value="conference">Conference</option>
-                    <option value="workshop">Workshop</option>
-                    <option value="fashion">Retreats</option>
-                    <option value="fashion">Fashion Shows</option>
-                    <option value="art">Art Shows</option>
-                    <option value="wedding">Wedding</option>
-                    <option value="birthday">Birthday</option>
-                    <option value="corporate">Corporate Event</option>
-                    <option value="family">Family Gathering</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none h-5 w-5" />
-                </div>
-              </label>
-            </div>
-
-            <div className="p-2">
-              <label htmlFor="eventDate" className="text-gray-600">
-              <span className="text-[#c300f9]">*</span>Event Date
-                <input 
-                id="eventDate"
-                name="eventDate"
-                type="date"
-                value={eventDetails.eventDate}
-                onChange={handleEventDetails}
-                className="w-full p-2 text-gray-700 border-2 border-gray-600  rounded-lg hover:border-fuchsia-700"/>
-              </label>
-            </div>
+        <div className="text-black rounded-2xl dropshadow-custom p-4 mb-6">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold mb-3">
+              Start a collection of memories that lasts a lifetime.
+            </h1>
+            <p className="text-gray-700 ">
+              Event Details - Help everyone recognize your special occasion.
+            </p>
           </div>
 
-          {/*------image Upload----- */}
-          <div>
-            <div>
-              <p className="font-medium my-4 text-gray-700 text-sm">
-                Upload Cover Image - Give your album a personal touch with a banner.
-              </p>
-            </div>
-
-            <div
-              className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-                ${isDragging ? "border-[#c300f9] bg-[#c300f9]/5" : "border-gray-400"}
-                hover:border-[#c300f9] hover:bg-[#c300f9]/5`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => document.getElementById("file-upload")?.click()}
-            >
-              {previewUrl ? (
-                <div className="flex flex-col items-center gap-4">
-                  <img 
-                    src={previewUrl} 
-                    alt="Preview" 
-                    className="max-h-48 rounded-lg object-contain"
-                  />
-                  <p className="text-sm text-gray-500">Click or drag to change image</p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-2">
-                  <Upload className="h-10 w-10 text-gray-500" />
-                  <p className="text-sm text-gray-700">
-                    Drag an image here or <span className="text-[#c300f9] font-medium">click to upload</span>
-                  </p>
-                  <p className="text-sm text-gray-500">*Images must be JPEG or PNG</p>
-                </div>
-              )}
-                <input
-                id="file-upload"
-                type="file"
-                className="hidden"
-                accept="image/jpeg,image/png"
-                onChange={handleFileInput}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                Event Title <span className="text-[#c300f9">*</span>
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                placeholder="Give your event a name"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
+                required
               />
             </div>
-          </div>
 
-          <div className="items-center text-center w-3/4 my-6 p-1 mx-auto">
-          <button 
-            onClick={handleSubmit}
-            type="submit"
-            className="cursor-pointer w-full h-[40px] text-slate-100 bg-black border hover:border-[#C300F9]
-           shadow-[0_0_10px_rgba(168,85,247,0.15)] rounded-lg"
-           
-          >
-            Create Album
-          </button>
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 ">
+                Event Description <span className="text-[#c300f9]">*</span>
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="Describe the event"
+                rows={3}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
+                required
+              />
+            </div>
 
-          
-        </form>
-      </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="eventType" className="block text-sm font-medium text-gray-700">
+                  Event Type <span className="text-[#c300f9]">*</span>
+                </label>
+                <select
+                  id="eventType"
+                  name="eventType"
+                  value={formData.eventType}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border-gray-300 border focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700 appearance-none bg-no-repeat"
+                  style={{
+                    backgroundImage:
+                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill=`` viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
+                    backgroundPosition: "right 0.5rem center",
+                    backgroundSize: "1.5em 1.5em",
+                  }}
+                  required
+                >
+                  <option value="" disabled>
+                    What type of event
+                  </option>
+                  <option value="wedding">Wedding</option>
+                  <option value="birthday">Birthday</option>
+                  <option value="graduation">Graduation</option>
+                  <option value="anniversary">Anniversary</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div className="space-y-2 ">
+                <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 ">
+                  Event Date <span className="text-[#c300f9]">*</span>
+                </label>
+                <input
+                  type="date"
+                  id="eventDate"
+                  name="eventDate"
+                  value={formData.eventDate}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border-purple-500 text-gray-700 border"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 ">
+                Upload Cover Image - Give your album a personal touch with a banner.
+              </label>
+              <div
+                className={`border-2 w-3/4 mx-auto border-dashed rounded-lg p-8 text-center ${isDragging ? "border-purple-500 bg-purple-50 /20" : "border-gray-300 "} transition-colors`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {imagePreview ? (
+                  <div className="relative">
+                    <img
+                      src={imagePreview || "/placeholder.svg"}
+                      alt="Cover preview"
+                      className="mx-auto max-h-48 rounded-lg object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCoverImage(null)
+                        setImagePreview(null)
+                      }}
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-gray-100">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-[#c300f9]"
+                      >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 ">
+                        Drag an image here or{" "}
+                        <label className="text-purple-600 hover:text-purple-700 cursor-pointer">
+                          <span>click to upload</span>
+                          <input
+                            type="file"
+                            className="hidden"
+                            accept="image/jpeg, image/png"
+                            onChange={handleImageChange}
+                          />
+                        </label>
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">*Images must be JPEG or PNG</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                className=" cursor-pointer w-3/4 py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              >
+                Create Album
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
   )
 }
 
+export default CreateAlbum
 
-export default CreateAlbum;

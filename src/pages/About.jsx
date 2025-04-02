@@ -3,7 +3,7 @@ import { assets } from "../assets/asset"
 
 const About = () => {
   return (
-    <section className="py-10 sm:p-0 md:py-20 lg:p-0 items-center w-full sm:w-3/4 mx-auto">
+    <section className="py-10 sm:p-0 md:py-20 lg:p-0 items-center w-full sm:w-3/4 mx-auto z-0">
         <div className="text-center w-3/4 mx-auto ">
         <h1 className="text-2xl sm:text-3xl font-bold">About <span className="text-[#c300f9]">Moooments!</span></h1>
         </div>

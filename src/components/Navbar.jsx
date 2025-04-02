@@ -99,22 +99,25 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
             ) : (
               <div className="sm:flex items-center gap-4 hidden">
                 <NavLink to='/signup'>
-                  <button
-                    className="border-2 border-black rounded sm:w-[101px] sm:h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300 shadow-md p-2 cursor-pointer"
+                <motion.button
+                    className="h-10 px-4 rounded-md border-2 border-black font-medium hover:bg-black hover:text-white transition-all duration-300 shadow-sm"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
                   >
                     Login
-                  </button>
+                  </motion.button>
                 </NavLink>
                 <NavLink to='/signup'>
-                  <motion.button
-                    className="rounded sm:w-[101px] sm:h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 shadow-md p-2 cursor-pointer"
+                <motion.button
+                    className="h-10 px-4 rounded-md font-medium text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 shadow-md"
                     initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 0.95 }}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.5, ease: "easeIn" }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
                   >
                     Sign Up
                   </motion.button>
+
                 </NavLink>
               </div>
             )}
@@ -131,40 +134,63 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     );
 };
 
-const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation }) => {
-    return (
-        <>
-            <UserCircle className={`${isLoggedIn ? 'w-8 h-8 transition-all duration-300 hover:text-[#c300f9]' : 'hidden'}`} strokeWidth={1.5} onClick={toggleDropdown} />
-            {dropdownVisible && (
-                <div className="absolute right-0 top-[100%] mt-2 flex-col flex gap-4 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
-                    <button
-                        onClick={() => {
-                            handleNavigation();
-                            toggleDropdown();
-                        }}
-                        className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left p-2"
-                    >
-                        My Dashboard
-                    </button>
-                    <div className="w-full bg-slate-300 h-1"></div>
-                    <button
-                        onClick={() => {
-                            logoutUser();
-                            toggleDropdown();
-                        }}
-                        className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
-                    >
-                        Log out
-                    </button>
-                </div>
-            )}
-        </>
-    );
-};
+const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef }) => {
+  return (
+    <>
+      {isLoggedIn && (
+        <div className="relative" ref={dropdownRef}>
+          <UserCircle className="w-8 h-8 text-[#c300f9] cursor-pointer" strokeWidth={1.5} onClick={toggleDropdown} />
+
+          {dropdownVisible && (
+            <motion.div
+              className="absolute right-0 top-full mt-2 bg-white border border-gray-100 p-1 shadow-lg z-10 rounded-md w-48"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <button
+                onClick={() => {
+                  handleNavigation()
+                  toggleDropdown()
+                }}
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-[#c300f9]/10 rounded-md transition-colors"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                My Dashboard
+              </button>
+              <div className="my-1 border-t border-gray-100"></div>
+              <button
+                onClick={() => {
+                  logoutUser()
+                  toggleDropdown()
+                }}
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-[#c300f9]/10 rounded-md transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Log out
+              </button>
+            </motion.div>
+          )}
+        </div>
+      )}
+    </>
+  )
+}
+
+
 
 Navbar.propTypes = {
   isMenu: PropTypes.bool.isRequired,
   setIsMenu: PropTypes.func.isRequired,
 };
 
+User.propTypes = {
+  isScreen: PropTypes.bool,
+  toggleDropdown: PropTypes.func.isRequired,
+  dropdownVisible: PropTypes.bool.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  handleNavigation: PropTypes.func.isRequired,
+  dropdownRef: PropTypes.object,
+}
 export default Navbar;

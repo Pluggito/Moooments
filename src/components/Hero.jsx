@@ -4,7 +4,9 @@ import { Typewriter } from "react-simple-typewriter";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { Camera, Share2, Download } from "lucide-react"
 import PageLoader from "../components/PageLoader";
+import { image } from "motion/react-client";
 
 
 const Hero = ({loading, setLoading}) => {
@@ -26,8 +28,10 @@ const Hero = ({loading, setLoading}) => {
       }, 1500);
     };
 
+    const images = [assets.img_1, assets.img_2, assets.img_3]
+
   return (
-      <main className="flex items-center justify-center py-[30%] lg:py-[12%] my-15 xl:my-11 overflow-x-hidden ">
+      <main className="flex items-center justify-center py-[5%] my-15 xl:my-11 overflow-x-hidden ">
         {loading && <PageLoader />}
         <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
@@ -70,21 +74,35 @@ const Hero = ({loading, setLoading}) => {
         </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-[90%] sm:max-w-[75%] mx-auto px-4 mt-7">
-          <button
-            type="button"
-            className="border-2 border-black rounded w-full sm:w-[207px] h-[44px] font-bold hover:bg-black hover:text-white transition-all duration-300
-                cursor-pointer shadow-md relative z-[30]"
-            onClick={() => navigate('/eventlink')}
-          >
-            Enter Event Link
-          </button>
+            <motion.button
+                type="button"
+                className="group relative overflow-hidden rounded-full w-full sm:w-[220px] h-[50px] font-medium text-gray-800 bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => navigate("/eventlink")}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="relative z-5 flex items-center justify-center gap-2 font-medium">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M9 5L15 12L9 19"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span>Enter Event Link</span>
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              </motion.button>
+
               
               <motion.button
-            type="button"
-                className="rounded w-full sm:w-[292px] h-[44px] font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-colors cursor-pointer shadow-md relative z-[30]"
+                type="button"
+                className="group relative overflow-hidden rounded-full w-full sm:w-[280px] h-[50px] font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                 onClick={handleClick}
-                whileTap={{ scale: 0.95 }}
-                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -92,16 +110,118 @@ const Hero = ({loading, setLoading}) => {
                   ease: "easeOut",
                   type: "spring",
                   stiffness: 500,
-                  damping: 25
+                  damping: 25,
                 }}
-          >
-            Create your Event Album
+              >
+                <span className="relative z-5 flex  justify-center items-center content-center gap-2">
+                  <span>Create your Event Album</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5 12H19M19 12L13 6M19 12L13 18"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-[#c300f9] to-[#a000c7]"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-[#d42fff] to-[#b700e5] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </motion.button>
         </div>
         </div>
+
+        <section className="w-full container mx-auto mt-7 px-4 mb-20">
+        <motion.div
+          className="grid grid-cols-3 gap-4 max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+
+        {images.map((imgSrc, index) => (
+            <motion.div
+            key={index}
+              className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-md"
+              whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                 src={imgSrc}  // Use the imported path directly
+                 alt={`Event photo ${index + 1}`}
+                 className="w-full h-full object-cover"
+               />
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
+
+      <section className="w-full py-20 bg-white rounded shadow-lg">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Three simple steps to create and share your event memories
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <StepCard
+              number="01"
+              icon={<Camera className="h-8 w-8 text-white" />}
+              title="Create an Event"
+              description="Set up your event in seconds. Add details and customize privacy settings."
+            />
+            <StepCard
+              number="02"
+              icon={<Share2 className="h-8 w-8 text-white" />}
+              title="Share with Guests"
+              description="Invite guests with a simple link or QR code. No app download required."
+            />
+            <StepCard
+              number="03"
+              icon={<Download className="h-8 w-8 text-white" />}
+              title="Collect Memories"
+              description="Everyone uploads photos to one place. Download or share the complete collection."
+            />
+          </div>
+        </div>
+      </section>
+
+      </section>
+
     </main>
     );
 };
 
+
+const StepCard = ({ number, icon, title, description }) => {
+  return (
+    <motion.div
+      className="flex flex-col items-center text-center "
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+    >
+      <div className="relative mb-6">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[#c300f9] to-[#a000c7] flex items-center justify-center">
+          {icon}
+        </div>
+        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white border-2 border-[#c300f9] flex items-center justify-center text-sm font-bold text-[#c300f9]">
+          {number}
+        </div>
+      </div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </motion.div>
+  )
+}
+
 export default Hero
+

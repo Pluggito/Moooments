@@ -11,7 +11,7 @@
     scrollbar-width: none;
   }
   
- /*#hero-background {
+/* body {
     background-image: linear-gradient(150deg, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.1)), url('./assets/Home-Page.png');
   } */
 
@@ -27,6 +27,10 @@
     }
   
   }
+
+  .dropshadow-custom {
+    box-shadow: 0 4px 20px rgba(195, 0, 249, 0.5); /* Adjust values as needed */
+  }
   
 @keyframes fadeIn {
   from {
@@ -41,11 +45,11 @@
   animation: fadeIn 1s ease-in-out forwards; /* Adjust duration as needed */
 }
 
-.pattern-grid-lg {
+/*body {
   background-image: 
-    linear-gradient(to right, rgba(195, 0, 249, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(195, 0, 249, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+    linear-gradient(to right, rgba(195, 0, 249, 0.1) 1px, transparent 3px),
+    linear-gradient(to top, rgba(195, 0, 249, 0.1) 1px, transparent 3px);
+  background-size: 20px 20px;
 }
   
 
