@@ -64,31 +64,36 @@ const CreateAlbum = ({loading, setloading}) => {
     }
   }
 
-  const validate = ()=>{
-    if(eventDetails.title || eventDetails.description || eventDetails.eventDate || eventDetails.eventType || coverImage){
-      setEventDetails('')
-      setCoverImage(null)
-     
+  const validate = () => {
+    if (!eventDetails.title || !eventDetails.description || !eventDetails.eventDate || !eventDetails.eventType || !coverImage) {
+      console.error('Please fill all fields');
+      return false;
     }
-    else{
-      console.error('please fill all fields')
-    }
+    return true;
   }
+
   const handleSubmit = async(e) => {
-    e.preventDefault();
-    !validate();
-    if(!authToken){
-      console.error('Not verifed logged in')
-    }
-    setloading(true)
-    try {
-      await createAlbum(eventDetails, coverImage, authToken);
-      setloading(false)
-      navigate('/preview')
-    } catch (error) {
-      console.error('Sorry, could not process the infomation')      
-    }
+  e.preventDefault();
+  
+  if (!validate()) {
+    return; 
   }
+  
+  if (!authToken) {
+    console.error('Not verified logged in');
+    return;
+  }
+  
+  setloading(true);
+  try {
+    await createAlbum(eventDetails, coverImage, authToken);
+    navigate('/preview');
+  } catch (error) {
+    console.error('Sorry, could not process the information');
+  } finally {
+    setloading(false);
+  }
+}
 
   return (
       <main className="flex-1 container mx-auto max-w-5xl px-2 py-8">
