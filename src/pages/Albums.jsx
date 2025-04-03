@@ -22,10 +22,10 @@ const Albums = ({ loading, setLoading }) => {
     setLoading(true);
     try {
       const albumDetails = await getAlbumDetails(albumId);
-      console.log("Album Details:", albumDetails);
+      //console.log("Album Details:", albumDetails);
 
       if (!albumDetails || !albumDetails.images) {
-        console.log("No images found in album details.");
+        console.error("No images found in album details.");
         return;
       }
 
@@ -38,7 +38,7 @@ const Albums = ({ loading, setLoading }) => {
       setSavedData(sortedEvents);
 
       const images = Array.isArray(albumDetails.images) ? albumDetails.images : [];
-      console.log("Extracted Images:", images);
+     // console.log("Extracted Images:", images);
 
       setDisplayImages(images.length ? images : []);
 
@@ -67,7 +67,7 @@ const Albums = ({ loading, setLoading }) => {
           text: `Check out this album: ${albumTitle}`,
           url: shareUrl,
         });
-        console.log("Shared successfully!");
+       // console.log("Shared successfully!");
       } catch (error) {
         console.error("Error sharing:", error);
       }

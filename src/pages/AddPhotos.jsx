@@ -2,6 +2,7 @@ import { ImageIcon, XIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
+import PropTypes from 'prop-types'
 import { useNavigate, useParams } from "react-router-dom";
 
 const AddPhotos = ({ loading, setLoading }) => {
@@ -94,7 +95,7 @@ const AddPhotos = ({ loading, setLoading }) => {
       setFiles([]); // Clear uploaded files
       setPreviewUrls([]); // Reset previews
     } catch (error) {
-      console.error("Error uploading images:", error);
+      //console.error("Error uploading images:", error);
       alert("Failed to upload images.");
     } finally {
       setLoading(false);
@@ -113,10 +114,10 @@ const AddPhotos = ({ loading, setLoading }) => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      console.log("Fetching album details for albumId:", albumId);
+      //console.log("Fetching album details for albumId:", albumId);
       
       const albumData = await getAlbumDetails(albumId);
-      console.log("Album details response:", albumData);
+     // console.log("Album details response:", albumData);
       
       if (!albumData) {
         alert("No album found for this ID");
@@ -129,7 +130,7 @@ const AddPhotos = ({ loading, setLoading }) => {
         alert("No album found for this ID.");
       }
     } catch (error) {
-      console.error("Error fetching album details:", error);
+      //console.error("Error fetching album details:", error);
     } finally {
       setLoading(false);
     }
@@ -202,5 +203,10 @@ const AddPhotos = ({ loading, setLoading }) => {
     </div>
   );
 };
+
+AddPhotos.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
+}
 
 export default AddPhotos;

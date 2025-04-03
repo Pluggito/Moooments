@@ -45,7 +45,7 @@ const App = () => {
         <Route path="/preview" element={<Preview loading={loading} setLoading={setLoading} />} />
         <Route path="/dashboard" element={<Dashboard loading={loading} setLoading={setLoading} />} />
         <Route path='/add-to-album/:albumId' element={<AddPhotos loading={loading} setLoading={setLoading}/>}/>
-        <Route path="/event-album-page" element={<EventAlbumPage loading={loading} setLoading={setLoading} />} />
+        <Route path='/event-share-page/:albumId' element={<EventAlbumPage loading={loading} setLoading={setLoading}/>}/>
         <Route path='/album/:albumId' element={<Albums loading={loading} setLoading={setLoading}/>}/>
       </Routes>
      

@@ -1,41 +1,41 @@
 import { LucideArrowLeft } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,  } from "react-router-dom";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
 
-const Preview = ({loading, setLoading}) => {
+const Preview = ({ loading, setLoading }) => {
     const navigate = useNavigate();
     const { getAlbum } = useContext(EventContext);
     const [savedEvents, setSavedEvents] = useState([]);
     
 
     const fetchEvents = async () => {
-      setLoading(true);
-      try {
-          const events = await getAlbum();  
-          
-          if (events.length > 0) {
-              const sortedEvents = events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-              setSavedEvents([sortedEvents[0]]);
-          }
-      } catch (error) {
-          console.error('Error fetching events:', error);
-      } finally {
-          setLoading(false);
-      }
-  };
+        setLoading(true);
+        try {
+            const events = await getAlbum();  
+            if (events.length > 0) {
+                const sortedEvents = events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                setSavedEvents([sortedEvents[0]]);
+            }
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-   const handleNavigation = () => {
-      setLoading(true)
-      setTimeout(()=>
-        {
-          navigate('/event-album-page')
-          setLoading(false);
-        }, 1500)
-      navigate()
-   }
-  
+    const albumId = savedEvents[0]?.albumId;
+
+    const handleNavigation = () => {
+        if (!albumId) return;
+        
+        setLoading(true);
+        setTimeout(() => {
+            navigate(`/event-share-page/${albumId}`); 
+            setLoading(false);
+        }, 1500);
+    };
 
     useEffect(() => {
         fetchEvents();
@@ -72,7 +72,7 @@ const Preview = ({loading, setLoading}) => {
                             </div>
                         ))
                     ) : (
-                        <p>No events available.</p> // Handle empty state
+                        <p>No events available.</p>
                     )}
 
                     {savedEvents.length > 0 && (
@@ -97,7 +97,7 @@ const Preview = ({loading, setLoading}) => {
 
                             <div className="px-6 pb-6 mt-7">
                                 <button 
-                                  onClick={handleNavigation}                                  
+                                    onClick={handleNavigation}                                  
                                     className="w-full bg-black hover:bg-zinc-800 text-white py-3 rounded-lg border border-[#c300f9] shadow-[0_0_10px_rgba(168,85,247,0.15)]
                                     cursor-pointer transform transition-all duration-500 hover:scale-[1.05]"
                                 >

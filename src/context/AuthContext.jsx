@@ -29,11 +29,11 @@ export const AuthProvider = ({children}) => {
                 };
                 
                 const loginRes = await axios.post(`${BASEURL}auth/v1/login/`, loginData);
-                
                 if (loginRes.status === 200) {
                     const tokens = loginRes.data;
                     setAuthToken(tokens);
                     localStorage.setItem('authTokens', JSON.stringify(tokens));
+                    navigate('/')
                     
                     {/*try {
                         await axios.post(
@@ -56,6 +56,7 @@ export const AuthProvider = ({children}) => {
                 error.response?.data?.message || 
                 "Registration failed. Please check your information and try again."
             );
+            console.log(error)
         } finally {
             setLoading(false);
         }
