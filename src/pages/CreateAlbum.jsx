@@ -138,7 +138,7 @@ const CreateAlbum = ({loading, setLoading}) => {
               <input
                 type="text"
                 id="title"
-                name="title"
+                name="eventTitle"
                 value={eventDetails.eventTitle}
                 onChange={handleInputChange}
                 placeholder="Give your event a name"
@@ -153,7 +153,7 @@ const CreateAlbum = ({loading, setLoading}) => {
               </label>
               <textarea
                 id="description"
-                name="description"
+                name="eventDescription"
                 value={eventDetails.eventDescription}
                 onChange={handleInputChange}
                 placeholder="Describe the event"
