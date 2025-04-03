@@ -66,7 +66,7 @@ const CreateAlbum = ({loading, setLoading}) => {
   }
 
   const validate = () => {
-    if (!eventDetails.title || !eventDetails.description || !eventDetails.eventDate || !eventDetails.eventType || !coverImage) {
+    if (!eventDetails.eventTitle || !eventDetails.eventDescription || !eventDetails.eventDate || !eventDetails.eventType || !coverImage) {
       console.error('Please fill all fields');
       return false;
     }
