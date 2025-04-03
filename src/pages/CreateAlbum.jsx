@@ -6,7 +6,7 @@ import { EventContext } from "../context/EventContext"
 import { AuthContext } from "../context/AuthContext"
 import PageLoader from "../components/PageLoader"
 
-const CreateAlbum = ({loading, setloading}) => {
+const CreateAlbum = ({loading, setLoading}) => {
   const navigate = useNavigate()
   const [eventDetails, setEventDetails] = useState({
     title: "",
@@ -85,14 +85,14 @@ const CreateAlbum = ({loading, setloading}) => {
     return;
   }
   
-  setloading(true);
+  setLoading(true);
   try {
     await createAlbum(eventDetails, coverImage, authToken);
     navigate('/preview');
   } catch (error) {
     console.error('Sorry, could not process the information');
   } finally {
-    setloading(false);
+    setLoading(false);
   }
 }
 
