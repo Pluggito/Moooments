@@ -300,7 +300,7 @@ const CreateAlbum = ({loading, setloading}) => {
             <div className="flex justify-center">
               <button
                 onClick={handleSubmit}
-                type="submit"
+                type="button"
                 className=" cursor-pointer w-3/4 py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
               >
                 Create Album
