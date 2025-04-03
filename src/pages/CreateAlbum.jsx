@@ -129,10 +129,10 @@ const CreateAlbum = ({loading, setloading}) => {
             </p>
           </div>
 
-          <form  className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                Event Title <span className="text-[#c300f9">*</span>
+                Event Title <span className="text-[#c300f9]">*</span>
               </label>
               <input
                 type="text"
@@ -175,7 +175,7 @@ const CreateAlbum = ({loading, setloading}) => {
                   className="w-full px-4 py-3 rounded-lg border-gray-300 border focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700 appearance-none bg-no-repeat"
                   style={{
                     backgroundImage:
-                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill=`` viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
+                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
                     backgroundPosition: "right 0.5rem center",
                     backgroundSize: "1.5em 1.5em",
                   }}
@@ -299,8 +299,7 @@ const CreateAlbum = ({loading, setloading}) => {
 
             <div className="flex justify-center">
               <button
-                onClick={handleSubmit}
-                type="submit"
+                 type="submit" 
                 className=" cursor-pointer w-3/4 py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
               >
                 Create Album
