@@ -11,14 +11,14 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
 
  export const EventProvider = ({ children }) => {
   const api = useAxios()
-  const createAlbum = async (eventDetails, file, authToken) => {
+  const createAlbum = async (eventDetails, coverImage, authToken) => {
     try { 
         const eventData = {
             title: eventDetails.eventTitle,
             description: eventDetails.eventDescription,
             event_type: eventDetails.eventType,
             event_date: eventDetails.eventDate,
-            album_picture: file
+            album_picture: coverImage
         };
 
         const res = await axios.post(`${BASEURL}api/v1/list-create-album/`, eventData, {

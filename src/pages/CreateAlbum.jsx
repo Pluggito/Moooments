@@ -1,10 +1,13 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import '../index.css'
+import { EventContext } from "../context/EventContext"
+import { AuthContext } from "../context/AuthContext"
+import PageLoader from "../components/PageLoader"
 
-const CreateAlbum = () => {
+const CreateAlbum = ({loading, setloading}) => {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState({
+  const [eventDetails, setEventDetails] = useState({
     title: "",
     description: "",
     eventType: "",
@@ -13,11 +16,13 @@ const CreateAlbum = () => {
   const [coverImage, setCoverImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [isDragging, setIsDragging] = useState(false)
+  const {createAlbum} = useContext(EventContext);
+  const {authToken} = useContext(AuthContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
+    setEventDetails({
+      ...eventDetails,
       [name]: value,
     })
   }
@@ -59,15 +64,35 @@ const CreateAlbum = () => {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission logic here
-    console.log("Form submitted:", formData, coverImage)
-    // Navigate to next page or show success message
+  const validate = ()=>{
+    if(eventDetails.title || eventDetails.description || eventDetails.eventDate || eventDetails.eventType || coverImage){
+      setEventDetails('')
+      setCoverImage(null)
+     
+    }
+    else{
+      console.error('please fill all fields')
+    }
+  }
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    !validate();
+    if(!authToken){
+      console.error('Not verifed logged in')
+    }
+    setloading(true)
+    try {
+      await createAlbum(eventDetails, coverImage, authToken);
+      setloading(false)
+      navigate('/preview')
+    } catch (error) {
+      console.error('Sorry, could not process the infomation')      
+    }
   }
 
   return (
       <main className="flex-1 container mx-auto max-w-5xl px-2 py-8">
+        {loading && <PageLoader/>}
         <button
           onClick={() => navigate(-1)}
           className="flex items-center text-gray-700 hover:text-[#c300f9]  mb-8 group transition-colors"
@@ -99,7 +124,7 @@ const CreateAlbum = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form  className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Event Title <span className="text-[#c300f9">*</span>
@@ -108,7 +133,7 @@ const CreateAlbum = () => {
                 type="text"
                 id="title"
                 name="title"
-                value={formData.title}
+                value={eventDetails.title}
                 onChange={handleInputChange}
                 placeholder="Give your event a name"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
@@ -123,7 +148,7 @@ const CreateAlbum = () => {
               <textarea
                 id="description"
                 name="description"
-                value={formData.description}
+                value={eventDetails.description}
                 onChange={handleInputChange}
                 placeholder="Describe the event"
                 rows={3}
@@ -140,7 +165,7 @@ const CreateAlbum = () => {
                 <select
                   id="eventType"
                   name="eventType"
-                  value={formData.eventType}
+                  value={eventDetails.eventType}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border-gray-300 border focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700 appearance-none bg-no-repeat"
                   style={{
@@ -152,12 +177,20 @@ const CreateAlbum = () => {
                   required
                 >
                   <option value="" disabled>
-                    What type of event
+                    Select an event type
                   </option>
                   <option value="wedding">Wedding</option>
                   <option value="birthday">Birthday</option>
                   <option value="graduation">Graduation</option>
                   <option value="anniversary">Anniversary</option>
+                  <option value="conference">Conference</option>
+                  <option value="party">Party</option>
+                  <option value="meeting">Meeting</option>
+                  <option value="family_reunion">Family Reunion</option>
+                  <option value="corporate_event">Corporate Event</option>
+                  <option value="charity_event">Charity Event</option>
+                  <option value="concert">Concert</option>
+                  <option value="festival">Festival</option>
                   <option value="other">Other</option>
                 </select>
               </div>
@@ -170,7 +203,7 @@ const CreateAlbum = () => {
                   type="date"
                   id="eventDate"
                   name="eventDate"
-                  value={formData.eventDate}
+                  value={eventDetails.eventDate}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border-purple-500 text-gray-700 border"
                   required
@@ -261,6 +294,7 @@ const CreateAlbum = () => {
 
             <div className="flex justify-center">
               <button
+                onClick={handleSubmit}
                 type="submit"
                 className=" cursor-pointer w-3/4 py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
               >
