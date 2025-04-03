@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import PropTypes from 'prop-types'
 import '../index.css'
 import { EventContext } from "../context/EventContext"
 import { AuthContext } from "../context/AuthContext"
@@ -309,6 +310,11 @@ const CreateAlbum = ({loading, setloading}) => {
         </div>
       </main>
   )
+}
+
+CreateAlbum.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
 }
 
 export default CreateAlbum
