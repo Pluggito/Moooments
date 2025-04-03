@@ -9,8 +9,8 @@ import PageLoader from "../components/PageLoader"
 const CreateAlbum = ({loading, setLoading}) => {
   const navigate = useNavigate()
   const [eventDetails, setEventDetails] = useState({
-    title: "",
-    description: "",
+    eventTitle: "",
+    eventDescription: "",
     eventType: "",
     eventDate: "",
   })
@@ -139,7 +139,7 @@ const CreateAlbum = ({loading, setLoading}) => {
                 type="text"
                 id="title"
                 name="title"
-                value={eventDetails.title}
+                value={eventDetails.eventTitle}
                 onChange={handleInputChange}
                 placeholder="Give your event a name"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
@@ -154,7 +154,7 @@ const CreateAlbum = ({loading, setLoading}) => {
               <textarea
                 id="description"
                 name="description"
-                value={eventDetails.description}
+                value={eventDetails.eventDescription}
                 onChange={handleInputChange}
                 placeholder="Describe the event"
                 rows={3}
