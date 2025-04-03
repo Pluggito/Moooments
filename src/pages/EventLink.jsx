@@ -31,8 +31,10 @@ const EventLink = ({ loading, setLoading }) => {
     try {
       const retrievedAlbumData = await getAlbumDetails(albumId)
       if (retrievedAlbumData && albumId) {
-        navigate(`/album/${albumId}`)
-        console.log("On the page")
+        const path = url.includes("event-album-page") ? 
+          `/add-to-albm/${albumId}` : 
+          `/album/${albumId}`;
+        navigate(path);
       } else {
         alert("Event album not found.")
       }
