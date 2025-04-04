@@ -1,9 +1,8 @@
-"use client"
-
 import { useContext, useState } from "react"
 import { EventContext } from "../context/EventContext"
 import { useNavigate } from "react-router-dom"
 import PageLoader from "../components/PageLoader"
+import PropTypes from 'prop-types'
 
 const EventLink = ({ loading, setLoading }) => {
   const { getAlbumDetails } = useContext(EventContext)
@@ -11,7 +10,7 @@ const EventLink = ({ loading, setLoading }) => {
   const navigate = useNavigate()
 
   const extractUniqueId = (inputUrl) => {
-    const match = inputUrl.match(/event-album-page\/([^/]+)/) || inputUrl.match(/album\/([^/]+)/)
+    const match = inputUrl.match(/event-share-page\/([^/]+)/) || inputUrl.match(/album\/([^/]+)/)
     return match ? match[1] : null
   }
 
@@ -31,15 +30,15 @@ const EventLink = ({ loading, setLoading }) => {
     try {
       const retrievedAlbumData = await getAlbumDetails(albumId)
       if (retrievedAlbumData && albumId) {
-        const path = url.includes("event-album-page") ? 
-          `/add-to-albm/${albumId}` : 
+        const path = url.includes("event-share-page") ? 
+          `/add-to-album/${albumId}` : 
           `/album/${albumId}`;
         navigate(path);
       } else {
         alert("Event album not found.")
       }
     } catch (error) {
-      console.error("Error fetching event album:", error)
+      //console.error("Error fetching event album:", error)
       alert("Something went wrong. Please try again.")
     } finally {
       setLoading(false)
@@ -121,6 +120,12 @@ const EventLink = ({ loading, setLoading }) => {
       </div>
     </div>
   )
+}
+
+
+EventLink.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
 }
 
 export default EventLink

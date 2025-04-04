@@ -32,7 +32,7 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
         
         if (res.status === 201) {
             toast.success('event created');
-            console.log(event);
+           // console.log(event);
             return event.albumId
         }else if(res.status === 400){
           toast.error('Error creating events')
@@ -45,7 +45,7 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
 
   const getAlbum = async () => { 
       const res = await api.get(`api/v1/list-create-album/`)
-      console.log(res.data)
+      //console.log(res.data)
       return res.data        
   }
 
@@ -54,13 +54,13 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
       const res = await api.delete(`api/v1/update-delete-album/${id}/`);
       
       if (res.status === 204 || res.status === 200) {
-        console.log("Album deleted successfully");
+       // console.log("Album deleted successfully");
         return res.data;
       } else {
-        console.error("Failed to delete album");
+      //  console.error("Failed to delete album");
       }
     } catch (error) {
-      console.error("Error deleting album:", error);
+     // console.error("Error deleting album:", error);
     }
   };
 
@@ -73,10 +73,10 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
           "Content-Type": "multipart/form-data"
         },
       });
-      console.log("Upload successful:", res.data);
+     // console.log("Upload successful:", res.data);
       return res.data;
     } catch (error) {
-      console.error("Error uploading image:", error);
+     // console.error("Error uploading image:", error);
     }
   };
 
@@ -85,10 +85,10 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
       let res = await api.get(
         `api/v1/album-detail/${albumId}/`
       );
-      console.log(res)
+     // console.log(res)
       return res.data
   } catch(error){
-    console.log("hmm", error)
+    //console.log("hmm", error)
   }
 };
   
@@ -96,10 +96,10 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
 const getAllAlbum = async () => {
   try{
     let res = await api.get(`api/v1/list-albums/`)
-    console.log(res.data)
+    //console.log(res.data)
       return res.data 
   }catch(error){ 
-    console.log(error)
+    //console.log(error)
   }
   
 }

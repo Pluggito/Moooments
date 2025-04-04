@@ -20,7 +20,7 @@ const Dashboard = ({loading, setLoading}) => {
         setSavedEvents(sortedEvents);
       }
     } catch (error) {
-      console.error('Error fetching events:', error);
+     // console.error('Error fetching events:', error);
     } finally {
       setLoading(false);
     }
@@ -164,5 +164,10 @@ EventCard.propTypes = {
   handleDeleteEvent: PropTypes.func.isRequired,
 
 };
+
+Dashboard.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
+}
 
 export default Dashboard;
