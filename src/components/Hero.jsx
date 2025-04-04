@@ -150,6 +150,7 @@ const Hero = ({loading, setLoading}) => {
                  src={imgSrc}  // Use the imported path directly
                  alt={`Event photo ${index + 1}`}
                  className="w-full h-full object-cover"
+                 loading="lazy"
                />
             </motion.div>
           ))}
