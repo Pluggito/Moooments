@@ -102,6 +102,7 @@ const Albums = ({ loading, setLoading }) => {
               <img
                 src={image.image_url || "/placeholder.svg"}
                 alt={`Album Image ${index + 1}`}
+                loading="lazy"
                 className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
                 onClick={() => handleImageClick(image.image_url)}
               />
@@ -126,6 +127,7 @@ const Albums = ({ loading, setLoading }) => {
             <img 
               src={previewUrl} 
               alt="Preview" 
+              loading="lazy"
               className="w-full h-auto max-h-[80vh] object-contain rounded-md"
             />
           </div>
