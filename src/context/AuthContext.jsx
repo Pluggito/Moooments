@@ -34,6 +34,7 @@ export const AuthProvider = ({children}) => {
                     setAuthToken(tokens);
                     localStorage.setItem('authTokens', JSON.stringify(tokens));
                     navigate('/')
+                    setIsLoggedIn(true)
                     
                     {/*try {
                         await axios.post(
@@ -54,7 +55,7 @@ export const AuthProvider = ({children}) => {
         } catch (error) {
             setError(
                 error.response?.data?.message || 
-                "Registration failed. Please check your information and try again."
+                "Password must have at least 8 characters"
             );
             console.log(error)
         } finally {
