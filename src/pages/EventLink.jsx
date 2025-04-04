@@ -8,6 +8,7 @@ const EventLink = ({ loading, setLoading }) => {
   const { getAlbumDetails } = useContext(EventContext)
   const [url, setUrl] = useState("")
   const navigate = useNavigate()
+  
 
   const extractUniqueId = (inputUrl) => {
     const match = inputUrl.match(/event-share-page\/([^/]+)/) || inputUrl.match(/album\/([^/]+)/)

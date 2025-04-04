@@ -4,10 +4,12 @@ import PageLoader from "../components/PageLoader";
 import { useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types'
 
+
 const EventAlbumPage = ({ loading, setLoading }) => {
     const [currentUrl, setCurrentUrl] = useState("");
     const navigate = useNavigate();
     const linkRef = useRef(null);
+    const [button, setButton] = useState('Copy Link')
 
     useEffect(() => {
         setCurrentUrl(window.location.href);
@@ -17,8 +19,14 @@ const EventAlbumPage = ({ loading, setLoading }) => {
         if (linkRef.current) {
             navigator.clipboard.writeText(linkRef.current.value);
         }
+    
+        setButton("Copied"); 
+    
+        setTimeout(() => {
+            setButton("Copy Link"); 
+        }, 2000);
     };
-
+    
     const handleNavigation = () => {
         setLoading(true);
         setTimeout(() => {
@@ -26,6 +34,7 @@ const EventAlbumPage = ({ loading, setLoading }) => {
             setLoading(false);
         }, 1000);
     };
+
 
     return (
         <div className="min-h-screen bg-white p-4 md:p-6">
@@ -69,9 +78,9 @@ const EventAlbumPage = ({ loading, setLoading }) => {
                             </div>
                             <button 
                                 onClick={handleCopyLink} 
-                                className="bg-violet-600 p-3 hover:bg-violet-700 text-white md:w-auto font-bold rounded-lg"
+                                className="bg-violet-600 p-3 hover:bg-violet-700 text-white md:w-auto font-bold rounded-lg cursor-pointer"
                             >
-                                Copy Link
+                               {button}
                             </button>
                         </div>
 

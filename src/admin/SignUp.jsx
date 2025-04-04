@@ -305,6 +305,7 @@ const SignUp = () => {
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
+                                    title="Must have minimum of 8 characters"
                                     placeholder="Password"
                                     className="w-full p-3 rounded-lg bg-transparent text-black hover:bg-slate-50 shadow-md focus:outline-none"
                                     autoComplete="off"
