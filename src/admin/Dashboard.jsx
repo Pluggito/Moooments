@@ -113,7 +113,7 @@ const EventCard = ({ id, image, title, description, navigate, handleDeleteEvent,
   return (
     <div className="bg-gray-50 hover:bg-gray-100 transition-colors p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row gap-4">
       <div className="w-full sm:w-1/3">
-        <img src={image || "/placeholder.jpg"} alt={title} className="rounded-lg w-full h-[160px] sm:h-[120px] object-cover aspect-1/1" />
+        <img src={image || "/placeholder.jpg"} alt={title} loading="lazy" className="rounded-lg w-full h-[160px] sm:h-[120px] object-cover aspect-1/1" />
       </div>
       <div className="flex-1 flex flex-col justify-between">
         <div>

@@ -153,7 +153,7 @@ const AddPhotos = ({ loading, setLoading }) => {
           <h2 className="text-xl font-semibold text-purple-600">Share Your Memories</h2>
           <p className="text-gray-700 mb-5">Contribute your photos to the event album.</p>
           {latestAlbum.length > 0 && latestAlbum[0]?.album_picture ? (
-            <img src={latestAlbum[0].album_picture} alt="Latest Event" className="w-full object-cover aspect-4/3 rounded-lg" />
+            <img src={latestAlbum[0].album_picture} loading="lazy" alt="Latest Event" className="w-full object-cover aspect-4/3 rounded-lg" />
           ) : (
             <p className="text-gray-500">No Event created</p>
           )}
@@ -187,7 +187,7 @@ const AddPhotos = ({ loading, setLoading }) => {
             <div className="grid grid-cols-3 gap-4">
               {previewUrls.map((url, index) => (
                 <div key={index} className="relative">
-                  <img src={url} alt={`Preview ${index}`} className="h-24 rounded-lg object-cover" />
+                  <img src={url} loading="lazy" alt={`Preview ${index}`} className="h-24 rounded-lg object-cover" />
                   <XIcon className="absolute top-1 right-1 text-xs p-1 rounded-full cursor-pointer bg-black text-slate-50" size={27} onClick={() => removeImage(index)}/>
                 </div>
               ))}

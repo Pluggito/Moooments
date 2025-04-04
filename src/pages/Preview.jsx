@@ -29,7 +29,7 @@ const Preview = ({ loading, setLoading }) => {
 
     const handleNavigation = () => {
         if (!albumId) return;
-        
+
         setLoading(true);
         setTimeout(() => {
             navigate(`/event-share-page/${albumId}`); 
@@ -68,6 +68,7 @@ const Preview = ({ loading, setLoading }) => {
                                     src={event.album_picture}
                                     alt={event.title}
                                     className="w-full h-full object-center object-cover rounded-lg"
+                                    loading="lazy"
                                 />
                             </div>
                         ))
