@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { UserCircle } from "lucide-react";
 import PageLoader from "./PageLoader";
 import { LayoutDashboard, LogOut } from "lucide-react";
+import Avatar from "./Avatar";
 
 const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     const components = [
@@ -18,6 +19,9 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef();
+    const { isLoggedIn, logoutUser, userEmail} = useContext(AuthContext);
+    const [isScreen, setIsScreen] = useState(window.innerWidth > 640);
+    const location = useLocation();
 
     const toggleDropdown = () => {
       setDropdownVisible(!dropdownVisible);
@@ -29,7 +33,8 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
         navigate('/dashboard')
         setLoading(false)
       },1000)
-    }
+    }    
+    
 
     useEffect(() => {
       const handleClickOutside = (event) => {
@@ -41,9 +46,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const { isLoggedIn, logoutUser } = useContext(AuthContext);
-    const [isScreen, setIsScreen] = useState(window.innerWidth > 640);
-    const location = useLocation();
+
 
     useEffect(() => {
       const handleResize = () => setIsScreen(window.innerWidth > 640);
@@ -80,12 +83,15 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
               </ul>
             )}
 
-            {isLoggedIn ? (
+            {isLoggedIn && userEmail ? (
               <div className="sm:flex items-center gap-4 hidden">
                 {loading && <PageLoader />}
                 {isScreen && <button onClick={handleNavigation} className="rounded p-2 font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-colors cursor-pointer shadow-md relative z-[30]">My Dashboard</button>}
-                <UserCircle className="w-12 h-12 transition-all duration-300 hover:text-[#c300f9]" strokeWidth={1.3} onClick={toggleDropdown} />
+                {/*<Avatar onClick={toggleDropdown}/>*/}
+                <UserCircle className="w-11 h-11 transition-all duration-300 hover:text-[#c300f9]" strokeWidth={1.3} onClick={toggleDropdown} /> 
                 {dropdownVisible &&  <div className="absolute right-0 top-[100%] mt-2 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
+                  <div className="flex flex-col items-center gap-2">
+                  <p className="text-sm font-semibold text-gray-600 border-b p-1">{userEmail}</p> 
                   <button
                     onClick={() => {
                       logoutUser();
@@ -95,6 +101,8 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
                   >
                     Log out
                   </button>
+                  </div>
+                 
                 </div>}
               </div>
             ) : (
@@ -127,28 +135,30 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
 
 {!isScreen && <div className="flex items-center justify-center gap-3">
             {/* Hamburger menu and user icon (for smaller screens) */}
-            <User isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} />
-            <HambugerMenu isMenu={isMenu} setIsMenu={setIsMenu} isLoggedIn={isLoggedIn} />
+           <Avatar isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} userEmail={userEmail} />
+           <HambugerMenu isMenu={isMenu} setIsMenu={setIsMenu} isLoggedIn={isLoggedIn} />
             
           </div>}
       </nav>
     );
 };
 
-const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef }) => {
+const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef, userEmail }) => {
   return (
     <>
-      {isLoggedIn && (
+      {isLoggedIn && userEmail ? (
         <div className="relative" ref={dropdownRef}>
           <UserCircle className="w-8 h-8 text-[#c300f9] cursor-pointer" strokeWidth={1.5} onClick={toggleDropdown} />
 
           {dropdownVisible && (
             <motion.div
-              className="absolute right-0 top-full mt-2 bg-white border border-gray-100 p-1 shadow-lg z-10 rounded-md w-48"
+              className="absolute -right-10 top-full mt-2 bg-white border border-gray-100 p-1 shadow-lg z-10 rounded-md w-48"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
             >
+              <div className="flex flex-col items-center gap3">
+                <p className="text-sm font-semibold text-gray-600 border-b p-1">{userEmail}</p> 
               <button
                 onClick={() => {
                   handleNavigation()
@@ -170,10 +180,12 @@ const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleN
                 <LogOut className="w-4 h-4" />
                 Log out
               </button>
+              </div>
+             
             </motion.div>
           )}
         </div>
-      )}
+      ): <></>}
     </>
   )
 }
@@ -193,5 +205,6 @@ User.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   handleNavigation: PropTypes.func.isRequired,
   dropdownRef: PropTypes.object,
+  userEmail: PropTypes.func.isRequired
 }
 export default Navbar;

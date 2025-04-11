@@ -58,9 +58,9 @@ const SignUp = () => {
         // Validate password
         if (!formData.password) {
             errors.password = 'Password is required';
-        } else if (formData.password.length < 6) {
-            errors.password = 'Password must be at least 6 characters';
-        }
+        } else if (formData.password.length < 8) {
+            errors.password = 'Password must be at least 8 characters';
+        }        
 
         // Validate terms and newsletter
         if (!termsAndConditions || !newsletter) {
@@ -72,6 +72,9 @@ const SignUp = () => {
             setTimeout(() => setError({}), 3000);
             return;
         }
+
+
+ 
 
         // Call registerUser with form data
         await registerUser({
@@ -96,6 +99,7 @@ const SignUp = () => {
         visible: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: 50 },
     };
+
 
     const getPasswordStrength = (password) => {
         if (!password) return '';
