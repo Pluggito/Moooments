@@ -47,7 +47,7 @@ const Avatar = ({toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handle
 
           {dropdownVisible && (
             <motion.div
-              className="absolute -right-10 top-full mt-2 bg-white border border-gray-100 p-1 shadow-lg z-10 rounded-md w-48"
+              className="absolute -right-10 top-full mt-2 bg-white border border-gray-100 p-1 shadow-lg z-10 rounded-md w-52"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
