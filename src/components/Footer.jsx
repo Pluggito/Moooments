@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="flex flex-col items-center space-y-4">
           {/* First Section - Want to share more memories text */}
           <motion.p 
-            className="text-[14px] sm:text-lg font-medium text-gray-600"
+            className="text-[13px] sm:text-lg font-medium text-gray-600"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }} 

@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
-import { XIcon, Share2Icon, ClipboardIcon, CheckIcon } from "lucide-react";
+import { XIcon, Share2Icon, ClipboardIcon, CheckIcon, DownloadIcon } from "lucide-react";
 
 const Albums = ({ loading, setLoading }) => {
   const [displayImages, setDisplayImages] = useState([]); 
@@ -78,6 +78,10 @@ const Albums = ({ loading, setLoading }) => {
     }
   };
 
+  const handleDownload = async () => {
+        
+  }
+
   return (
     <div className="max-w-7xl mx-auto p-4">
       {loading && <PageLoader />}
@@ -85,6 +89,10 @@ const Albums = ({ loading, setLoading }) => {
       {/* Album Title & Share Button */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">{albumTitle}</h1>
+        <div className="flex items-center justify-between">
+          <button type="download" className="border-none bg-transparent" onClick={handleDownload}>
+          <DownloadIcon size={20} />
+          </button>
         <button
           onClick={handleShare}
           className="flex items-center gap-2 bg-[#c300f9] text-white px-4 py-2 rounded-lg shadow-md hover:bg-[#a000c7] transition"
@@ -92,10 +100,13 @@ const Albums = ({ loading, setLoading }) => {
           {copied ? <CheckIcon size={20} /> : <Share2Icon size={20} />}
           {copied ? "Copied!" : "Share"}
         </button>
+        </div>
+
+        
       </div>
 
       {/* Album Images */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {displayImages.length > 0 ? (
           displayImages.map((image, index) => (
             <div key={index} className="relative overflow-hidden rounded-lg shadow-lg">
@@ -115,8 +126,8 @@ const Albums = ({ loading, setLoading }) => {
 
       {/* Image Preview Modal */}
       {previewUrl && (
-        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md p-4">
-          <div className="relative max-w-3xl w-full max-h-[90vh] p-2 bg-white rounded-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md p-4 overflow-hidden">
+          <div className="relative max-w-3xl w-full max-h-[90vh] p-2 bg-transparent rounded-lg">
             <button 
               className="absolute top-4 right-4 bg-[#c300f9] text-white rounded-full p-2 shadow-md hover:bg-[#a000c7] transition"
               onClick={() => setPreviewUrl(null)}

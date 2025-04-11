@@ -73,6 +73,9 @@ const SignUp = () => {
             return;
         }
 
+
+ 
+
         // Call registerUser with form data
         await registerUser({
             email: formData.email,
