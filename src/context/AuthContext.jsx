@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
               setError("This email is already registered.");
               return;
             }
-            if(userData.password.length < 8){
+            if(userData.password.length?.[0] < 8){
                 setError('Password must be minimum of 8 characters')
             }
           }
@@ -58,7 +58,6 @@ export const AuthProvider = ({ children }) => {
         } finally {
           setLoading(false);
         }
-        return userData.email
     };
       
 
