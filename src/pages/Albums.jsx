@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
-import { XIcon, Share2Icon, CheckIcon, DownloadIcon, Cross } from "lucide-react";
+import { XIcon, Share2Icon, CheckIcon, DownloadIcon, Cross, PlusCircle, Plus } from "lucide-react";
 import axios from "axios";
 
 const Albums = ({ loading, setLoading }) => {
@@ -13,6 +13,7 @@ const Albums = ({ loading, setLoading }) => {
   const { albumId } = useParams();
   const [previewUrl, setPreviewUrl] = useState(null);
   const [copied, setCopied] = useState(false); // Track clipboard status
+  const navigate = useNavigate()
 
   const fetchAllDetails = async () => {
     if (!albumId) {
@@ -105,6 +106,7 @@ const Albums = ({ loading, setLoading }) => {
       }
     }
   };
+
   
 
   return (
@@ -115,8 +117,8 @@ const Albums = ({ loading, setLoading }) => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">{albumTitle}</h1>
         <div className="flex items-center gap-3.5">
-          <button>
-            <Cross size={20}/>
+          <button className="cursor-pointer" onClick={()=>navigate(`/add-to-album/${albumId}`)}>
+            <Plus size={20}/>
           </button>
           <button type="download" className="border-none bg-transparent cursor-pointer" onClick={handleDownload}>
           <DownloadIcon size={20} />

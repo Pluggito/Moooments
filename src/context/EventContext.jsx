@@ -55,6 +55,7 @@ const BASEURL = "https://mooment-prototype-v1.onrender.com/";
       const res = await api.delete(`api/v1/update-delete-album/${id}/`);
       
       if (res.status === 204 || res.status === 200) {
+        window.location.reload();
        // console.log("Album deleted successfully");
         return res.data;
       } else {
