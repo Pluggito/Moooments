@@ -2,7 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
-import { XIcon, Share2Icon, ClipboardIcon, CheckIcon, DownloadIcon } from "lucide-react";
+import { XIcon, Share2Icon, CheckIcon, DownloadIcon, Cross } from "lucide-react";
+import axios from "axios";
 
 const Albums = ({ loading, setLoading }) => {
   const [displayImages, setDisplayImages] = useState([]); 
@@ -78,9 +79,33 @@ const Albums = ({ loading, setLoading }) => {
     }
   };
 
-  const handleDownload = async () => {
-        
-  }
+
+
+  const handleDownload = async() => {
+    for (let i = 0; i < displayImages.length; i++) {
+      const imageUrl = displayImages[i].image_url;
+      const imageName = `photo-${i + 1}.jpg`;
+  
+      try {
+        const response = await axios.get(imageUrl, {
+          responseType: "blob", // Important for file downloads
+        });
+  
+        const blobUrl = window.URL.createObjectURL(response.data);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = imageName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+  
+        window.URL.revokeObjectURL(blobUrl);
+      } catch (error) {
+        console.error(`Failed to download ${imageName}:`, error);
+      }
+    }
+  };
+  
 
   return (
     <div className="max-w-7xl mx-auto p-4">
@@ -89,8 +114,11 @@ const Albums = ({ loading, setLoading }) => {
       {/* Album Title & Share Button */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">{albumTitle}</h1>
-        <div className="flex items-center justify-between">
-          <button type="download" className="border-none bg-transparent" onClick={handleDownload}>
+        <div className="flex items-center gap-3.5">
+          <button>
+            <Cross size={20}/>
+          </button>
+          <button type="download" className="border-none bg-transparent cursor-pointer" onClick={handleDownload}>
           <DownloadIcon size={20} />
           </button>
         <button
