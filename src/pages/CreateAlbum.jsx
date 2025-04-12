@@ -197,7 +197,42 @@ const CreateAlbum = ({loading, setLoading}) => {
                   <option value="charity_event">Charity Event</option>
                   <option value="concert">Concert</option>
                   <option value="festival">Festival</option>
-                  <option value="other">Other</option>
+                  <option value="sports_event">Sports Event</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="seminar">Seminar</option>
+                  <option value="webinar">Webinar</option>
+                  <option value="fundraiser">Fundraiser</option>
+                  <option value="baby_shower">Baby Shower</option>
+                  <option value="holiday_party">Holiday Party</option>
+                  <option value="launch_event">Product Launch</option>
+                  <option value="reunion">Reunion</option>
+                  <option value="fashion_show">Fashion Show</option>
+                  <option value="exhibition">Exhibition</option>
+                  <option value="theater_performance">Theater Performance</option>
+                  <option value="cultural_event">Cultural Event</option>
+                  <option value="charity_gala">Charity Gala</option>
+                  <option value="art_exhibition">Art Exhibition</option>
+                  <option value="fundraiser_gala">Fundraiser Gala</option>
+                  <option value="music_festival">Music Festival</option>
+                  <option value="food_festival">Food Festival</option>
+                  <option value="arts_festival">Arts Festival</option>
+                  <option value="new_years_eve">New Year's Eve</option>
+                  <option value="christmas_party">Christmas Party</option>
+                  <option value="fashion_week">Fashion Week</option>
+                  <option value="business_expo">Business Expo</option>
+                  <option value="startup_pitch">Startup Pitch Event</option>
+                  <option value="hackathon">Hackathon</option>
+                  <option value="career_fair">Career Fair</option>
+                  <option value="networking_event">Networking Event</option>
+                  <option value="award_ceremony">Award Ceremony</option>
+                  <option value="film_screening">Film Screening</option>
+                  <option value="live_streaming_event">Live Streaming Event</option>
+                  <option value="holiday_fair">Holiday Fair</option>
+                  <option value="convention">Convention</option>
+                  <option value="trade_show">Trade Show</option>
+                  <option value="charity_walk">Charity Walk</option>
+                  <option value="pride_parade">Pride Parade</option>
+
                 </select>
               </div>
 
