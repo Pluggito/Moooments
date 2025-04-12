@@ -156,7 +156,7 @@ const Albums = ({ loading, setLoading }) => {
 
       {/* Image Preview Modal */}
       {previewUrl && (
-        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md p-4 overflow-hidden">
+        <div className="fixed z-10 inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md p-4 overflow-hidden">
           <div className="relative max-w-3xl w-full max-h-[90vh] p-2 bg-transparent rounded-lg">
             <button 
               className="absolute top-4 right-4 bg-[#c300f9] text-white rounded-full p-2 shadow-md hover:bg-[#a000c7] transition"
