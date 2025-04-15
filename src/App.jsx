@@ -6,7 +6,7 @@ import SignUp from "./admin/SignUp"
 import About from "./pages/About"
 import Pricing from "./pages/Pricing"
 import Blog from "./pages/Blog"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import EventLink from "./pages/EventLink"
 import ForgetPassword from "./admin/ForgetPassword.jsx"
 import CreateAlbum from "./pages/CreateAlbum.jsx"
@@ -16,6 +16,9 @@ import AddPhotos from "./pages/AddPhotos.jsx"
 import { ToastContainer } from "react-toastify"
 import Albums from "./pages/Albums.jsx"
 import EventAlbumPage from "./pages/EventAlbumPage.jsx"
+import Profile from "./admin/Profile.jsx"
+import ShareLinks from "./pages/ShareLinks.jsx"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -25,6 +28,27 @@ const App = () => {
 
   const [isMenu, setIsMenu] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
+  const navigate = useNavigate();
+  const linkRef = useRef(null);
+  const [button, setButton] = useState('Copy Link')
+
+  useEffect(() => {
+      setCurrentUrl(window.location.href);
+  }, [window.location.href]);
+
+  const handleCopyLink = () => {
+      if (linkRef.current) {
+          navigator.clipboard.writeText(linkRef.current.value);
+      }
+  
+      setButton("Copied"); 
+  
+      setTimeout(() => {
+          setButton("Copy Link"); 
+      }, 2000);
+  };
+
    
   return (
     <main className={`
@@ -45,8 +69,10 @@ const App = () => {
         <Route path="/preview" element={<Preview loading={loading} setLoading={setLoading} />} />
         <Route path="/dashboard" element={<Dashboard loading={loading} setLoading={setLoading} />} />
         <Route path='/add-to-album/:albumId' element={<AddPhotos loading={loading} setLoading={setLoading}/>}/>
-        <Route path='/event-share-page/:albumId' element={<EventAlbumPage loading={loading} setLoading={setLoading}/>}/>
+        <Route path='/event-share-page/:albumId' element={<EventAlbumPage loading={loading} setLoading={setLoading} handleCopyLink={handleCopyLink} linkRef={linkRef} currentUrl={currentUrl} button={button} navigate={navigate}/>}/>
+        <Route path='/share-link-album/:albumId' element={<ShareLinks handleCopyLink={handleCopyLink} linkRef={linkRef} currentUrl={currentUrl} button={button}/>}/>
         <Route path='/album/:albumId' element={<Albums loading={loading} setLoading={setLoading}/>}/>
+        <Route path="/profile" element={<Profile/>}/>
       </Routes>
      
 

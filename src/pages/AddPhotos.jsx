@@ -1,4 +1,4 @@
-import { ImageIcon, XIcon } from "lucide-react";
+import { Camera, GalleryHorizontal, GalleryThumbnails, ImageIcon, XIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
@@ -153,10 +153,11 @@ const AddPhotos = ({ loading, setLoading }) => {
           <h2 className="text-xl font-semibold text-purple-600">Share Your Memories</h2>
           <p className="text-gray-700 mb-5">Contribute your photos to the event album.</p>
           {latestAlbum.length > 0 && latestAlbum[0]?.album_picture ? (
-            <>
-            <img src={latestAlbum[0].album_picture} loading="lazy" alt="Latest Event" className="w-full object-cover aspect-4/3 rounded-lg" />
-            <div></div>
-            </>
+            <div className=" relative">
+            <img src={latestAlbum[0].album_picture} loading="lazy" alt="Latest Event" className="relative w-full object-cover aspect-4/3 rounded-lg" />
+            <div className="absolute flex gap-1.5 items-center bottom-2 left-2 p-1 text-base text-white rounded bg-gray-800">
+              <ImageIcon size={20}/> {latestAlbum[0].image_count}/7 Photos</div>
+            </div>
             
           ) : (
             <p className="text-gray-500">No Event created</p>

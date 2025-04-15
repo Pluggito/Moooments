@@ -11,7 +11,7 @@ const EventLink = ({ loading, setLoading }) => {
   
 
   const extractUniqueId = (inputUrl) => {
-    const match = inputUrl.match(/event-share-page\/([^/]+)/) || inputUrl.match(/album\/([^/]+)/)
+    const match = inputUrl.match(/event-share-page\/([^/]+)/) || inputUrl.match(/album\/([^/]+)/) || inputUrl.match(/share-link-album\/([^/]+)/)
     return match ? match[1] : null
   }
 
@@ -31,15 +31,14 @@ const EventLink = ({ loading, setLoading }) => {
     try {
       const retrievedAlbumData = await getAlbumDetails(albumId)
       if (retrievedAlbumData && albumId) {
-        const path = url.includes("event-share-page") ? 
-          `/add-to-album/${albumId}` : 
-          `/album/${albumId}`;
+        const isAddToAlbum = url.includes("event-share-page") || url.includes("share-link-album")
+        const path = isAddToAlbum ? `/add-to-album/${albumId}` : `/album/${albumId}`
         navigate(path);
       } else {
         alert("Event album not found.")
       }
     } catch (error) {
-      //console.error("Error fetching event album:", error)
+      console.error("Error fetching event album:", error)
       alert("Something went wrong. Please try again.")
     } finally {
       setLoading(false)
