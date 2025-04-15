@@ -34,7 +34,6 @@ const Dashboard = ({loading, setLoading}) => {
 
   const handleDeleteEvent = async (id) => {
     await deleteAlbum(id);
-
       fetchEvents();
   };
 

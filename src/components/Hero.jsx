@@ -4,15 +4,28 @@ import { Typewriter } from "react-simple-typewriter";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Camera, Share2, Download } from "lucide-react"
+import { Camera, Share2, Download, Cake, PartyPopper, HeartHandshake } from "lucide-react"
 import PageLoader from "../components/PageLoader";
-import { image } from "motion/react-client";
+import { faGrinHearts } from "@fortawesome/free-regular-svg-icons";
+
 
 
 const Hero = ({loading, setLoading}) => {
     const navigate = useNavigate();
     
     const {isLoggedIn} = useContext(AuthContext)
+    const [openIndexes, setOpenIndexes] = useState(new Set());
+
+    const toggleOverlay = (index) => {
+      const updated = new Set(openIndexes);
+      if (updated.has(index)) {
+        updated.delete(index);
+      } else {
+        updated.add(index);
+      }
+      setOpenIndexes(updated);
+    };
+
 
     const handleClick = async() => {
       setLoading(true);
@@ -28,7 +41,12 @@ const Hero = ({loading, setLoading}) => {
       }, 1500);
     };
 
-    const images = [assets.img_1, assets.img_2, assets.img_3]
+
+    const examples = [
+      {images: assets.img_1, type: 'Create moooments on your Birthday', icon: Cake},
+      {images: assets.img_2, type: 'Share your moooments about a family event', icon: HeartHandshake}, 
+      {images: assets.img_3, type: 'Upload your moooments about a festival', icon: PartyPopper }
+    ]
 
   return (
       <main className="flex items-center justify-center py-[5%] my-15 xl:my-11 overflow-x-hidden ">
@@ -96,8 +114,8 @@ const Hero = ({loading, setLoading}) => {
                 <span className="absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </motion.button>
 
-              
-              <motion.button
+              {isLoggedIn ? (
+                <motion.button
                 type="button"
                 className="group relative overflow-hidden rounded-full w-full sm:w-[280px] h-[50px] font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                 onClick={handleClick}
@@ -128,32 +146,82 @@ const Hero = ({loading, setLoading}) => {
                 <span className="absolute inset-0 bg-gradient-to-r from-[#c300f9] to-[#a000c7]"></span>
                 <span className="absolute inset-0 bg-gradient-to-r from-[#d42fff] to-[#b700e5] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </motion.button>
+              ) : (
+                <motion.button
+                type="button"
+                className="group relative overflow-hidden rounded-full w-full sm:w-[280px] h-[50px] font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={handleClick}
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeOut",
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 25,
+                }}
+              >
+                <span className="relative z-5 flex  justify-center items-center content-center gap-2">
+                  <span>Get Started</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5 12H19M19 12L13 6M19 12L13 18"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-[#c300f9] to-[#a000c7]"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-[#d42fff] to-[#b700e5] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              </motion.button>
+              )}
+              
         </div>
         </div>
 
         <section className="w-full container mx-auto mt-7 px-4 mb-20">
         <motion.div
-          className="grid grid-cols-3 gap-4 max-w-4xl mx-auto"
+          className="grid grid-col-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
 
-        {images.map((imgSrc, index) => (
+          {examples.map((imgSrc, index) => (
             <motion.div
-            key={index}
-              className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-md"
+              key={index}
+              className="relative aspect-[1/1] sm:aspect-[3/4] rounded-lg overflow-hidden shadow-md"
               whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
               transition={{ duration: 0.3 }}
+              onClick={() => toggleOverlay(index)}
             >
               <img
-                 src={imgSrc}  // Use the imported path directly
-                 alt={`Event photo ${index + 1}`}
-                 className="w-full h-full object-cover"
-                 loading="lazy"
-               />
+                src={imgSrc.images}
+                alt={`Event photo ${index + 1}`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div
+                className={`absolute bottom-0 w-full bg-[linear-gradient(135deg,_#9d50bb,_#6e48aa)] opacity-80 overflow-hidden transition-all duration-500 ${
+                  openIndexes.has(index) ? 'h-full' : 'h-0'
+                }`}
+              >
+                <div
+                  className="flex flex-col items-center justify-center my-[30%]"
+                >
+                  <imgSrc.icon size={50} color="white"/>
+                  <h1 className="text-white text-2xl text-center p-4">{imgSrc.type}</h1>
+                </div>
+
+                
+              </div>
             </motion.div>
           ))}
+
         </motion.div>
       </section>
 

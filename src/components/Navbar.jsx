@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
-import { UserCircle } from "lucide-react";
+import { User2, UserCircle } from "lucide-react";
 import PageLoader from "./PageLoader";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import Avatar from "./Avatar";
@@ -91,14 +91,24 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
                 <UserCircle className="w-11 h-11 transition-all duration-300 hover:text-[#c300f9]" strokeWidth={1.3} onClick={toggleDropdown} /> 
                 {dropdownVisible &&  <div className="absolute right-0 top-[100%] mt-2 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
                   <div className="flex flex-col items-center gap-2">
-                  <p className="text-sm font-semibold text-gray-600 border-b p-1">{userEmail}</p> 
+                  <button
+                    onClick={() => {
+                      navigate('/profile')
+                      toggleDropdown();
+                    }}
+                    className="flex items-center gap-3 font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
+                  >
+                    <User2 className="w-4 h-4"/>
+                    Profile
+                  </button>
                   <button
                     onClick={() => {
                       logoutUser();
                       toggleDropdown();
                     }}
-                    className="font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
+                    className="flex items-center gap-3 font-medium text-gray-600 hover:text-[#c300f9] transition-colors cursor-pointer w-full text-left"
                   >
+                    <LogOut className="w-4 h-4" />
                     Log out
                   </button>
                   </div>
@@ -135,7 +145,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
 
 {!isScreen && <div className="flex items-center justify-center gap-3">
             {/* Hamburger menu and user icon (for smaller screens) */}
-           <Avatar isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} userEmail={userEmail} />
+           <Avatar isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} userEmail={userEmail} navigate={navigate}/>
            <HambugerMenu isMenu={isMenu} setIsMenu={setIsMenu} isLoggedIn={isLoggedIn} />
             
           </div>}
@@ -143,7 +153,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     );
 };
 
-const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef, userEmail }) => {
+const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef, userEmail, navigate }) => {
   return (
     <>
       {isLoggedIn && userEmail ? (
@@ -158,7 +168,6 @@ const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleN
               transition={{ duration: 0.2 }}
             >
               <div className="flex flex-col items-center gap3">
-                <p className="text-sm font-semibold text-gray-600 border-b p-1">{userEmail}</p> 
               <button
                 onClick={() => {
                   handleNavigation()

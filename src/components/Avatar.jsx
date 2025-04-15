@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, User2 } from "lucide-react";
 
 
-const Avatar = ({toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef, userEmail}) => {
+
+const Avatar = ({toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef, userEmail, navigate}) => {
 
   // Extract the first letter of the email
   const firstLetter = userEmail ? userEmail[0].toUpperCase() : "";
@@ -53,7 +54,12 @@ const Avatar = ({toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handle
               transition={{ duration: 0.2 }}
             >
               <div className="flex flex-col items-center gap3">
-                <p className="text-sm font-semibold text-gray-600 border-b p-1">{userEmail}</p> 
+              <button
+              onClick={() => navigate('/profile')}
+              className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-[#c300f9]/10 rounded-md transition-colors">
+                <User2 className="w-4 h-4" />  
+                Profile              
+              </button>
               <button
                 onClick={() => {
                   handleNavigation()

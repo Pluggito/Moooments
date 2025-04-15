@@ -232,7 +232,7 @@ const CreateAlbum = ({loading, setLoading}) => {
                   <option value="trade_show">Trade Show</option>
                   <option value="charity_walk">Charity Walk</option>
                   <option value="pride_parade">Pride Parade</option>
-
+                  <option value='other'>Other</option>
                 </select>
               </div>
 
@@ -336,7 +336,7 @@ const CreateAlbum = ({loading, setLoading}) => {
             <div className="flex justify-center">
               <button
                  type="submit" 
-                className=" cursor-pointer w-3/4 py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                className=" cursor-pointer w-3/4 py-3 px-4 bg-black border-[#c300f9] border hover:bg-gray-800 text-white font-medium rounded-lg tracking-wide transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
               >
                 Create Album
               </button>

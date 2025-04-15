@@ -2,18 +2,21 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { EventContext } from "../context/EventContext";
 import PageLoader from "../components/PageLoader";
-import { XIcon, Share2Icon, CheckIcon, DownloadIcon, Cross, PlusCircle, Plus } from "lucide-react";
+import { XIcon, Share2Icon, CheckIcon, DownloadIcon, Cross, PlusCircle, Plus, Delete, DeleteIcon, Trash, Trash2 } from "lucide-react";
 import axios from "axios";
 
 const Albums = ({ loading, setLoading }) => {
   const [displayImages, setDisplayImages] = useState([]); 
   const [savedData, setSavedData] = useState([]);
   const [albumTitle, setAlbumTitle] = useState(""); 
-  const { getAlbumDetails } = useContext(EventContext);
+  const { getAlbumDetails, deleteAlbum  } = useContext(EventContext);
   const { albumId } = useParams();
   const [previewUrl, setPreviewUrl] = useState(null);
   const [copied, setCopied] = useState(false); // Track clipboard status
   const navigate = useNavigate()
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+
 
   const fetchAllDetails = async () => {
     if (!albumId) {
@@ -55,6 +58,19 @@ const Albums = ({ loading, setLoading }) => {
     fetchAllDetails();
   }, [albumId]);
 
+  const deletePhoto = async(id) => {
+    try{
+      if(selectedImages.includes(selectedImages.id)){
+        await deleteAlbum(id)      
+      }
+    }catch(error){
+      console.log('error')
+    }
+   
+   
+  }
+
+
   const handleImageClick = (imageUrl) => {
     setPreviewUrl(imageUrl);
   };
@@ -80,33 +96,28 @@ const Albums = ({ loading, setLoading }) => {
     }
   };
 
-
-
-  const handleDownload = async() => {
-    for (let i = 0; i < displayImages.length; i++) {
-      const imageUrl = displayImages[i].image_url;
-      const imageName = `photo-${i + 1}.jpg`;
-  
-      try {
-        const response = await axios.get(imageUrl, {
-          responseType: "blob", // Important for file downloads
-        });
-  
-        const blobUrl = window.URL.createObjectURL(response.data);
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.download = imageName;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-  
-        window.URL.revokeObjectURL(blobUrl);
-      } catch (error) {
-        console.error(`Failed to download ${imageName}:`, error);
-      }
-    }
+  const toggleSelectImage = (imageId) => {
+    setSelectedImages((prevSelected) =>
+      prevSelected.includes(imageId)
+        ? prevSelected.filter((id) => id !== imageId)
+        : [...prevSelected, imageId]
+    );
   };
 
+
+
+  const handleSingleDownload = (imageUrl, index = 1) => {
+    const imageName = `photo-${index}.jpg`;
+  
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.setAttribute("download", imageName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+ 
+  
   
 
   return (
@@ -116,19 +127,21 @@ const Albums = ({ loading, setLoading }) => {
       {/* Album Title & Share Button */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">{albumTitle}</h1>
-        <div className="flex items-center gap-3.5">
-          <button className="cursor-pointer" onClick={()=>navigate(`/add-to-album/${albumId}`)}>
+        <div className="flex items-center gap-4.5">
+          <button className="cursor-pointer hover:text-[#a000c7] transition" onClick={()=>navigate(`/share-link-album/${albumId}`)}>
             <Plus size={20}/>
           </button>
-          <button type="download" className="border-none bg-transparent cursor-pointer" onClick={handleDownload}>
-          <DownloadIcon size={20} />
-          </button>
+          <button
+          className="text-black cursor-pointer hover:text-[#a000c7] transition"
+          onClick={() => setIsDeleteMode((prev) => !prev)}
+        >
+          <Trash2 size={20} />
+        </button>
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 bg-[#c300f9] text-white px-4 py-2 rounded-lg shadow-md hover:bg-[#a000c7] transition"
+          className="text-black cursor-pointer hover:text-[#a000c7] transition"
         >
           {copied ? <CheckIcon size={20} /> : <Share2Icon size={20} />}
-          {copied ? "Copied!" : "Share"}
         </button>
         </div>
 
@@ -140,14 +153,34 @@ const Albums = ({ loading, setLoading }) => {
         {displayImages.length > 0 ? (
           displayImages.map((image, index) => (
             <div key={index} className="relative overflow-hidden rounded-lg shadow-lg">
-              <img
-                src={image.image_url || "/placeholder.svg"}
-                alt={`Album Image ${index + 1}`}
-                loading="lazy"
-                className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
-                onClick={() => handleImageClick(image.image_url)}
-              />
-            </div>
+            <img
+              src={image.image_url || "/placeholder.svg"}
+              alt={`Album Image ${index + 1}`}
+              loading="lazy"
+              className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+              onClick={() =>
+                isDeleteMode
+                  ? toggleSelectImage(image.id)
+                  : handleImageClick(image.image_url)
+              }
+            />
+            
+            {isDeleteMode && (
+              <div className="absolute top-2 right-2">
+                <div
+                  className={`w-5 h-5 border-2 rounded-full flex items-center justify-center ${
+                    selectedImages.includes(image.id)
+                      ? "bg-[#a000c7] border-[#a000c7]"
+                      : "bg-white border-gray-400"
+                  }`}
+                >
+                  {selectedImages.includes(image.id) && (
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  )}
+                </div>
+              </div>
+            )}
+          </div>          
           ))
         ) : (
           <p className="text-center text-gray-500">No images available.</p>
@@ -159,12 +192,19 @@ const Albums = ({ loading, setLoading }) => {
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md p-4 overflow-hidden">
           <div className="relative max-w-3xl w-full max-h-[90vh] p-2 bg-transparent rounded-lg">
             <button 
-              className="absolute top-4 right-4 bg-[#c300f9] text-white rounded-full p-2 shadow-md hover:bg-[#a000c7] transition"
+              className="absolute top-15 right-4 bg-[#c300f9] text-white rounded-full p-2 shadow-md hover:bg-[#a000c7] transition cursor-pointer" 
               onClick={() => setPreviewUrl(null)}
               aria-label="Close Preview"
             >
-              <XIcon size={24} />
+              <XIcon size={20} />
             </button>
+              <button
+                className="absolute top-4 right-4 bg-white text-black rounded-full p-2 shadow hover:bg-gray-200 transition cursor-pointer"
+                onClick={() => handleSingleDownload(previewUrl)}
+                aria-label="Download Image"
+              >
+                <DownloadIcon size={20} />
+              </button>
             <img 
               src={previewUrl} 
               alt="Preview" 
