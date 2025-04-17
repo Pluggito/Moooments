@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import QRCode from 'react-qr-code'
+
+
 const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title }) => {
   return (
     <div>
@@ -47,15 +50,33 @@ const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title }) => {
               </div>
               <div className="flex flex-col items-center gap-4">
                 <div className="border-4 border-black p-1 bg-white inline-block">
-                  <img
-                    src={"/placeholder.svg?height=150&width=150"}
-                    alt="QR Code"
-                    width={150}
-                    height={150}
-                    className="h-[150px] w-[150px]"
+                  <QRCode
+                    value={currentUrl}
+                    size={150}
+                    bgColor="#ffffff"
+                    fgColor="#000000"
+                    level="H"
+                    includeMargin={true}
                   />
                 </div>
-                <button className="border-zinc-300">Download QR Code</button>
+
+                <button
+                  className="text-sm font-semibold px-4 py-2 bg-violet-600 text-white rounded hover:bg-violet-700"
+                  onClick={() => {
+                    const canvas = document.querySelector("canvas");
+                    const pngUrl = canvas
+                      .toDataURL("image/png")
+                      .replace("image/png", "image/octet-stream");
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = pngUrl;
+                    downloadLink.download = "moooment-qr.png";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                  }}
+                >
+                  Download QR Code
+                </button>
               </div>
             </div>
           </div>
