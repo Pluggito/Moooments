@@ -66,7 +66,7 @@ const AddPhotos = ({ loading, setLoading }) => {
   };
 
   const handleUploadImages = async () => {
-    if (files.length + latestAlbum[0].image_count > 7) {
+    if (files.length + latestAlbum[0].image_count > 30) {
       alert("Maximum limit exceeded");
       return;
     }

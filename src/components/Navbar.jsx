@@ -88,7 +88,8 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
                 {loading && <PageLoader />}
                 {isScreen && <button onClick={handleNavigation} className="rounded p-2 font-semibold text-white bg-[#c300f9] hover:bg-[#a000c7] transition-colors cursor-pointer shadow-md relative z-[30]">My Dashboard</button>}
                 {/*<Avatar onClick={toggleDropdown}/>*/}
-                <UserCircle className="w-11 h-11 transition-all duration-300 hover:text-[#c300f9]" strokeWidth={1.3} onClick={toggleDropdown} /> 
+                <UserCircle ref={dropdownRef}
+                className="w-11 h-11 transition-all duration-300 hover:text-[#c300f9]" strokeWidth={1.3} onClick={toggleDropdown} /> 
                 {dropdownVisible &&  <div className="absolute right-0 top-[100%] mt-2 bg-white border border-gray-200 p-2 shadow-lg z-10 rounded-md">
                   <div className="flex flex-col items-center gap-2">
                   <button
