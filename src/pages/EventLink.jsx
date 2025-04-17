@@ -1,57 +1,66 @@
-import { useContext, useState } from "react"
-import { EventContext } from "../context/EventContext"
-import { useNavigate } from "react-router-dom"
-import PageLoader from "../components/PageLoader"
-import PropTypes from 'prop-types'
+import { useContext, useState } from "react";
+import { EventContext } from "../context/EventContext";
+import { useNavigate } from "react-router-dom";
+import PageLoader from "../components/PageLoader";
+import PropTypes from "prop-types";
 
 const EventLink = ({ loading, setLoading }) => {
-  const { getAlbumDetails } = useContext(EventContext)
-  const [url, setUrl] = useState("")
-  const navigate = useNavigate()
-  
+  const { getAlbumDetails } = useContext(EventContext);
+  const [url, setUrl] = useState("");
+  const navigate = useNavigate();
 
   const extractUniqueId = (inputUrl) => {
-    const match = inputUrl.match(/event-share-page\/([^/]+)/) || inputUrl.match(/album\/([^/]+)/) || inputUrl.match(/share-link-album\/([^/]+)/)
-    return match ? match[1] : null
-  }
+    const match =
+      inputUrl.match(/event-share-page\/([^/]+)/) ||
+      inputUrl.match(/album\/([^/]+)/) ||
+      inputUrl.match(/share-link-album\/([^/]+)/);
+    return match ? match[1] : null;
+  };
 
   const fetchEventsDetails = async () => {
     if (!url) {
-      alert("Please enter an event link.")
-      return
+      alert("Please enter an event link.");
+      return;
     }
 
-    const albumId = extractUniqueId(url)
+    const albumId = extractUniqueId(url);
     if (!albumId) {
-      alert("Invalid event link format.")
-      return
+      alert("Invalid event link format.");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     try {
-      const retrievedAlbumData = await getAlbumDetails(albumId)
+      const retrievedAlbumData = await getAlbumDetails(albumId);
       if (retrievedAlbumData && albumId) {
-        const isAddToAlbum = url.includes("event-share-page") || url.includes("share-link-album")
-        const path = isAddToAlbum ? `/add-to-album/${albumId}` : `/album/${albumId}`
+        const isAddToAlbum =
+          url.includes("event-share-page") || url.includes("share-link-album");
+        const path = isAddToAlbum
+          ? `/add-to-album/${albumId}`
+          : `/album/${albumId}`;
         navigate(path);
       } else {
-        alert("Event album not found.")
+        alert("Event album not found.");
       }
     } catch (error) {
-      console.error("Error fetching event album:", error)
-      alert("Something went wrong. Please try again.")
+      console.error("Error fetching event album:", error);
+      alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto max-w-xl py-12 md:py-16 lg:py-20 px-4">
       {loading && <PageLoader />}
       <div className="flex flex-col items-center justify-center space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Place Your Event Link Here!</h1>
-          <p className="text-gray-500 dark:text-gray-400">Connect with your guests by sharing your event link</p>
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Place Your Event Link Here!
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400">
+            Connect with your guests by sharing your event link
+          </p>
         </div>
 
         {/* Card with gradient border */}
@@ -119,14 +128,12 @@ const EventLink = ({ loading, setLoading }) => {
         </div>
       </div>
     </div>
-  )
-}
-
+  );
+};
 
 EventLink.propTypes = {
   loading: PropTypes.bool.isRequired,
   setLoading: PropTypes.func.isRequired,
-}
+};
 
-export default EventLink
-
+export default EventLink;
