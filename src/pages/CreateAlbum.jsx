@@ -128,14 +128,14 @@ const CreateAlbum = ({loading, setLoading}) => {
             <p className="text-gray-700 ">
               Event Details - Help everyone recognize your special occasion.
             </p>
-          </div>
+        </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Event Title <span className="text-[#c300f9]">*</span>
               </label>
-              <input
+                <input 
                 type="text"
                 id="title"
                 name="eventTitle"
@@ -167,7 +167,7 @@ const CreateAlbum = ({loading, setLoading}) => {
               <div className="space-y-2">
                 <label htmlFor="eventType" className="block text-sm font-medium text-gray-700">
                   Event Type <span className="text-[#c300f9]">*</span>
-                </label>
+              </label>
                 <select
                   id="eventType"
                   name="eventType"
@@ -234,7 +234,7 @@ const CreateAlbum = ({loading, setLoading}) => {
                   <option value="pride_parade">Pride Parade</option>
                   <option value='other'>Other</option>
                 </select>
-              </div>
+          </div>
 
               <div className="space-y-2 ">
                 <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 ">
@@ -340,9 +340,9 @@ const CreateAlbum = ({loading, setLoading}) => {
               >
                 Create Album
               </button>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
+      </div>
       </main>
   )
 }

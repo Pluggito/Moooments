@@ -13,7 +13,7 @@ const HambugerMenu = ({setIsMenu, isMenu, isLoggedIn}) => {
 
     useEffect(() => {
       if(isMenu) {
-        setActive(true);
+          setActive(true);
         document.body.style.overflow = 'hidden';
       } else {
         setActive(false);
@@ -21,7 +21,7 @@ const HambugerMenu = ({setIsMenu, isMenu, isLoggedIn}) => {
       }
     }, [isMenu]);
 
-    return (
+  return (
       <div className="grid float-right sm:hidden pointer-events-auto">
         <span className="sr-only">Toggle menu</span>
         <AnimatedHamburgerButton 
@@ -87,13 +87,13 @@ const HambugerMenu = ({setIsMenu, isMenu, isLoggedIn}) => {
                 className={`${isLoggedIn ? 'hidden' : 'text-3xl font-medium hover:text-[#c300f9] transition-colors' }`}
               >
                 Sign Up
-              </NavLink>
+      </NavLink>
               
             </motion.div>
-          </div>
+        </div>
         </motion.div>
-      </div>
-    );
+  </div>
+  );
 };
 
 // Add PropTypes
@@ -113,11 +113,11 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
       >
         <motion.button
         type="button"
-          initial={false}
-          animate={active ? "open" : "closed"}
-          onClick={handleRequest}
+    initial={false}
+    animate={active ? "open" : "closed"}
+    onClick={handleRequest}
           className="relative h-12 w-12 rounded-full bg-transparent transition-colors hover:bg-gray-100  z-[999] p-2"
-        >
+  >
           <motion.span
             variants={VARIANTS.top}
             className="absolute h-[3px] w-[24px] bg-black rounded"
@@ -141,45 +141,45 @@ const AnimatedHamburgerButton = ({ active, handleRequest }) => {
         </motion.button>
       </MotionConfig>
     );
-};
+  };
 
 // Add PropTypes
 AnimatedHamburgerButton.propTypes = {
   active: PropTypes.bool.isRequired,
   handleRequest: PropTypes.func.isRequired
 };
-
-const VARIANTS = {
-  top: {
-    open: {
-      rotate: ["0deg", "0deg", "45deg"],
-      top: ["35%", "50%", "50%"],
+  
+  const VARIANTS = {
+    top: {
+      open: {
+        rotate: ["0deg", "0deg", "45deg"],
+        top: ["35%", "50%", "50%"],
+      },
+      closed: {
+        rotate: ["45deg", "0deg", "0deg"],
+        top: ["50%", "50%", "35%"],
+      },
     },
-    closed: {
-      rotate: ["45deg", "0deg", "0deg"],
-      top: ["50%", "50%", "35%"],
+    middle: {
+      open: {
+        rotate: ["0deg", "0deg", "-45deg"],
+      },
+      closed: {
+        rotate: ["-45deg", "0deg", "0deg"],
+      },
     },
-  },
-  middle: {
-    open: {
-      rotate: ["0deg", "0deg", "-45deg"],
-    },
-    closed: {
-      rotate: ["-45deg", "0deg", "0deg"],
-    },
-  },
-  bottom: {
-    open: {
-      rotate: ["0deg", "0deg", "45deg"],
-      bottom: ["35%", "50%", "50%"],
+    bottom: {
+      open: {
+        rotate: ["0deg", "0deg", "45deg"],
+        bottom: ["35%", "50%", "50%"],
+        left: "50%",
+      },
+      closed: {
+        rotate: ["45deg", "0deg", "0deg"],
+        bottom: ["50%", "50%", "35%"],
       left: "50%",
+      },
     },
-    closed: {
-      rotate: ["45deg", "0deg", "0deg"],
-      bottom: ["50%", "50%", "35%"],
-      left: "50%",
-    },
-  },
-};
+  };
 
 export default HambugerMenu;

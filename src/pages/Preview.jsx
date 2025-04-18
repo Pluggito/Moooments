@@ -19,7 +19,7 @@ const Preview = ({ loading, setLoading }) => {
         );
         setSavedEvents([sortedEvents[0]]);
       }
-    } catch (error) {
+            } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
       setLoading(false);
@@ -45,7 +45,7 @@ const Preview = ({ loading, setLoading }) => {
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
       {loading && <PageLoader />}
-      <div className="space-y-6">
+        <div className="space-y-6">
         <button
           onClick={() => navigate("/create-album")}
           className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
