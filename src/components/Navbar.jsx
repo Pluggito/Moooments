@@ -53,7 +53,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, []);
-
+  
     return (
       <nav className="flex sm:flex justify-between items-center px-2 py-3 shadow-xs sticky z-50">
         <div className="flex justify-between items-center ">
@@ -71,16 +71,16 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
           <>
             {!['/about', '/create-album'].includes(location.pathname) && (
               <ul className="hidden sm:flex gap-9">
-                {components.map((item, index) => (
-                  <NavLink 
-                    key={index}
+          {components.map((item, index) => (
+            <NavLink 
+            key={index}
                     to={item.path}
                     className="font-medium text-gray-600 hover:text-[#c300f9] no-underline"
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-              </ul>
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </ul>
             )}
 
             {isLoggedIn && userEmail ? (
@@ -118,42 +118,42 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
               </div>
             ) : (
               <div className="sm:flex items-center gap-4 hidden">
-                <NavLink to='/signup'>
+          <NavLink to='/signup'>
                 <motion.button
                     className="h-10 px-4 rounded-md border-2 border-black font-medium hover:bg-black hover:text-white transition-all duration-300 shadow-sm"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
-                  >
-                    Login
+          >
+            Login
                   </motion.button>
-                </NavLink>
-                <NavLink to='/signup'>
+          </NavLink>
+          <NavLink to='/signup'>
                 <motion.button
                     className="h-10 px-4 rounded-md font-medium text-white bg-[#c300f9] hover:bg-[#a000c7] transition-all duration-300 shadow-md"
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
-                  >
-                    Sign Up
+          >
+            Sign Up
                   </motion.button>
 
-                </NavLink>
-              </div>
+          </NavLink>
+        </div>
             )}
-          </>
+            </>
         )}
-
+          
 {!isScreen && <div className="flex items-center justify-center gap-3">
             {/* Hamburger menu and user icon (for smaller screens) */}
            <Avatar isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} userEmail={userEmail} navigate={navigate}/>
            <HambugerMenu isMenu={isMenu} setIsMenu={setIsMenu} isLoggedIn={isLoggedIn} />
-            
+      
           </div>}
       </nav>
     );
-};
-
+  };
+  
 const User = ({ toggleDropdown, dropdownVisible, isLoggedIn, logoutUser, handleNavigation, dropdownRef, userEmail, navigate }) => {
   return (
     <>

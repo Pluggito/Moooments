@@ -51,6 +51,7 @@ const ShareLinks = ({
           linkRef={linkRef}
           currentUrl={currentUrl}
           button={button}
+          albumId={albumId}
         />
       </div>
     </div>

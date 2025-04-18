@@ -84,8 +84,8 @@ const EventLink = ({ loading, setLoading }) => {
                   <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                 </svg>
                 <span>Paste your event link below</span>
-              </div>
-
+             </div>
+          
               <div className="space-y-4">
                 <input
                   type="text"
@@ -120,7 +120,7 @@ const EventLink = ({ loading, setLoading }) => {
             </div>
           </div>
         </div>
-
+      
         <div className="text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Access your event album and share memories with your guests

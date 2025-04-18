@@ -46,6 +46,7 @@ const EventAlbumPage = ({
           linkRef={linkRef}
           currentUrl={currentUrl}
           button={button}
+          albumId={albumId}
         />
       </div>
     </div>

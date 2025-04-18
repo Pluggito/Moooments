@@ -64,7 +64,7 @@ const Hero = ({ loading, setLoading }) => {
   return (
     <main className="flex items-center justify-center py-[5%] my-15 xl:my-11 overflow-x-hidden ">
       {loading && <PageLoader />}
-      <div
+        <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-8"
         style={{ background: `url(${assets.hero_image})` }}
       />
@@ -84,13 +84,13 @@ const Hero = ({ loading, setLoading }) => {
 
             <motion.h1
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black text-balance inline-block"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              Capture Every&nbsp;
-              <span className="text-[#c300f9] font-bold">
-                <Typewriter
+          >
+            Capture Every&nbsp;
+            <span className="text-[#c300f9] font-bold">
+              <Typewriter
                   words={[
                     "Moooments!",
                     "Laughter!",
@@ -99,14 +99,14 @@ const Hero = ({ loading, setLoading }) => {
                     "",
                     "Moooments!",
                   ]}
-                  loop={true}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={300}
-                  deleteSpeed={75}
-                  delaySpeed={1500}
-                />
-              </span>
+                loop={true}
+                cursor
+                cursorStyle="|"
+                typeSpeed={300}
+                deleteSpeed={75}
+                delaySpeed={1500}
+              />
+            </span>
               <br /> Share Every Memory
             </motion.h1>
           </div>
@@ -293,8 +293,8 @@ const Hero = ({ loading, setLoading }) => {
                 title="Collect Memories"
                 description="Everyone uploads photos to one place. Download or share the complete collection."
               />
-            </div>
-          </div>
+        </div>
+        </div>
         </section>
       </section>
     </main>
