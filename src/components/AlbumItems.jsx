@@ -2,7 +2,10 @@ import PropTypes from "prop-types";
 import QRCode from 'react-qr-code'
 
 
-const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title }) => {
+const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title, albumId }) => {
+
+const value = `https://moooments.vercel.app/add-to-album/${albumId}`
+
   return (
     <div>
       <div className="text-center space-y-6">
@@ -51,7 +54,7 @@ const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title }) => {
               <div className="flex flex-col items-center gap-4">
                 <div className="border-4 border-black p-1 bg-white inline-block">
                   <QRCode
-                    value={currentUrl}
+                    value={value}
                     size={150}
                     bgColor="#ffffff"
                     fgColor="#000000"
