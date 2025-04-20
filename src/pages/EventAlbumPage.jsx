@@ -22,8 +22,7 @@ const EventAlbumPage = ({
     }, 1000);
   };
 
-  const albumId = useParams()
-
+  const { albumId } = useParams();
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-6">
