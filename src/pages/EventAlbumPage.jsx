@@ -2,6 +2,8 @@ import { ArrowLeft } from "lucide-react";
 import PageLoader from "../components/PageLoader";
 import PropTypes from "prop-types";
 import AlbumItems from "../components/AlbumItems";
+import { useParams } from "react-router-dom";
+
 
 const EventAlbumPage = ({
   loading,
@@ -19,6 +21,9 @@ const EventAlbumPage = ({
       setLoading(false);
     }, 1000);
   };
+
+  const albumId = useParams()
+
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-6">
