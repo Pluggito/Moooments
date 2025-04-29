@@ -104,6 +104,7 @@ export const AuthProvider = ({ children }) => {
             setIsLoggedIn(false);
         }
     }, []);
+    
 
     const contextData = {
         user,

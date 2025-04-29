@@ -19,6 +19,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef();
+    const avatarRef = useRef()
     const { isLoggedIn, logoutUser, userEmail} = useContext(AuthContext);
     const [isScreen, setIsScreen] = useState(window.innerWidth > 640);
     const location = useLocation();
@@ -36,7 +37,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
     }    
     
 
-    useEffect(() => {
+    {/*useEffect(() => {
       const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
           setDropdownVisible(false);
@@ -44,7 +45,9 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
       };
       document.addEventListener("mousedown", handleClickOutside);
       return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    }, []);*/}
+    
+    
 
 
 
@@ -146,7 +149,7 @@ const Navbar = ({ isMenu, setIsMenu , loading, setLoading}) => {
           
 {!isScreen && <div className="flex items-center justify-center gap-3">
             {/* Hamburger menu and user icon (for smaller screens) */}
-           <Avatar isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} userEmail={userEmail} navigate={navigate}/>
+           <Avatar isScreen={isScreen} toggleDropdown={toggleDropdown} dropdownVisible={dropdownVisible} logoutUser={logoutUser} isLoggedIn={isLoggedIn} handleNavigation={handleNavigation} userEmail={userEmail} navigate={navigate} avatarRef={avatarRef}/>
            <HambugerMenu isMenu={isMenu} setIsMenu={setIsMenu} isLoggedIn={isLoggedIn} />
       
           </div>}
