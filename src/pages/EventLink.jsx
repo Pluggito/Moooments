@@ -41,6 +41,7 @@ const EventLink = ({ loading, setLoading }) => {
         navigate(path);
       } else {
         alert("Event album not found.");
+        console.log(error)
       }
     } catch (error) {
       console.error("Error fetching event album:", error);

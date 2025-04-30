@@ -33,9 +33,13 @@ const Dashboard = ({ loading, setLoading }) => {
   }, []);
 
   const handleDeleteEvent = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this album?");
+    if (!confirmDelete) return;
+  
     await deleteAlbum(id);
     fetchEvents();
   };
+  
 
   return (
     <div className="min-h-screen flex flex-1">

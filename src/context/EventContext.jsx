@@ -1,14 +1,16 @@
 import axios from "axios";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import PropTypes from "prop-types";
 import useAxios from "../utils/useAxios";
 import { toast } from "react-toastify";
+import { AuthContext } from "./AuthContext";
 
 const BASEURL = "https://mooment-prototype-v1.onrender.com/";
 
 export const EventContext = createContext();
 
 export const EventProvider = ({ children }) => {
+  const {isLoggedIn, authTokens} = useContext(AuthContext)
   const api = useAxios();
   const createAlbum = async (eventDetails, coverImage, authToken) => {
     try {
@@ -67,24 +69,49 @@ export const EventProvider = ({ children }) => {
       const res = await api.post(
         `api/v1/upload-image/${albumId}/`,
         {
-          files: file,
+          files: file, 
         },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data", 
           },
         }
       );
-      return res.data;
-    } catch (error) {}
+      return res.data; 
+  
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Unable to upload image');
+      return null; // Return null in case of failure
+    }
   };
+  
 
   const getAlbumDetails = async (albumId) => {
     try {
-      let res = await api.get(`api/v1/album-detail/${albumId}/`);
-      return res.data;
-    } catch (error) {}
+      const headers = {};
+  
+      // Only add Authorization header if the user is logged in
+      if (isLoggedIn && authTokens?.access) {
+        headers['Authorization'] = `Bearer ${authTokens.access}`;
+      }
+  
+      const res = await api.get(`api/v1/album-detail/${albumId}/`, { headers });
+  
+      if (res.status === 200) {
+        return res.data;
+      } else {
+        throw new Error('Failed to fetch album details');
+      }
+    } catch (error) {
+      console.error('Error fetching album details:', error);
+      toast.error('Unable to fetch album details');
+      return null; // Returning null in case of failure
+    }
   };
+  
+  
+  
 
   const getAllAlbum = async () => {
     try {

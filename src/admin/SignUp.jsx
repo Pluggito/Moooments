@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { Loader2Icon} from 'lucide-react'
+
 
 
 const SignUp = () => {
@@ -370,7 +372,7 @@ const SignUp = () => {
                                 ${loading ? 'bg-gray-400' : 'bg-[#c300f9] hover:bg-[#a000c7]'}
                                 transition-all duration-300 cursor-pointer shadow-md p-2 mt-9 mb-5`}
                         >
-                            {loading ? 'Processing...' : isMenu}
+                           {loading ? <Loader2Icon className="size-6 animate-spin"/> : isMenu}
                         </button>
                     </motion.div>
                 )}
