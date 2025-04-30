@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
-import QRCode from 'react-qr-code';
+import QRCode from "react-qr-code";
 
-const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title, albumId }) => {
-
+const AlbumItems = ({
+  linkRef,
+  handleCopyLink,
+  currentUrl,
+  button,
+  title,
+  albumId,
+}) => {
   const value = `https://moooments.vercel.app/add-to-album/${albumId}`;
 
   return (
@@ -58,7 +64,7 @@ const AlbumItems = ({ linkRef, handleCopyLink, currentUrl, button, title, albumI
                     bgColor="#ffffff"
                     fgColor="#000000"
                     level="H"
-                    includeMargin={true}
+                    includeMargin={true} // <- Valid prop for 'react-qr-code'
                   />
                 </div>
 
@@ -92,9 +98,9 @@ AlbumItems.propTypes = {
   title: PropTypes.string.isRequired,
   linkRef: PropTypes.object.isRequired,
   handleCopyLink: PropTypes.func.isRequired,
-  currentUrl: PropTypes.string.isRequired, 
+  currentUrl: PropTypes.string.isRequired,
   button: PropTypes.string.isRequired,
-  albumId: PropTypes.string.isRequired, 
+  albumId: PropTypes.string.isRequired,
 };
 
 export default AlbumItems;
