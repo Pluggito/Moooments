@@ -1,43 +1,112 @@
-import { createContext, useState, useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import axios from "axios";
+import { createContext } from "react";
+import PropTypes from "prop-types";
+import useAxios from "../utils/useAxios";
+import { toast } from "react-toastify";
 
-const EventContext = createContext();
+const BASEURL = "https://mooment-prototype-v1.onrender.com/";
+
+export const EventContext = createContext();
 
 export const EventProvider = ({ children }) => {
-  const [savedEvents, setSavedEvents] = useState([]);
-
-  useEffect(() => {
+  const api = useAxios();
+  const createAlbum = async (eventDetails, coverImage, authToken) => {
     try {
-      const events = JSON.parse(localStorage.getItem('events') || '[]');
-      setSavedEvents(events);
-    } catch (err) {
-      console.error('Error loading saved events:', err);
-    }
-  }, []);
+      const eventData = {
+        title: eventDetails.eventTitle,
+        description: eventDetails.eventDescription,
+        event_type: eventDetails.eventType,
+        event_date: eventDetails.eventDate,
+        album_picture: coverImage,
+      };
 
-  const addEvent = (newEvent) => {
-    const updatedEvents = [...savedEvents, newEvent];
-    setSavedEvents(updatedEvents);
-    localStorage.setItem('events', JSON.stringify(updatedEvents));
+      const res = await axios.post(
+        `${BASEURL}api/v1/list-create-album/`,
+        eventData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken.access}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const event = res.data;
+
+      if (res.status === 201) {
+        toast.success("event created");
+        return event.albumId;
+      } else if (res.status === 400) {
+        toast.error("Error creating events");
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
 
-  const clearEvents = () => {
-    localStorage.clear(); // Clears all localStorage
-    // OR
-    localStorage.removeItem('events'); // Clears only the events
-    setSavedEvents([]);
+  const getAlbum = async () => {
+    const res = await api.get(`api/v1/list-create-album/`);
+    return res.data;
+  };
+
+  const deleteAlbum = async (id) => {
+    try {
+      const res = await api.delete(`api/v1/update-delete-album/${id}/`);
+
+      if (res.status === 204 || res.status === 200) {
+        window.location.reload();
+        return res.data;
+      } else {
+        return;
+      }
+    } catch (error) {}
+  };
+
+  const uploadImage = async (albumId, file) => {
+    try {
+      const res = await api.post(
+        `api/v1/upload-image/${albumId}/`,
+        {
+          files: file,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {}
+  };
+
+  const getAlbumDetails = async (albumId) => {
+    try {
+      let res = await api.get(`api/v1/album-detail/${albumId}/`);
+      return res.data;
+    } catch (error) {}
+  };
+
+  const getAllAlbum = async () => {
+    try {
+      let res = await api.get(`api/v1/list-albums/`);
+      return res.data;
+    } catch (error) {}
+  };
+
+  const value = {
+    createAlbum,
+    getAlbum,
+    deleteAlbum,
+    uploadImage,
+    getAlbumDetails,
+    getAllAlbum,
   };
 
   return (
-    <EventContext.Provider value={{ savedEvents, addEvent, clearEvents }}>
-      {children}
-    </EventContext.Provider>
+    <EventContext.Provider value={value}>{children}</EventContext.Provider>
   );
 };
 
 EventProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
-
-export const useEvents = () => useContext(EventContext);
-

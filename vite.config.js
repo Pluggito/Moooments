@@ -16,4 +16,9 @@ export default defineConfig({
   server: {
     historyApiFallback: true,
   },
+  optimization: {
+    minimize: true,
+    splitChunks: { chunks: "all" }
+  }
+  
 })
